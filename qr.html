@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>שלוה — סרקי להתקנה</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#08060f; color:#fff; font-family:'Segoe UI',sans-serif; min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px; }
+.card { background:#15111f; border-radius:24px; padding:36px 32px; max-width:440px; width:100%; text-align:center; box-shadow:0 20px 60px rgba(0,0,0,.6); border:1px solid rgba(155,114,245,.2); }
+h1 { font-size:28px; margin-bottom:4px; background:linear-gradient(135deg,#c4a8ff,#f4a8c8); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+.sub { color:#a89ec0; font-size:14px; margin-bottom:24px; }
+.qrwrap { background:#fff; border-radius:16px; padding:16px; display:inline-block; margin-bottom:20px; min-height:280px; min-width:280px; }
+.qrwrap img { display:block; width:260px; height:260px; }
+.url { font-size:12px; color:#7ef0da; word-break:break-all; margin-bottom:18px; direction:ltr; user-select:all; }
+.steps { text-align:right; font-size:13px; color:#cfc6e8; line-height:2; }
+.steps b { color:#c4a8ff; }
+.err { color:#f87171; font-size:12px; display:none; }
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>🌸 שלוה</h1>
+  <p class="sub">כווני את מצלמת הטלפון אל הקוד — והאפליקציה תיפתח</p>
+  <div class="qrwrap">
+    <img id="qr1"
+         src="https://api.qrserver.com/v1/create-qr-code/?size=520x520&ecc=M&color=2a0e5e&data=https%3A%2F%2Fhitbonenutkaren-bit.github.io%2Fshalva-app%2F"
+         alt="QR"
+         onerror="this.onerror=null;this.src='https://quickchart.io/qr?size=520&dark=2a0e5e&text=https%3A%2F%2Fhitbonenutkaren-bit.github.io%2Fshalva-app%2F';">
+  </div>
+  <div class="err" id="err">אין חיבור לאינטרנט — פתחי את הכתובת ידנית בטלפון:</div>
+  <div class="url">https://hitbonenutkaren-bit.github.io/shalva-app/</div>
+  <div class="steps">
+    <b>אחרי שהאפליקציה נפתחת — מתקינים על מסך הבית:</b><br>
+    📱 אייפון: ספארי ← כפתור שיתוף ⬆️ ← "הוסף למסך הבית"<br>
+    🤖 אנדרואיד: כרום יציע "התקנת אפליקציה" — אשרי
+  </div>
+</div>
+</body>
+</html>
