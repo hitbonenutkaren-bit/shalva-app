@@ -384,8 +384,8 @@ canvas#wc { width:100%!important;height:70px!important;border-radius:12px;backgr
     </div>
   </div>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%;max-width:330px;margin-bottom:22px">
-    <div style="background:rgba(155,114,245,.1);border:1px solid rgba(155,114,245,.2);border-radius:12px;padding:12px;text-align:center"><div style="font-size:20px;font-weight:800;color:#c4a8ff">0</div><div style="font-size:9px;color:#7c6f9a;margin-top:2px">&#1502;&#1514;&#1495;&#1512;&#1493;&#1514; &#1489;&#1506;&#1489;&#1512;&#1497;&#1514;</div></div>
-    <div style="background:rgba(244,168,200,.08);border:1px solid rgba(244,168,200,.2);border-radius:12px;padding:12px;text-align:center"><div style="font-size:20px;font-weight:800;color:#f4a8c8">180K</div><div style="font-size:9px;color:#7c6f9a;margin-top:2px">&#1500;&#1497;&#1491;&#1493;&#1514;/&#1513;&#1504;&#1492;</div></div>
+    <div style="background:rgba(155,114,245,.1);border:1px solid rgba(155,114,245,.2);border-radius:12px;padding:12px;text-align:center"><div style="font-size:16px;font-weight:800;color:#c4a8ff">ראשונה</div><div style="font-size:9px;color:#7c6f9a;margin-top:2px">בזיהוי חרדה בזמן אמת בעברית</div></div>
+    <div style="background:rgba(244,168,200,.08);border:1px solid rgba(244,168,200,.2);border-radius:12px;padding:12px;text-align:center"><div style="font-size:20px;font-weight:800;color:#f4a8c8">182K</div><div style="font-size:9px;color:#7c6f9a;margin-top:2px">לידות/שנה (למ"ס 2025)</div></div>
     <div style="background:rgba(126,240,218,.06);border:1px solid rgba(126,240,218,.15);border-radius:12px;padding:12px;text-align:center"><div style="font-size:20px;font-weight:800;color:#7ef0da">14</div><div style="font-size:9px;color:#7c6f9a;margin-top:2px">&#1502;&#1505;&#1499;&#1497;&#1501; &#1502;&#1500;&#1488;&#1497;&#1501;</div></div>
     <div style="background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.15);border-radius:12px;padding:12px;text-align:center"><div style="font-size:20px;font-weight:800;color:#34d399">MVP</div><div style="font-size:9px;color:#7c6f9a;margin-top:2px">&#1502;&#1493;&#1499;&#1503; &#1500;&#1496;&#1505;&#1496;</div></div>
   </div>
@@ -4518,6 +4518,153 @@ function closeWeekVideo(){
   _wvClearTimers();
   document.getElementById('weekVideoModal').style.display='none';
 }
+</script>
+
+
+<script>
+// ═══ שכבת נתונים מרכזית — כל מדידה נשמרת ═══
+const SDATA = {
+  load(){ try{return JSON.parse(localStorage.getItem('shalva_data')||'{}')}catch(e){return {}} },
+  save(d){ try{localStorage.setItem('shalva_data', JSON.stringify(d))}catch(e){} },
+  push(kind, entry){ const d=this.load(); (d[kind]=d[kind]||[]).push(Object.assign({t:Date.now()},entry)); if(d[kind].length>500) d[kind]=d[kind].slice(-500); this.save(d); },
+  get(kind){ return (this.load()[kind])||[]; },
+  week(kind){ const cut=Date.now()-7*864e5; return this.get(kind).filter(e=>e.t>cut); }
+};
+
+// מצב רוח נשמר
+const _origSelMood = selMood;
+selMood = function(el){ _origSelMood(el);
+  const mood = el.querySelector('.ml') ? el.querySelector('.ml').textContent : '';
+  SDATA.push('mood', {mood});
+};
+// מדידות דופק/נשימה נשמרות
+const _origSBR = showBioResults;
+showBioResults = function(hr,hrv,br,src){ _origSBR(hr,hrv,br,src);
+  if(hr) SDATA.push('bio', {hr,hrv:hrv||null,br:br||null,src});
+};
+
+// ═══ דו"ח לרופאה — נתונים אמיתיים מהשימוש ═══
+function fillRealDoctorData(){
+  const wrap = document.querySelector('#doctorModal > div');
+  if(!wrap) return;
+  let box = document.getElementById('drRealData');
+  if(!box){ box = document.createElement('div'); box.id='drRealData'; wrap.insertBefore(box, wrap.children[2]||null); }
+  const bio = SDATA.week('bio'), mood = SDATA.week('mood');
+  let vax=[]; try{ vax = (JSON.parse(localStorage.getItem('vax_history')||'[]')).filter(e=>(Date.now()-(e.t||e.time||0))<7*864e5); }catch(e){}
+  let eve=[]; try{ eve = (JSON.parse(localStorage.getItem('shalva_evening')||'[]')).filter(e=>(Date.now()-new Date(e.date).getTime())<7*864e5); }catch(e){}
+  const avg=(arr,k)=>arr.length?Math.round(arr.reduce((a,b)=>a+(b[k]||0),0)/arr.length):null;
+  const avgHR=avg(bio,'hr'), avgHRV=avg(bio.filter(b=>b.hrv),'hrv');
+  const moodCounts={}; mood.forEach(m=>{moodCounts[m.mood]=(moodCounts[m.mood]||0)+1;});
+  const moodTxt=Object.entries(moodCounts).map(([k,v])=>k+' ×'+v).join(' · ')||'—';
+  box.innerHTML =
+    '<div style="background:var(--s1);border:1px solid rgba(126,240,218,.3);border-radius:16px;padding:16px;margin-bottom:14px">'
+    +'<div style="font-size:11px;font-weight:700;color:var(--teal);letter-spacing:1px;margin-bottom:10px">📊 נתונים אמיתיים — 7 ימים אחרונים</div>'
+    +'<div style="font-size:12px;line-height:2;color:var(--white)">'
+    +'מדידות דופק: <b>'+bio.length+'</b>'+(avgHR?' · ממוצע <b>'+avgHR+'</b>':'')+(avgHRV?' · HRV ממוצע <b>'+avgHRV+' ms</b>':'')+'<br>'
+    +'בדיקות קול: <b>'+vax.length+'</b><br>'
+    +'דיווחי מצב רוח: <b>'+mood.length+'</b>'+(mood.length?' — '+moodTxt:'')+'<br>'
+    +'סיכומי ערב: <b>'+eve.length+'</b>'
+    +'</div>'
+    +'<div style="display:flex;gap:8px;margin-top:12px">'
+    +'<button onclick="exportShalvaData()" style="flex:1;padding:10px;border:1px solid rgba(126,240,218,.35);border-radius:10px;background:transparent;color:var(--teal);font-size:11px;font-weight:700;cursor:pointer;font-family:inherit">⬇ גיבוי הנתונים לקובץ</button>'
+    +'<label style="flex:1;padding:10px;border:1px solid rgba(196,168,255,.35);border-radius:10px;background:transparent;color:var(--purple2);font-size:11px;font-weight:700;cursor:pointer;text-align:center;font-family:inherit">⬆ שחזור מגיבוי<input type="file" accept=".json" style="display:none" onchange="importShalvaData(this.files[0])"></label>'
+    +'</div>'
+    +'<div style="font-size:9px;color:var(--dim);margin-top:8px">הנתונים נשמרים במכשיר בלבד. הגיבוי מאפשר מעבר טלפון או הצגה למטפלת.</div>'
+    +'</div>';
+}
+const _origODR = openDoctorReport;
+openDoctorReport = function(){ _origODR(); fillRealDoctorData(); };
+
+// ═══ גיבוי ושחזור ═══
+function exportShalvaData(){
+  const keys=['shalva_data','shalva_evening','vax_history','shalva_reminder'];
+  const out={_app:'shalva',_date:new Date().toISOString()};
+  keys.forEach(k=>{ const v=localStorage.getItem(k); if(v) out[k]=v; });
+  const blob=new Blob([JSON.stringify(out,null,1)],{type:'application/json'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
+  a.download='shalva-backup-'+new Date().toISOString().slice(0,10)+'.json'; a.click();
+  showToast('הגיבוי ירד למכשיר 💾');
+}
+function importShalvaData(file){
+  if(!file) return;
+  const r=new FileReader();
+  r.onload=()=>{ try{
+    const d=JSON.parse(r.result);
+    if(d._app!=='shalva') throw 0;
+    Object.keys(d).forEach(k=>{ if(!k.startsWith('_')) localStorage.setItem(k,d[k]); });
+    showToast('הנתונים שוחזרו ✅'); fillRealDoctorData();
+  }catch(e){ showToast('⚠️ קובץ גיבוי לא תקין'); } };
+  r.readAsText(file);
+}
+
+// ═══ תזכורת יומית (מוצעת אחרי סיכום ערב ראשון) ═══
+const _origSER = saveEveningReview;
+saveEveningReview = function(){ _origSER();
+  try{
+    if(localStorage.getItem('shalva_reminder')) return;
+    if(!('Notification' in window)) return;
+    setTimeout(()=>{
+      if(confirm('רוצה שאזכיר לך כל ערב ב-20:00 לעשות רגע לעצמך? 🌙')){
+        Notification.requestPermission().then(p=>{
+          if(p==='granted'){ localStorage.setItem('shalva_reminder','20:00'); showToast('תזכורת יומית הופעלה 🔔'); }
+        });
+      } else localStorage.setItem('shalva_reminder','off');
+    }, 2200);
+  }catch(e){}
+};
+setInterval(()=>{
+  try{
+    const rt=localStorage.getItem('shalva_reminder');
+    if(!rt||rt==='off'||!('Notification' in window)||Notification.permission!=='granted') return;
+    const now=new Date(); const [h,m]=rt.split(':').map(Number);
+    if(now.getHours()===h&&now.getMinutes()===m){
+      const last=localStorage.getItem('shalva_reminder_last');
+      const today=now.toDateString();
+      if(last!==today){ localStorage.setItem('shalva_reminder_last',today);
+        new Notification('שלוה 🌸',{body:'רגע קטן לעצמך — נשימה, מחשבה, סיכום יום.'}); }
+    }
+  }catch(e){}
+}, 30000);
+
+// ═══ חיבור למנוע AI אמיתי (עם גדרות בטיחות) ═══
+// היועצת עונה מהמאגר המדויק; אם הוגדרה כתובת שרת — עונה דרך מנוע AI
+const _origDeliver = deliverAdvisorReply;
+deliverAdvisorReply = function(question){
+  const ep = localStorage.getItem('shalva_ai_endpoint');
+  if(!ep){ _origDeliver(question); return; }
+  addAdvisorMsg('', false, true);
+  fetch(ep, {method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({question:question, week:(typeof currentWeekNum!=='undefined'&&currentWeekNum)||null})})
+  .then(r=>{ if(!r.ok) throw 0; return r.json(); })
+  .then(j=>{
+    const typing=document.getElementById('chatTyping'); if(typing) typing.remove();
+    let reply=(j.reply||'').trim(); if(!reply) throw 0;
+    if(!/רופא|מיילדת|מטפל/.test(reply)) reply += '\n\n💜 לשאלות אישיות — פני לרופאה או למיילדת שלך.';
+    addAdvisorMsg(reply, false);
+  })
+  .catch(()=>{
+    const typing=document.getElementById('chatTyping'); if(typing) typing.remove();
+    _origDeliver(question);
+  });
+};
+function setupSmartAdvisor(){
+  const cur = localStorage.getItem('shalva_ai_endpoint')||'';
+  const v = prompt('כתובת שרת היועצת החכמה (השאירי ריק לכיבוי — היועצת תענה מהמאגר המובנה):', cur);
+  if(v===null) return;
+  if(v.trim()){ localStorage.setItem('shalva_ai_endpoint', v.trim()); showToast('מנוע AI חובר ליועצת ✅'); }
+  else { localStorage.removeItem('shalva_ai_endpoint'); showToast('היועצת חזרה למאגר המובנה'); }
+}
+// כפתור הגדרות קטן ליד שדה הצ'אט
+window.addEventListener('load', ()=>{
+  const inp=document.getElementById('chatInput');
+  if(inp && inp.parentElement){
+    const g=document.createElement('button');
+    g.textContent='⚙️'; g.title='חיבור מנוע AI';
+    g.style.cssText='background:transparent;border:none;color:var(--dim);font-size:16px;cursor:pointer;padding:4px';
+    g.onclick=setupSmartAdvisor;
+    inp.parentElement.appendChild(g);
+  }
+});
 </script>
 
 <script>
