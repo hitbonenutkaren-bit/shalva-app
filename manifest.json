@@ -1,0 +1,18 @@
+{
+  "name": "שלוה — ליווי טבעי להריון רגוע",
+  "short_name": "שלוה",
+  "description": "אפליקציה טבעית לרוגע ורווחה בהריון — נשימה מודרכת, מעקב אישי ויועצת",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#08060f",
+  "theme_color": "#0d0a1e",
+  "lang": "he",
+  "dir": "rtl",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ],
+  "categories": ["health", "lifestyle"]
+}
