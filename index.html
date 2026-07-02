@@ -2166,7 +2166,7 @@ function detectionTick() {
   SIG.br  = Math.max(8,  Math.min(40,  SIG.br));
   SIG.gsr = Math.max(0.4,Math.min(5,   SIG.gsr));
 
-  const score = calcRisk();
+  const score = (typeof getUnifiedScore === "function") ? getUnifiedScore() : calcRisk();
 
   if (score >= ALERT_THRESHOLD) { highTicks++; }
   else { highTicks = Math.max(0, highTicks - 1); }
@@ -2281,6 +2281,14 @@ function mloop(){
   setVCard('vj',jitter2>.05?Math.round(jitter2*100)+'%':'\u2014',Math.min(1,jitter2*10),['var(--yellow)','var(--red)']);
   setVCard('vr',Math.round(sr*100)+'%',sr,['var(--purple2)','var(--orange)']);
   document.getElementById('ms').textContent = '\ud83d\udd34 \u05de\u05d0\u05d6\u05d9\u05e0\u05d4...';
+  // מזינים את מנוע הקול המשותף — אותם נתונים בכל האפליקציה
+  if (typeof VAX !== 'undefined' && pitch > 80) {
+    const pScore = Math.max(0, Math.min(40, (pitch - 220) / 70 * 40));
+    const jScore = Math.max(0, Math.min(35, jitter2 * 350));
+    const eScore = Math.max(0, Math.min(25, rms * 60));
+    VAX.lastScore = Math.round(pScore + jScore + eScore);
+    VAX.lastScoreTime = Date.now();
+  }
 }
 
 function setVCard(id, val, fill, colors) {
@@ -3473,10 +3481,12 @@ function showBioResults(hr,hrv,br,src){
     else note='💜 מדדים תקינים';
     document.getElementById('bioAnxNote').textContent=note;
   }
-  // Push to live SIG
-  if(hr){SIG.hr=hr;BASE.hr=hr;}
-  if(hrv){SIG.hrv=hrv;BASE.hrv=hrv;}
-  if(br){SIG.br=br;BASE.br=br;}
+  // Push to live SIG — המדידה מזינה את המנוע המרכזי
+  if(hr){SIG.hr=hr;}
+  if(hrv){SIG.hrv=hrv;}
+  if(br){SIG.br=br;}
+  // מכיילים baseline רק ממדידה רגועה (אחרת חרדה "מתאפסת" בטעות)
+  if(hr && hr<88 && (!hrv || hrv>32)){ BASE.hr=hr; if(hrv)BASE.hrv=hrv; if(br)BASE.br=br; }
   // Update card
   const lastEl=document.getElementById('bioLastReading');
   const srcIcon=src==='watch'?'⌚':'📷';
@@ -3494,9 +3504,10 @@ function stopBioMeasure(){
 }
 
 function applyWatchData(hr,hrv,br){
-  if(hr>30&&hr<220){SIG.hr=hr;BASE.hr=hr;}
-  if(hrv>0&&hrv<200){SIG.hrv=hrv;BASE.hrv=hrv;}
-  if(br>5&&br<50){SIG.br=br;BASE.br=br;}
+  if(hr>30&&hr<220){SIG.hr=hr;}
+  if(hrv>0&&hrv<200){SIG.hrv=hrv;}
+  if(br>5&&br<50){SIG.br=br;}
+  if(hr>30&&hr<88&&(!hrv||hrv>32)){BASE.hr=hr;if(hrv)BASE.hrv=hrv;if(br)BASE.br=br;}
   showBioResults(hr,hrv,br,'watch');
   const note=hr>100?'⚡ קצב לב גבוה — שלוה עם עין פקוחה':hrv&&hrv<25?'🌸 HRV נמוך — רגע לנשום':hrv&&hrv>55?'🌿 מדדים מצוינים!':'💜 מדדים תקינים';
   const wRes=document.getElementById('watchResults');
@@ -3917,6 +3928,8 @@ const VAX = {
 
     // ── 5. חישוב ציון חרדה ──
     this.score = this.calcAnxScore();
+    this.lastScore = this.score;
+    this.lastScoreTime = Date.now();
 
     // ── עדכן UI ──
     this.updateUI(freqData, timeData);
@@ -4246,11 +4259,18 @@ function showToast(msg) {
 // ── Unified anxiety score (voice + biometric) ──
 function getUnifiedScore() {
   const bioScore = calcRisk ? calcRisk() : 0;
-  const vaxScore = (typeof VAX !== 'undefined' && VAX.score) ? VAX.score : 0;
-  // Weight: 60% biometric, 40% voice (when voice is active)
-  const vaxActive = (typeof VAX !== 'undefined' && VAX.active);
-  if (vaxActive) {
-    return Math.round(bioScore * 0.60 + vaxScore * 0.40);
+  if (typeof VAX === 'undefined') return bioScore;
+  // קול חי — משקל מלא 40%
+  if (VAX.active && VAX.score) {
+    return Math.round(bioScore * 0.60 + VAX.score * 0.40);
+  }
+  // מדידת קול אחרונה (עד 10 דקות) — משקל דועך עם הזמן
+  if (VAX.lastScore && VAX.lastScoreTime) {
+    const ageMin = (Date.now() - VAX.lastScoreTime) / 60000;
+    if (ageMin < 10) {
+      const w = 0.40 * (1 - ageMin / 10);
+      return Math.round(bioScore * (1 - w) + VAX.lastScore * w);
+    }
   }
   return bioScore;
 }
