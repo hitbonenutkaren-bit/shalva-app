@@ -1,1 +1,1 @@
-# shalva-app
+# shalva-app — Shalva PWA
