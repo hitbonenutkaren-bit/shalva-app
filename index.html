@@ -876,7 +876,7 @@ function howNext() {
 <!-- ══ S5: BREATHE ══ -->
 <div class="sc" id="s5" style="justify-content:flex-start;padding-top:46px;overflow-y:auto">
   <div class="br-hdr">
-    <div class="back" onclick="go('s3')">←</div>
+    <div class="back" onclick="SCAPE.stop();go('s3')">←</div>
     <div class="br-title">תרגיל נשימה — 4 דקות</div>
   </div>
   <div class="orb-wrap">
@@ -890,6 +890,19 @@ function howNext() {
     <div class="vav">🧘‍♀️</div>
     <div><div class="vname">שלוה — בקול שקט</div><div class="vtxt" id="vt">"יפה מאוד. שאפי לאט — הגוף שלך נרגע ומתמלא בשקט."</div><div class="sw"><div class="swb"></div><div class="swb"></div><div class="swb"></div><div class="swb"></div><div class="swb"></div></div></div>
   </div>
+  <!-- 🎶 מדיטציית צלילים — 6 צלילי רקע עדינים -->
+  <div style="width:100%;max-width:360px;margin:0 0 16px">
+    <div style="font-size:11px;color:var(--dim);margin-bottom:8px;text-align:center">🎶 צליל רקע למדיטציה — בחרי מה מרגיע אותך</div>
+    <div style="display:flex;gap:7px;flex-wrap:wrap;justify-content:center">
+      <div class="sndchip" onclick="SCAPE.toggle('rain',this)" style="background:var(--s1);border:1px solid var(--s3);border-radius:20px;padding:7px 13px;font-size:12px;color:var(--dim);cursor:pointer;transition:all .2s">🌧️ גשם</div>
+      <div class="sndchip" onclick="SCAPE.toggle('ocean',this)" style="background:var(--s1);border:1px solid var(--s3);border-radius:20px;padding:7px 13px;font-size:12px;color:var(--dim);cursor:pointer;transition:all .2s">🌊 גלים</div>
+      <div class="sndchip" onclick="SCAPE.toggle('wind',this)" style="background:var(--s1);border:1px solid var(--s3);border-radius:20px;padding:7px 13px;font-size:12px;color:var(--dim);cursor:pointer;transition:all .2s">🌬️ רוח</div>
+      <div class="sndchip" onclick="SCAPE.toggle('tone',this)" style="background:var(--s1);border:1px solid var(--s3);border-radius:20px;padding:7px 13px;font-size:12px;color:var(--dim);cursor:pointer;transition:all .2s">🎵 טון עדין</div>
+      <div class="sndchip" onclick="SCAPE.toggle('heart',this)" style="background:var(--s1);border:1px solid var(--s3);border-radius:20px;padding:7px 13px;font-size:12px;color:var(--dim);cursor:pointer;transition:all .2s">💓 פעימות</div>
+      <div class="sndchip" onclick="SCAPE.toggle('chimes',this)" style="background:var(--s1);border:1px solid var(--s3);border-radius:20px;padding:7px 13px;font-size:12px;color:var(--dim);cursor:pointer;transition:all .2s">🔔 פעמונים</div>
+    </div>
+  </div>
+
   <div class="prog-wrap">
     <div class="prog-lbl"><span>התקדמות</span><span id="pp">0%</span></div>
     <div class="prog-bar"><div class="prog-fill" id="pf" style="width:0%"></div></div>
@@ -2434,6 +2447,88 @@ const BREATH_PHASES = () => [
 let pi = 0, pd = 4, cyc = 0, bTimer, progSec = 0, progTimer;
 const TOTAL_CYCLES = 4;
 
+// ══ 🎶 SCAPE — מדיטציית צלילים מסונתזת (WebAudio, ללא קבצים חיצוניים) ══
+const SCAPE = {
+  ctx:null, master:null, nodes:[], ivals:[], cur:null,
+  ensure(){
+    if(!this.ctx) this.ctx = new (window.AudioContext||window.webkitAudioContext)();
+    if(this.ctx.state==='suspended') this.ctx.resume();
+    if(!this.master){ this.master=this.ctx.createGain(); this.master.gain.value=0.20; this.master.connect(this.ctx.destination); }
+  },
+  brownBuf(){
+    const len=2*this.ctx.sampleRate, buf=this.ctx.createBuffer(1,len,this.ctx.sampleRate), d=buf.getChannelData(0);
+    let last=0;
+    for(let i=0;i<len;i++){ const w=Math.random()*2-1; last=(last+0.02*w)/1.02; d[i]=last*3.5; }
+    return buf;
+  },
+  noiseSrc(){ const s=this.ctx.createBufferSource(); s.buffer=this.brownBuf(); s.loop=true; return s; },
+  stop(){
+    this.ivals.forEach(clearInterval); this.ivals=[];
+    this.nodes.forEach(n=>{ try{n.stop&&n.stop()}catch(e){} try{n.disconnect&&n.disconnect()}catch(e){} });
+    this.nodes=[]; this.cur=null;
+    document.querySelectorAll('.sndchip').forEach(c=>{ c.style.background='var(--s1)'; c.style.borderColor='var(--s3)'; c.style.color='var(--dim)'; });
+  },
+  toggle(type,el){
+    const was=this.cur;
+    this.stop();
+    if(was===type) return;
+    this.ensure(); this.cur=type;
+    if(el){ el.style.background='rgba(155,114,245,.18)'; el.style.borderColor='rgba(155,114,245,.55)'; el.style.color='var(--white)'; }
+    this['mk_'+type]();
+    try{ localStorage.setItem('shalvaSound',type); }catch(e){}
+  },
+  mk_rain(){
+    const n=this.noiseSrc(), hp=this.ctx.createBiquadFilter(), lp=this.ctx.createBiquadFilter(), g=this.ctx.createGain();
+    hp.type='highpass'; hp.frequency.value=400; lp.type='lowpass'; lp.frequency.value=1600; g.gain.value=0.9;
+    n.connect(hp); hp.connect(lp); lp.connect(g); g.connect(this.master); n.start();
+    this.nodes.push(n,hp,lp,g);
+  },
+  mk_ocean(){
+    const n=this.noiseSrc(), lp=this.ctx.createBiquadFilter(), g=this.ctx.createGain();
+    lp.type='lowpass'; lp.frequency.value=650; g.gain.value=0.6;
+    const lfo=this.ctx.createOscillator(), lg=this.ctx.createGain();
+    lfo.frequency.value=0.07; lg.gain.value=0.35; lfo.connect(lg); lg.connect(g.gain);
+    n.connect(lp); lp.connect(g); g.connect(this.master); n.start(); lfo.start();
+    this.nodes.push(n,lp,g,lfo,lg);
+  },
+  mk_wind(){
+    const n=this.noiseSrc(), bp=this.ctx.createBiquadFilter(), g=this.ctx.createGain();
+    bp.type='bandpass'; bp.frequency.value=480; bp.Q.value=1.6; g.gain.value=0.8;
+    const lfo=this.ctx.createOscillator(), lg=this.ctx.createGain();
+    lfo.frequency.value=0.05; lg.gain.value=260; lfo.connect(lg); lg.connect(bp.frequency);
+    n.connect(bp); bp.connect(g); g.connect(this.master); n.start(); lfo.start();
+    this.nodes.push(n,bp,g,lfo,lg);
+  },
+  mk_tone(){
+    const o1=this.ctx.createOscillator(), o2=this.ctx.createOscillator(), g=this.ctx.createGain();
+    o1.frequency.value=174; o2.frequency.value=261.6; g.gain.value=0.16;
+    const trem=this.ctx.createOscillator(), tg=this.ctx.createGain();
+    trem.frequency.value=0.15; tg.gain.value=0.06; trem.connect(tg); tg.connect(g.gain);
+    o1.connect(g); o2.connect(g); g.connect(this.master); o1.start(); o2.start(); trem.start();
+    this.nodes.push(o1,o2,g,trem,tg);
+  },
+  mk_heart(){
+    const thump=()=>{ if(this.cur!=='heart')return;
+      const o=this.ctx.createOscillator(), g=this.ctx.createGain(), t=this.ctx.currentTime;
+      o.frequency.value=52; g.gain.setValueAtTime(0,t);
+      g.gain.linearRampToValueAtTime(0.7,t+0.03); g.gain.exponentialRampToValueAtTime(0.001,t+0.25);
+      g.gain.setValueAtTime(0.001,t+0.32); g.gain.linearRampToValueAtTime(0.45,t+0.35); g.gain.exponentialRampToValueAtTime(0.001,t+0.55);
+      o.connect(g); g.connect(this.master); o.start(t); o.stop(t+0.6);
+    };
+    thump(); this.ivals.push(setInterval(thump,1000));
+  },
+  mk_chimes(){
+    const notes=[523.25,587.33,659.25,783.99,880];
+    const ping=()=>{ if(this.cur!=='chimes')return;
+      const o=this.ctx.createOscillator(), g=this.ctx.createGain(), t=this.ctx.currentTime;
+      o.frequency.value=notes[Math.floor(Math.random()*notes.length)];
+      g.gain.setValueAtTime(0.0001,t); g.gain.linearRampToValueAtTime(0.22,t+0.02); g.gain.exponentialRampToValueAtTime(0.0001,t+3.5);
+      o.connect(g); g.connect(this.master); o.start(t); o.stop(t+3.6);
+    };
+    ping(); this.ivals.push(setInterval(ping,3800));
+  }
+};
+
 function startBreath() {
   clearInterval(bTimer); clearInterval(progTimer);
   pi = 0; cyc = 0; progSec = 0;
@@ -2452,6 +2547,7 @@ function startBreath() {
         if (cyc >= TOTAL_CYCLES) {
           clearInterval(bTimer); clearInterval(progTimer);
           setTimeout(() => {
+            SCAPE.stop();
             go('s6');
             setTimeout(() => VOICE.speak(`כל הכבוד ${userName}! סיימת את תרגיל הנשימה בהצלחה. הגוף שלך מלא בשקט ואנרגיה — את מדהימה.`), 400);
           }, 1200);
