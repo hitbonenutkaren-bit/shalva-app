@@ -1,6 +1,6 @@
 // שלוה — Service Worker (עבודה גם ללא אינטרנט)
-// build: 2026-07-03
-const CACHE = 'shalva-v6';
+// build: 2026-07-03b
+const CACHE = 'shalva-v7';
 const ASSETS = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png', './apple-touch-icon.png'];
 
 self.addEventListener('install', e => {

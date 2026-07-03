@@ -1179,6 +1179,7 @@ function howNext() {
 
   <!-- Input row -->
   <div style="padding:0 22px 12px;display:flex;gap:10px;align-items:flex-end">
+    <button onclick="advisorSettings()" title="חיבור לשרת AI" style="width:34px;height:34px;border-radius:50%;border:1px solid var(--s3);background:var(--s1);color:var(--dim);font-size:15px;cursor:pointer;flex-shrink:0;margin-bottom:7px">⚙️</button>
     <textarea id="chatInput" placeholder="שאלי אותי..." style="flex:1;background:var(--s1);border:1px solid var(--s3);border-radius:16px;padding:12px 16px;color:var(--white);font-size:14px;outline:none;resize:none;height:48px;max-height:120px;font-family:-apple-system,sans-serif;direction:rtl;line-height:1.5;-webkit-appearance:none;transition:border-color .3s"
       oninput="autoGrow(this)"
       onfocus="this.style.borderColor='rgba(155,114,245,.5)'"
@@ -2982,16 +2983,51 @@ function sendChat() {
   deliverAdvisorReply(text);
 }
 
+// ⚙️ חיבור אופציונלי לשרת יועצת AI (Cloudflare Worker) — ראי מדריך-הקמת-שרת-AI
+function advisorSettings() {
+  const cur = localStorage.getItem('shalvaAdvisorUrl') || '';
+  const url = prompt('כתובת שרת היועצת (Cloudflare Worker)\nלדוגמה: https://shalva-advisor.xxx.workers.dev\n\nהשאירי ריק ואשרי — לניתוק וחזרה למאגר המובנה:', cur);
+  if (url === null) return;
+  const clean = url.trim();
+  if (!clean) { localStorage.removeItem('shalvaAdvisorUrl'); alert('היועצת עונה מהמאגר המובנה 🌸'); return; }
+  if (!/^https:\/\//.test(clean)) { alert('הכתובת צריכה להתחיל ב-https://'); return; }
+  localStorage.setItem('shalvaAdvisorUrl', clean);
+  alert('היועצת מחוברת לשרת ה-AI ✓');
+}
+
+async function askAdvisorServer(question) {
+  const url = localStorage.getItem('shalvaAdvisorUrl');
+  if (!url) return null;
+  try {
+    const ctrl = new AbortController();
+    const t = setTimeout(() => ctrl.abort(), 15000);
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ question: question, week: currentWeekNum || null }),
+      signal: ctrl.signal
+    });
+    clearTimeout(t);
+    if (!res.ok) return null;
+    const data = await res.json();
+    return (data && data.reply) ? data.reply : null;
+  } catch (e) { return null; }
+}
+
 function deliverAdvisorReply(question) {
   addAdvisorMsg('', false, true);
-  setTimeout(() => {
-    const typing = document.getElementById('chatTyping');
-    if (typing) typing.remove();
-    const reply = resolveAdvisorReply(question);
-    addAdvisorMsg(reply, false);
-    const shortVoice = reply.replace(/[📊⏰💤⚠️🌸🫁📚🤝💜💪🧘📋🔥✓➤❌✅🌡️🛏️🌙📵🛁🍪🍋🕐💧]/g,'').replace(/[\-–•·]/g,'').replace(/\n/g,' ').substring(0, 100);
-    VOICE.speak(shortVoice);
-  }, 900 + Math.random() * 700);
+  const started = Date.now();
+  askAdvisorServer(question).then(serverReply => {
+    const wait = Math.max(300, 900 - (Date.now() - started));
+    setTimeout(() => {
+      const typing = document.getElementById('chatTyping');
+      if (typing) typing.remove();
+      const reply = serverReply || resolveAdvisorReply(question);
+      addAdvisorMsg(reply, false);
+      const shortVoice = reply.replace(/[📊⏰💤⚠️🌸🫁📚🤝💜💪🧘📋🔥✓➤❌✅🌡️🛏️🌙📵🛁🍪🍋🕐💧]/g,'').replace(/[\-–•·]/g,'').replace(/\n/g,' ').substring(0, 100);
+      VOICE.speak(shortVoice);
+    }, wait);
+  });
 }
 
 function resolveAdvisorReply(q) {
