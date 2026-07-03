@@ -482,8 +482,8 @@ canvas#wc { width:100%!important;height:70px!important;border-radius:12px;backgr
     <div class="fitem" style="animation-delay:.35s">
       <div class="ficon" style="background:rgba(155,114,245,.12)">🔮</div>
       <div class="ftext">
-        <h4>מזהה רגע לפני שמרגישים</h4>
-        <p>ניטור עדין ברקע — שלוה שם לב לשינויים לפנייך</p>
+        <h4>שמה לב לשינויים בגוף</h4>
+        <p>ניטור עדין ברקע — מזמינה אותך לרגע של נשימה כשמתאים</p>
       </div>
     </div>
     <div class="fitem" style="animation-delay:.6s">
@@ -691,7 +691,7 @@ function howNext() {
         <div onclick="goTab('s8','t3')" style="background:var(--s1);border:1px solid var(--s3);border-radius:16px;padding:14px;cursor:pointer;transition:all .2s" onmousedown="this.style.transform='scale(.97)'" onmouseup="this.style.transform=''">
           <div style="font-size:26px;margin-bottom:6px">👩‍👩‍👧</div>
           <div style="font-size:13px;font-weight:700">קהילה</div>
-          <div style="font-size:10px;color:var(--dim);margin-top:2px">247 נשים פעילות</div>
+          <div style="font-size:10px;color:var(--dim);margin-top:2px">גרסת הדגמה 🌱</div>
         </div>
 
         <div onclick="goTab('s10','t4')" style="background:var(--s1);border:1px solid var(--s3);border-radius:16px;padding:14px;cursor:pointer;transition:all .2s" onmousedown="this.style.transform='scale(.97)'" onmouseup="this.style.transform=''">
@@ -776,6 +776,7 @@ function howNext() {
       <div id="bioStatus" style="font-size:12px;color:var(--dim);text-align:center">אצבע על עדשת המצלמה — 30 שניות</div>
 
       <button id="bioStartBtn" onclick="startBioMeasure()" style="background:linear-gradient(135deg,var(--teal),var(--purple2));border:none;border-radius:14px;padding:13px 32px;color:#000;font-size:14px;font-weight:800;cursor:pointer;width:100%">▶ התחילי מדידה</button>
+      <div style="font-size:11px;color:var(--dim);margin-top:8px;text-align:center">מדידה ניסיונית באמצעות המצלמה — להתרשמות בלבד, אינה מכשור רפואי</div>
 
       <!-- Results -->
       <div id="bioResults" style="display:none;flex-direction:column;width:100%;gap:10px">
@@ -991,8 +992,8 @@ function howNext() {
   </div>
 
   <div class="vtab-info">
-    <strong>מה שלוה שומעת:</strong> שינויים עדינים בגובה הקול, הקצב והרעד — אינדיקטורים מוכחים למצב מערכת העצבים.
-    שילוב קול + שעון = <strong style="color:var(--teal)">92% דיוק</strong>.<br>
+    <strong>מה שלוה שומעת:</strong> שינויים עדינים בגובה הקול, הקצב והרעד — סימנים שעשויים לשקף את מצב מערכת העצבים.
+    <strong style="color:var(--teal)">יכולת בפיתוח</strong> — הניתוח להתרשמות בלבד ואינו מדידה רפואית.<br>
     <span style="color:rgba(126,240,218,.5)">הכל מעובד על המכשיר שלך. שום דבר לא עוזב את הטלפון.</span>
   </div>
 </div>
@@ -1004,15 +1005,18 @@ function howNext() {
     <p>נשים בהריון שמבינות בדיוק מה את עוברת</p>
   </div>
 
+  <!-- Demo notice -->
+  <div style="background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.25);border-radius:12px;padding:10px 14px;font-size:12px;color:#fbbf24;margin-bottom:12px;text-align:center">🌱 הדגמה — הפוסטים כאן להמחשה בלבד. הקהילה האמיתית נפתחת בקרוב.</div>
+
   <!-- Live count banner -->
   <div style="background:linear-gradient(135deg,rgba(155,114,245,.1),rgba(244,168,200,.08));border:1px solid rgba(155,114,245,.2);border-radius:16px;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
     <div>
       <div style="font-size:22px;font-weight:900;color:var(--purple2)">247</div>
-      <div style="font-size:11px;color:var(--dim);margin-top:1px">נשים פעילות השבוע</div>
+      <div style="font-size:11px;color:var(--dim);margin-top:1px">נשים פעילות · הדגמה</div>
     </div>
     <div style="text-align:left">
       <div style="font-size:22px;font-weight:900;color:var(--pink)">31</div>
-      <div style="font-size:11px;color:var(--dim);margin-top:1px">איתך בשבוע שלך</div>
+      <div style="font-size:11px;color:var(--dim);margin-top:1px">בשבוע שלך · הדגמה</div>
     </div>
     <div style="font-size:36px">🌸</div>
   </div>
@@ -1128,7 +1132,7 @@ function howNext() {
   </div>
   <div class="others-strip">
     <div class="others-dots" id="othersDots"></div>
-    <div class="others-txt"><b id="othersCount">31</b> נשים נוספות נמצאות איתך בשבוע זה הלילה</div>
+    <div class="others-txt"><b id="othersCount">31</b> נשים נוספות נמצאות איתך בשבוע זה הלילה · הדגמה</div>
   </div>
   <canvas id="galaxyCanvas"></canvas>
   <div class="galaxy-info">
@@ -1282,7 +1286,7 @@ function howNext() {
     <div style="margin-bottom:20px">
       <div class="back" style="display:inline-flex;margin-bottom:16px" onclick="document.getElementById('findFlow').style.display='none';document.getElementById('noCompanion').style.display='flex';">←</div>
       <div style="font-size:18px;font-weight:800;margin-bottom:6px">מלוות זמינות 🌸</div>
-      <div style="font-size:13px;color:var(--dim)">בחרי מי מתאימה לך — ניתן לשוחח לפני ההחלטה</div>
+      <div style="font-size:13px;color:var(--dim)">פרופילים להדגמה — רשת המלוות האמיתית בהקמה 🌱</div>
     </div>
     <!-- Companion profiles -->
     <div style="display:flex;flex-direction:column;gap:14px">
@@ -1696,17 +1700,17 @@ function howNext() {
     <div style="background:linear-gradient(135deg,rgba(155,114,245,.12),rgba(244,168,200,.08));border:1px solid rgba(155,114,245,.3);border-radius:16px;padding:18px;text-align:center;margin-bottom:16px">
       <div style="font-size:11px;color:var(--dim);margin-bottom:4px">מחיר חודשי</div>
       <div style="font-size:36px;font-weight:900;color:var(--white)">₪29<span style="font-size:14px;font-weight:400;color:var(--dim)">/חודש</span></div>
-      <div style="font-size:12px;color:var(--green);margin-top:4px">✅ ביטול בכל עת · 14 ימי ניסיון חינם</div>
+      <div style="font-size:12px;color:var(--green);margin-top:4px">מחיר משוער לגרסת ההשקה · טרם זמין לרכישה</div>
     </div>
 
     <!-- Testimonial -->
     <div style="padding:14px;background:rgba(155,114,245,.06);border-radius:14px;margin-bottom:16px;font-size:12px;line-height:1.7;color:var(--dim)">
       💜 <em>"הדוחות שלוה נתנה לרופאה שלי עזרו לה להבין מה אני עוברת הרבה יותר טוב. זה שינה הכל."</em><br>
-      <span style="color:var(--purple2)">— נועה ב., שבוע 34</span>
+      <span style="color:var(--purple2)">— ציטוט להמחשה (הדגמה)</span>
     </div>
 
-    <button onclick="startTrial()" style="width:100%;padding:17px;border-radius:50px;border:none;background:linear-gradient(135deg,#7c3aed,#be185d,#0e7490);background-size:200%;animation:gs 4s ease infinite;color:#fff;font-size:16px;font-weight:700;cursor:pointer;box-shadow:0 8px 28px rgba(124,58,237,.4);margin-bottom:10px">
-      ✨ התחילי 14 ימי ניסיון חינם
+    <button onclick="showToast('פרמיום ייפתח בגרסת ההשקה 🌸')" style="width:100%;padding:17px;border-radius:50px;border:none;background:linear-gradient(135deg,#7c3aed,#be185d,#0e7490);background-size:200%;animation:gs 4s ease infinite;color:#fff;font-size:16px;font-weight:700;cursor:pointer;box-shadow:0 8px 28px rgba(124,58,237,.4);margin-bottom:10px">
+      ✨ בקרוב — בגרסת ההשקה
     </button>
     <button onclick="closePremium()" style="width:100%;padding:13px;border-radius:50px;border:none;background:transparent;color:var(--dim);font-size:13px;cursor:pointer">אולי אחר כך</button>
   </div>
@@ -3221,7 +3225,7 @@ function sendCmpMsg() {
   if (cont) { cont.appendChild(typDiv); cont.scrollTop = cont.scrollHeight; }
   setTimeout(() => {
     const t = document.getElementById('cmpTyping'); if(t) t.remove();
-    const reply = CMP_RESPONSES[Math.floor(Math.random() * CMP_RESPONSES.length)];
+    const reply = '(הדגמה — כאן תענה המלווה האמיתית שלך 🌱)\n' + CMP_RESPONSES[Math.floor(Math.random() * CMP_RESPONSES.length)];
     addCmpMessage(reply, false);
   }, 1200 + Math.random() * 800);
 }
