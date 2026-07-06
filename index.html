@@ -317,6 +317,7 @@ canvas#wc { width:100%!important;height:70px!important;border-radius:12px;backgr
 </head>
 <body>
 
+<div id="stars"></div>
 
 <!-- ══ S0: SPLASH ══ -->
 <div class="sc on" id="s0">
@@ -360,7 +361,7 @@ canvas#wc { width:100%!important;height:70px!important;border-radius:12px;backgr
 <!-- ══ S1: REGISTER ══ -->
 <div class="sc" id="s1" style="justify-content:flex-start;padding-top:52px;overflow-y:auto">
   <div class="reg-hdr">
-    <h2>נכירות קצרה 🌷</h2>
+    <h2>היכרות קצרה 🌷</h2>
     <p>כדי שאוכל לדאוג לך בדיוק כפי שאת צריכה</p>
   </div>
   <div class="form">
@@ -1358,7 +1359,7 @@ function howNext() {
         </div>
       </div>
     </div>
-    <div style="margin-top:14px;font-size:11px;color:var(--dim);text-align:center;line-height:1.7">כל המלוות עברו אימות · תמיכה רגשית בלבד · אין ייעוץ רפואי</div>
+    <div style="margin-top:14px;font-size:11px;color:var(--dim);text-align:center;line-height:1.7">פרופילים להדגמה בלבד · תמיכה רגשית בלבד · אין ייעוץ רפואי</div>
   </div>
 
   <!-- COMPANION PREVIEW MODAL -->
@@ -1578,9 +1579,12 @@ function howNext() {
       </div>
     </div>
 
+    <!-- Demo notice for sample sections -->
+    <div style="background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.25);border-radius:12px;padding:10px 14px;font-size:11px;color:#fbbf24;margin-bottom:12px;text-align:center">🌱 הדגמה — המקטעים שלמטה מציגים נתוני דוגמה להמחשת פורמט הדוח. הנתונים האמיתיים שלך מופיעים בתיבה למעלה.</div>
+
     <!-- Weekly anxiety summary -->
     <div style="background:var(--s1);border:1px solid var(--s3);border-radius:16px;padding:16px;margin-bottom:14px">
-      <div style="font-size:11px;font-weight:700;color:var(--dim);letter-spacing:1px;text-transform:uppercase;margin-bottom:12px">מדדי חרדה — שבוע אחרון</div>
+      <div style="font-size:11px;font-weight:700;color:var(--dim);letter-spacing:1px;text-transform:uppercase;margin-bottom:12px">מדדי חרדה — שבוע אחרון (דוגמה)</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
         <div style="text-align:center;padding:12px;background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.15);border-radius:12px">
           <div style="font-size:24px;font-weight:900;color:var(--green)">28<span style="font-size:12px">/100</span></div>
@@ -1607,7 +1611,7 @@ function howNext() {
 
     <!-- GAD-7 summary -->
     <div style="background:var(--s1);border:1px solid var(--s3);border-radius:16px;padding:16px;margin-bottom:14px">
-      <div style="font-size:11px;font-weight:700;color:var(--dim);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px">GAD-7 ממוצע שבועי</div>
+      <div style="font-size:11px;font-weight:700;color:var(--dim);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px">מדד מתח שבועי — דוגמה</div>
       <div style="display:flex;align-items:center;gap:16px">
         <div style="font-size:36px;font-weight:900;color:var(--green)">5<span style="font-size:14px">/21</span></div>
         <div>
@@ -1684,13 +1688,13 @@ function howNext() {
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;border-bottom:1px solid rgba(155,114,245,.08)">
         <div style="padding:12px 10px;font-size:12px">תרגילי נשימה</div>
-        <div style="padding:12px;text-align:center;border-right:1px solid rgba(155,114,245,.08)">3/יום</div>
-        <div style="padding:12px;text-align:center;color:var(--purple2)">∞</div>
+        <div style="padding:12px;text-align:center;border-right:1px solid rgba(155,114,245,.08)">✅</div>
+        <div style="padding:12px;text-align:center;color:var(--purple2)">✅</div>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;border-bottom:1px solid rgba(155,114,245,.08)">
         <div style="padding:12px 10px;font-size:12px">ניתוח קולי VAX</div>
-        <div style="padding:12px;text-align:center;border-right:1px solid rgba(155,114,245,.08)">1/שבוע</div>
-        <div style="padding:12px;text-align:center;color:var(--purple2)">∞ + עומק</div>
+        <div style="padding:12px;text-align:center;border-right:1px solid rgba(155,114,245,.08)">✅</div>
+        <div style="padding:12px;text-align:center;color:var(--purple2)">✅ מורחב</div>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;border-bottom:1px solid rgba(155,114,245,.08)">
         <div style="padding:12px 10px;font-size:12px">דוח לרופאה</div>
@@ -1703,8 +1707,8 @@ function howNext() {
         <div style="padding:12px;text-align:center;color:var(--purple2)">✅ עדיפות</div>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr">
-        <div style="padding:12px 10px;font-size:12px">גלקסיה מורחבת</div>
-        <div style="padding:12px;text-align:center;border-right:1px solid rgba(155,114,245,.08)">❌</div>
+        <div style="padding:12px 10px;font-size:12px">גלקסיית ההריון</div>
+        <div style="padding:12px;text-align:center;border-right:1px solid rgba(155,114,245,.08)">✅</div>
         <div style="padding:12px;text-align:center;color:var(--purple2)">✅ 40 שבועות</div>
       </div>
     </div>
@@ -1712,19 +1716,12 @@ function howNext() {
     <!-- Price -->
     <div style="background:linear-gradient(135deg,rgba(155,114,245,.12),rgba(244,168,200,.08));border:1px solid rgba(155,114,245,.3);border-radius:16px;padding:18px;text-align:center;margin-bottom:16px">
       <div style="font-size:11px;color:var(--dim);margin-bottom:4px">מחיר חודשי</div>
-      <div style="font-size:36px;font-weight:900;color:var(--white)">₪29<span style="font-size:14px;font-weight:400;color:var(--dim)">/חודש</span></div>
-      <div style="font-size:12px;color:var(--green);margin-top:4px">מחיר משוער לגרסת ההשקה · טרם זמין לרכישה</div>
+      <div style="font-size:36px;font-weight:900;color:var(--white)">₪75<span style="font-size:14px;font-weight:400;color:var(--dim)">/חודש</span></div>
+      <div style="font-size:12px;color:var(--green);margin-top:4px">כ-$20 · 14 ימי ניסיון חינם · ביטול בכל עת</div>
     </div>
 
-    <!-- Testimonial -->
-    <div style="padding:14px;background:rgba(155,114,245,.06);border-radius:14px;margin-bottom:16px;font-size:12px;line-height:1.7;color:var(--dim)">
-      💜 <em>"הדוחות שלוה נתנה לרופאה שלי עזרו לה להבין מה אני עוברת הרבה יותר טוב. זה שינה הכל."</em><br>
-      <span style="color:var(--purple2)">— ציטוט להמחשה (הדגמה)</span>
-    </div>
-
-    <button onclick="showToast('פרמיום ייפתח בגרסת ההשקה 🌸')" style="width:100%;padding:17px;border-radius:50px;border:none;background:linear-gradient(135deg,#7c3aed,#be185d,#0e7490);background-size:200%;animation:gs 4s ease infinite;color:#fff;font-size:16px;font-weight:700;cursor:pointer;box-shadow:0 8px 28px rgba(124,58,237,.4);margin-bottom:10px">
-      ✨ בקרוב — בגרסת ההשקה
-    </button>
+    <div id="premStatus" style="text-align:center;font-size:13px;line-height:1.8;margin-bottom:14px;color:var(--dim)"></div>
+    <div id="premActions"></div>
     <button onclick="closePremium()" style="width:100%;padding:13px;border-radius:50px;border:none;background:transparent;color:var(--dim);font-size:13px;cursor:pointer">אולי אחר כך</button>
   </div>
 </div>
@@ -1795,7 +1792,7 @@ function howNext() {
 
 // Stars
 const st = document.getElementById('stars');
-for(let i=0;i<50;i++){
+if (st) for(let i=0;i<50;i++){
   const s=document.createElement('div');s.className='star';
   const sz=Math.random()*2.5+.5;
   s.style.cssText=`width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;--d:${3+Math.random()*5}s;--dl:${Math.random()*5}s;`;
@@ -3206,6 +3203,7 @@ function initCompanion() {
 }
 
 function showConnectFlow() {
+  if (!requirePremium()) return;
   document.getElementById('noCompanion').style.display = 'none';
   const f = document.getElementById('connectFlow');
   f.style.display = 'flex';
@@ -3213,6 +3211,7 @@ function showConnectFlow() {
 }
 
 function showFindCompanion() {
+  if (!requirePremium()) return;
   document.getElementById('noCompanion').style.display = 'none';
   const f = document.getElementById('findFlow');
   f.style.display = 'flex';
@@ -4220,6 +4219,7 @@ function startSOSBreath() {
 
 // ── Doctor Report ──
 function openDoctorReport() {
+  if (!requirePremium()) return;
   const m = document.getElementById('doctorModal');
   if (!m) return;
   const n = document.getElementById('drPatientName');
@@ -4235,23 +4235,83 @@ function closeDoctorReport() {
   if (m) m.style.display = 'none';
 }
 function shareReport() {
-  const text = `דוח שלוה שבועי%0aשם: ${userName}%0aשבוע הריון: ${selWeek || '—'}%0aממוצע חרדה: 28/100%0aHRV: 62ms%0aGAD-7: 5/21 (קל)%0aתרגולי נשימה: 14%0a%0aנוצר ע"י שלוה App`;
+  // נתונים אמיתיים בלבד — 7 ימים אחרונים
+  const bio = (typeof SDATA !== 'undefined') ? SDATA.week('bio') : [];
+  const mood = (typeof SDATA !== 'undefined') ? SDATA.week('mood') : [];
+  let eve = []; try { eve = (JSON.parse(localStorage.getItem('shalva_evening')||'[]')).filter(e => (Date.now() - new Date(e.date).getTime()) < 7*864e5); } catch(e) {}
+  const avg = (arr,k) => arr.length ? Math.round(arr.reduce((a,b) => a+(b[k]||0),0)/arr.length) : null;
+  const avgHR = avg(bio,'hr'), avgHRV = avg(bio.filter(b => b.hrv),'hrv');
+  const text = `דוח שלוה שבועי%0aשם: ${userName}%0aשבוע הריון: ${selWeek || '—'}%0a`
+    + `מדידות דופק: ${bio.length}${avgHR ? ' · ממוצע ' + avgHR + ' BPM' : ''}${avgHRV ? ' · HRV ' + avgHRV + ' ms' : ''}%0a`
+    + `דיווחי מצב רוח: ${mood.length}%0aסיכומי ערב: ${eve.length}%0a`
+    + `הנתונים ממדידות עצמיות — אינם תחליף לבדיקה רפואית%0a%0aנוצר ע"י שלוה App`;
   window.open(`https://wa.me/?text=${text}`);
 }
 
-// ── Premium ──
-function openPremium() {
-  const m = document.getElementById('premiumModal');
-  if (m) m.style.display = 'flex';
+// ── Premium — מנוי, ניסיון חינם וקודי הפעלה ──
+const PREMIUM = {
+  PAYMENT_URL: '',  // קישור לדף תשלום (Grow / PayPal) — עד אז: פנייה במייל
+  CONTACT: 'hitbonenut.karen@gmail.com',
+  PRICE_TXT: '₪75 לחודש (כ-$20)',
+  TRIAL_DAYS: 14,
+  HASHES: ['6db5a17ecf1d70d1','2ca55cc5aa777798','0ea85af3b509dcc6','fc1f900446473257','cdcb25498295e21c','5aebed59c3fc322c','c77523241a715577','cd4e99d7c8bcedaa','eb043955ff121c28','03a459f4b5ff7447','ef1d0e8a614c83dd','a3d1747a84a261cd','ade4f0ca29bb861d','7d12567df7ba8d50','9645148cc92bbadf','6d17d095039f5368','1753feacade2b4ff','5efaa62a2f6ceb7d','49bfe1b129e29284','0d762643b16cd016','902e42bfd396ca92','ff0faf2074297f73','9d88179df16bde70','688ee8458f3ac318','f6ff847be06a8a4e','b3a3f38e29064ae1','d5992d7e55e6fcd1','b34446d0db426f23','49537ce5b378a7b8','a860414d9aa16020','730d7710c0a9bf63','6e8762c97a34df9c','1d8a707fead3d852','4971993c936b178f','294227b0ed05c003','a821595c463de7af','b9956fdf890f87b2','e1d94f73e8a11146','2d7815afd6709582','b8c577a22cb3b8f5','a16c21d6004c5d29','3135d0249ec08277','029034ada85c0380','2cdb607b18d4664e','87834940e31d2993','023bf16ddd182040','c77157e6731e1b39','031b8570abd7fdc3','717ee4804bf464d3','9fbaba0237432b55','87c83208d9b9365b','ac6d6987b51c155a','707b81127a30fa65','8e15b04b2b521e1e','a2122b98948577eb','330a791b5c1eceee','f3ed5f8007285fd3','34046a8c42a610df','ee4f049ff6057c72','d6ba1ac5acbb3598','049ec6ae856b00e1'],
+  _h(s){ let h=5381; for(const ch of s){ h=((h*33)+ch.codePointAt(0))>>>0; } return h.toString(16).padStart(8,'0'); },
+  hash(c){ return this._h('shalva\u{1F338}'+c)+this._h(c+'2026'); },
+  state(){ try{
+      if(localStorage.getItem('shalva_premium')) return {tier:'premium'};
+      const t=+localStorage.getItem('shalva_trial_start')||0;
+      if(t){ const left=this.TRIAL_DAYS-Math.floor((Date.now()-t)/864e5); return left>0?{tier:'trial',daysLeft:left}:{tier:'expired'}; }
+    }catch(e){} return {tier:'free'}; }
+};
+function isPremium(){ const s=PREMIUM.state(); return s.tier==='premium'||s.tier==='trial'; }
+function requirePremium(){ if(isPremium()) return true; openPremium(); return false; }
+function openPremium(){ const m=document.getElementById('premiumModal'); if(m){ renderPremium(); m.style.display='flex'; } }
+function closePremium(){ const m=document.getElementById('premiumModal'); if(m) m.style.display='none'; }
+function _pbtn(txt,fn,solid){ return '<button onclick="'+fn+'" style="width:100%;padding:'+(solid?'17px':'13px')+';border-radius:50px;border:'+(solid?'none':'1px solid rgba(155,114,245,.35)')+';background:'+(solid?'linear-gradient(135deg,#7c3aed,#be185d)':'rgba(155,114,245,.08)')+';color:'+(solid?'#fff':'var(--purple2)')+';font-size:'+(solid?'16px':'14px')+';font-weight:700;cursor:pointer;margin-bottom:10px;font-family:inherit">'+txt+'</button>'; }
+function ensureUserCode(){ try{ let c=localStorage.getItem('shalva_user_code'); if(!c){ const AB='ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; const blk=()=>Array.from({length:4},()=>AB[Math.floor(Math.random()*AB.length)]).join(''); c='SHALVA-'+blk()+'-'+blk(); localStorage.setItem('shalva_user_code',c); } return c; }catch(e){ return ''; } }
+function renderPremium(){
+  const st=PREMIUM.state(), s=document.getElementById('premStatus'), a=document.getElementById('premActions');
+  if(!s||!a) return;
+  const buy=_pbtn('💜 רכישת מנוי — ₪75/חודש','buyPremium()',true), code=_pbtn('יש לי קוד הפעלה','enterPremiumCode()',false);
+  if(st.tier==='premium'){ s.innerHTML='✨ <b style="color:var(--green)">המנוי שלך פעיל</b> — תודה שאת איתנו 💜'; a.innerHTML=''; }
+  else if(st.tier==='trial'){ s.innerHTML='🌸 ניסיון חינם פעיל — נותרו <b>@N@</b> ימים'.replace('@N@',st.daysLeft); a.innerHTML=buy+code; }
+  else if(st.tier==='expired'){ s.innerHTML='תקופת הניסיון הסתיימה 🌙 נשמח שתישארי איתנו'; a.innerHTML=buy+code; }
+  else { s.innerHTML=''; a.innerHTML=_pbtn('✨ התחילי 14 ימי ניסיון חינם','startTrial()',true)+_pbtn('💜 רכישת מנוי — ₪75/חודש','buyPremium()',false)+code; }
+  /*personal-code-line*/ if(st.tier==='premium'||st.tier==='trial'){ s.innerHTML+='<div style="margin-top:12px;font-size:12px;color:var(--dim)">הקוד האישי שלך:<br><b style="color:var(--purple2);direction:ltr;display:inline-block;letter-spacing:1px;font-size:14px">'+ensureUserCode()+'</b></div>'; }
 }
-function closePremium() {
-  const m = document.getElementById('premiumModal');
-  if (m) m.style.display = 'none';
+function startTrial(){
+  if(localStorage.getItem('shalva_trial_start')){ showToast('תקופת הניסיון כבר נוצלה במכשיר זה'); renderPremium(); return; }
+  localStorage.setItem('shalva_trial_start', String(Date.now()));
+  showToast('✨ 14 ימי ניסיון התחילו — בהנאה!'); renderPremium();
 }
-function startTrial() {
-  closePremium();
-  showToast('ברוכה הבאה לפרמיום! ✨ 14 ימי ניסיון התחילו');
+function buyPremium(){
+  if(PREMIUM.PAYMENT_URL){ window.open(PREMIUM.PAYMENT_URL,'_blank'); }
+  else{ location.href='mailto:'+PREMIUM.CONTACT+'?subject='+encodeURIComponent('הצטרפות לשלוה פרמיום')+'&body='+encodeURIComponent('היי, אשמח להצטרף למנוי שלוה פרמיום'+' ('+PREMIUM.PRICE_TXT+')'); }
 }
+function enterPremiumCode(){
+  const c=prompt('הכניסי את קוד ההפעלה שקיבלת (SHALVA-XXXX-XXXX):'); if(c===null) return;
+  const code=c.trim().toUpperCase();
+  if(code && PREMIUM.HASHES.indexOf(PREMIUM.hash(code))>-1){
+    localStorage.setItem('shalva_premium', JSON.stringify({code:code, at:new Date().toISOString()}));
+    showToast('✨ המנוי הופעל — ברוכה הבאה לפרמיום!'); renderPremium();
+  } else showToast('⚠️ קוד לא תקין — בדקי שוב או כתבי לנו במייל');
+}
+
+// ── Auto-unlock via QR link: ?unlock=CODE ──
+(function(){ try{
+  const p=new URLSearchParams(location.search); const raw=p.get('unlock');
+  if(raw){
+    const code=raw.trim().toUpperCase();
+    if(PREMIUM.HASHES.indexOf(PREMIUM.hash(code))>-1){
+      localStorage.setItem('shalva_premium', JSON.stringify({code:code, at:new Date().toISOString(), via:'qr'}));
+      try{ sessionStorage.setItem('shalva_qr_welcome','1'); }catch(e){}
+    }
+    p.delete('unlock');
+    const clean=location.pathname+(p.toString()?'?'+p.toString():'')+location.hash;
+    history.replaceState(null,'',clean);
+  }
+}catch(e){} })();
+window.addEventListener('load', ()=>{ try{ if(sessionStorage.getItem('shalva_qr_welcome')){ sessionStorage.removeItem('shalva_qr_welcome'); if(typeof showToast==='function') showToast('✨ פרמיום הופעל — ברוכה הבאה!'); } }catch(e){} });
 
 // ── Toast helper ──
 function showToast(msg) {
@@ -4332,7 +4392,13 @@ const LEGAL_TERMS = `<div style="font-size:15px;font-weight:800;margin-bottom:10
 התנאים עשויים להתעדכן מעת לעת. המשך שימוש לאחר עדכון מהווה הסכמה לנוסח המעודכן.<br><br>
 
 <b>8. דין וסמכות שיפוט</b><br>
-על תנאים אלה יחולו דיני מדינת ישראל, וסמכות השיפוט הייחודית נתונה לבתי המשפט המוסמכים בישראל.`;
+על תנאים אלה יחולו דיני מדינת ישראל, וסמכות השיפוט הייחודית נתונה לבתי המשפט המוסמכים בישראל.<br><br>
+
+<b>9. מנוי ותשלום</b><br>
+חלק מהתכונות ("שלוה פרמיום") זמינות במנוי חודשי בתשלום של ₪75 (כ-$20). התשלום מתבצע באמצעות ספק סליקה חיצוני — שלוה אינה שומרת ואינה מעבדת פרטי אמצעי תשלום. המנוי מתחדש מדי חודש עד לביטולו. תקופת ניסיון חינם אינה מתחדשת אוטומטית לתשלום ואינה דורשת אמצעי תשלום.<br><br>
+
+<b>10. ביטול והחזרים</b><br>
+ניתן לבטל את המנוי בכל עת בפנייה ל-hitbonenut.karen@gmail.com; הביטול ייכנס לתוקף בתום תקופת החיוב השוטפת. בהתאם לחוק הגנת הצרכן, התשמ"א-1981, ניתן לבטל עסקת מכר מרחוק בתוך 14 יום מיום ביצועה ולקבל החזר בהתאם להוראות הדין.`;
 
 const LEGAL_PRIV = `<div style="font-size:15px;font-weight:800;margin-bottom:10px">מדיניות פרטיות — שלוה</div>
 <div style="font-size:10px;color:var(--dim);margin-bottom:14px">בהתאם לחוק הגנת הפרטיות, התשמ"א-1981 (כולל תיקון 13) · עדכון אחרון: יולי 2026</div>
@@ -4678,10 +4744,5 @@ window.addEventListener('load', ()=>{
 });
 </script>
 
-<script>
-if ('serviceWorker' in navigator && location.protocol === 'https:') {
-  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(()=>{}));
-}
-</script>
 </body>
-</html>                                                                                                                                           
+</html>
