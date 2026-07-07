@@ -1,6 +1,6 @@
 // Shalva — Service Worker (works offline too)
-// build: 2026-07-06d — per-device personal code + QR
-const CACHE = 'shalva-en-v5';
+// build: 2026-07-06e — sale-ready content cleanup (demo testimonials)
+const CACHE = 'shalva-en-v6';
 const ASSETS = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png', './apple-touch-icon.png'];
 
 self.addEventListener('install', e => {
