@@ -1,6 +1,6 @@
 // שלוה — Service Worker (עבודה גם ללא אינטרנט)
-// build: 2026-07-06e — ניקוי תוכן למכירה (המלצות דמו)
-const CACHE = 'shalva-v14';
+// build: 2026-07-16b — החלפת מים/דולפינים במנגינות מדיטציה נעימות (med-2,med-3)
+const CACHE = 'shalva-v19';
 const ASSETS = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png', './apple-touch-icon.png'];
 
 self.addEventListener('install', e => {
@@ -24,6 +24,4 @@ self.addEventListener('fetch', e => {
         caches.open(CACHE).then(cc => cc.put(e.request, clone));
       }
       return r;
-    }).catch(() => caches.match('./index.html')))
-  );
-});
+    }).catch(() => caches.match('./index

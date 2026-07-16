@@ -904,6 +904,18 @@ function howNext() {
     </div>
   </div>
 
+  <!-- 🎼 מנגינות מדיטציה (קבצי שמע אמיתיים) -->
+  <div style="width:100%;max-width:360px;margin:0 0 16px">
+    <div style="font-size:11px;color:var(--dim);margin-bottom:8px;text-align:center">🎼 מנגינות מדיטציה — לאיזון מערכת העצבים</div>
+    <div style="display:flex;gap:7px;flex-wrap:wrap;justify-content:center">
+      <div class="muschip" onclick="MUSIC.toggle('1',this)" style="background:var(--s1);border:1px solid var(--s3);border-radius:20px;padding:7px 13px;font-size:12px;color:var(--dim);cursor:pointer;transition:all .2s">🎵 רקע רגוע</div>
+      <div class="muschip" onclick="MUSIC.toggle('2',this)" style="background:var(--s1);border:1px solid var(--s3);border-radius:20px;padding:7px 13px;font-size:12px;color:var(--dim);cursor:pointer;transition:all .2s">🌿 מנגינה שקטה</div>
+      <div class="muschip" onclick="MUSIC.toggle('3',this)" style="background:var(--s1);border:1px solid var(--s3);border-radius:20px;padding:7px 13px;font-size:12px;color:var(--dim);cursor:pointer;transition:all .2s">✨ רוגע רוחני</div>
+      <div class="muschip" onclick="MUSIC.toggle('4',this)" style="background:var(--s1);border:1px solid var(--s3);border-radius:20px;padding:7px 13px;font-size:12px;color:var(--dim);cursor:pointer;transition:all .2s">🧘 מדיטציה עמוקה</div>
+    </div>
+  </div>
+  <audio id="medMusic" loop preload="none"></audio>
+
   <div class="prog-wrap">
     <div class="prog-lbl"><span>התקדמות</span><span id="pp">0%</span></div>
     <div class="prog-bar"><div class="prog-fill" id="pf" style="width:0%"></div></div>
@@ -2468,6 +2480,7 @@ const SCAPE = {
   toggle(type,el){
     const was=this.cur;
     this.stop();
+    if(typeof MUSIC!=='undefined') MUSIC.stop();
     if(was===type) return;
     this.ensure(); this.cur=type;
     if(el){ el.style.background='rgba(155,114,245,.18)'; el.style.borderColor='rgba(155,114,245,.55)'; el.style.color='var(--white)'; }
@@ -2523,6 +2536,25 @@ const SCAPE = {
       o.connect(g); g.connect(this.master); o.start(t); o.stop(t+3.6);
     };
     ping(); this.ivals.push(setInterval(ping,3800));
+  }
+};
+
+// ══ 🎼 MUSIC — נגן מנגינות מדיטציה (קבצי mp3) ══
+const MUSIC = {
+  audio:null, cur:null,
+  files:{'1':'./audio/med-1.mp3','2':'./audio/med-2.mp3','3':'./audio/med-3.mp3','4':'./audio/med-4.mp3'},
+  el(){ if(!this.audio){ this.audio=document.getElementById('medMusic'); if(this.audio){ this.audio.loop=true; this.audio.volume=0.7; } } return this.audio; },
+  clearChips(){ document.querySelectorAll('.muschip').forEach(c=>{ c.style.background='var(--s1)'; c.style.borderColor='var(--s3)'; c.style.color='var(--dim)'; }); },
+  stop(){ const a=this.el(); if(a){ try{a.pause();}catch(e){} } this.cur=null; this.clearChips(); },
+  toggle(track,elm){
+    const a=this.el(); if(!a) return;
+    if(this.cur===track){ this.stop(); return; }
+    if(typeof SCAPE!=='undefined') SCAPE.stop();
+    this.clearChips();
+    a.src=this.files[track]; this.cur=track;
+    const pr=a.play(); if(pr&&pr.catch) pr.catch(()=>{});
+    if(elm){ elm.style.background='rgba(155,114,245,.18)'; elm.style.borderColor='rgba(155,114,245,.55)'; elm.style.color='var(--white)'; }
+    try{ localStorage.setItem('shalvaMusic',track); }catch(e){}
   }
 };
 
@@ -4746,3 +4778,4 @@ window.addEventListener('load', ()=>{
 
 </body>
 </html>
+                                   
