@@ -714,6 +714,15 @@ function howNext() {
           <div style="font-size:10px;color:var(--dim);margin-top:2px" id="companionStatusChip">חיבור אופציונלי</div>
         </div>
 
+        <div onclick="go('s14')" style="grid-column:1 / -1;background:var(--s1);border:1px solid rgba(52,211,153,.25);border-radius:16px;padding:14px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:12px" onmousedown="this.style.transform='scale(.97)'" onmouseup="this.style.transform=''">
+          <div style="font-size:26px">💰</div>
+          <div style="flex:1">
+            <div style="font-size:13px;font-weight:700">מעקב הכנסות והוצאות</div>
+            <div style="font-size:10px;color:var(--dim);margin-top:2px">בית ועסק — במקום אחד</div>
+          </div>
+          <div style="font-size:16px;color:var(--dim)">←</div>
+        </div>
+
       </div>
     </div>
 
@@ -1517,6 +1526,76 @@ function howNext() {
   </div>
 </div>
 
+<!-- ══ S14: FINANCE TRACKER (home & business) ══ -->
+<div class="sc" id="s14" style="justify-content:flex-start;padding:0 0 90px;overflow-y:auto">
+  <div class="app-phone-inner">
+
+    <!-- Header -->
+    <div style="padding:52px 22px 0;display:flex;align-items:center;gap:12px">
+      <button onclick="go('s3')" style="width:36px;height:36px;border-radius:50%;background:var(--s1);border:1px solid var(--s3);color:var(--white);font-size:16px;cursor:pointer;flex-shrink:0">→</button>
+      <div>
+        <div style="font-size:20px;font-weight:900">מעקב הכנסות והוצאות 💰</div>
+        <div style="font-size:12px;color:var(--dim)">בית ועסק — במקום אחד</div>
+      </div>
+    </div>
+
+    <!-- Scope tabs: בית / עסק -->
+    <div style="display:flex;gap:8px;padding:16px 22px 0">
+      <button id="finTabHome" onclick="finSwitchScope('home')" style="flex:1;padding:10px;border-radius:12px;border:1px solid rgba(155,114,245,.4);background:rgba(155,114,245,.14);color:var(--purple2);font-size:13px;font-weight:700;cursor:pointer">🏠 בית</button>
+      <button id="finTabBiz" onclick="finSwitchScope('biz')" style="flex:1;padding:10px;border-radius:12px;border:1px solid var(--s3);background:var(--s2);color:var(--dim);font-size:13px;font-weight:700;cursor:pointer">💼 עסק</button>
+    </div>
+
+    <!-- Balance summary card -->
+    <div style="margin:16px 22px 0;background:linear-gradient(135deg,rgba(155,114,245,.1),rgba(126,240,218,.06));border:1px solid rgba(155,114,245,.2);border-radius:18px;padding:16px 18px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;text-align:center">
+      <div>
+        <div style="font-size:10px;color:var(--dim);margin-bottom:4px">הכנסות</div>
+        <div id="finSumIncome" style="font-size:16px;font-weight:900;color:var(--green)">₪0</div>
+      </div>
+      <div>
+        <div style="font-size:10px;color:var(--dim);margin-bottom:4px">הוצאות</div>
+        <div id="finSumExpense" style="font-size:16px;font-weight:900;color:var(--red)">₪0</div>
+      </div>
+      <div>
+        <div style="font-size:10px;color:var(--dim);margin-bottom:4px">מאזן</div>
+        <div id="finSumBalance" style="font-size:16px;font-weight:900;color:var(--teal)">₪0</div>
+      </div>
+    </div>
+
+    <!-- Income table -->
+    <div style="margin:20px 22px 0">
+      <div style="font-size:13px;font-weight:700;color:var(--green);margin-bottom:8px">🟢 הכנסות</div>
+      <div style="display:grid;grid-template-columns:1fr 2fr 1fr auto;gap:6px;margin-bottom:10px">
+        <input class="finput" id="finIncomeDate" type="date" style="padding:9px 6px;font-size:11px">
+        <input class="finput" id="finIncomeDesc" type="text" placeholder="תיאור..." style="padding:9px 10px;font-size:13px">
+        <input class="finput" id="finIncomeAmt" type="number" placeholder="₪" style="padding:9px 6px;font-size:13px">
+        <button onclick="finAddRow('income')" style="background:rgba(52,211,153,.15);border:1px solid rgba(52,211,153,.4);border-radius:12px;color:var(--green);font-size:18px;font-weight:800;cursor:pointer;padding:0 14px">+</button>
+      </div>
+      <div id="finIncomeTable" style="display:flex;flex-direction:column;gap:6px"></div>
+      <div id="finIncomeEmpty" style="font-size:12px;color:var(--dim);text-align:center;padding:10px">עדיין אין רשומות הכנסה</div>
+    </div>
+
+    <!-- Expense table -->
+    <div style="margin:20px 22px 0">
+      <div style="font-size:13px;font-weight:700;color:var(--red);margin-bottom:8px">🔴 הוצאות</div>
+      <div style="display:grid;grid-template-columns:1fr 2fr 1fr auto;gap:6px;margin-bottom:10px">
+        <input class="finput" id="finExpenseDate" type="date" style="padding:9px 6px;font-size:11px">
+        <input class="finput" id="finExpenseDesc" type="text" placeholder="תיאור..." style="padding:9px 10px;font-size:13px">
+        <input class="finput" id="finExpenseAmt" type="number" placeholder="₪" style="padding:9px 6px;font-size:13px">
+        <button onclick="finAddRow('expense')" style="background:rgba(248,113,113,.15);border:1px solid rgba(248,113,113,.4);border-radius:12px;color:var(--red);font-size:18px;font-weight:800;cursor:pointer;padding:0 14px">+</button>
+      </div>
+      <div id="finExpenseTable" style="display:flex;flex-direction:column;gap:6px"></div>
+      <div id="finExpenseEmpty" style="font-size:12px;color:var(--dim);text-align:center;padding:10px">עדיין אין רשומות הוצאה</div>
+    </div>
+
+    <!-- Export -->
+    <div style="margin:20px 22px 0">
+      <button onclick="finExportCSV()" style="width:100%;padding:13px;border-radius:14px;border:1px solid var(--s3);background:var(--s1);color:var(--purple2);font-size:13px;font-weight:700;cursor:pointer">📤 ייצוא הכל ל-CSV</button>
+      <div style="font-size:10px;color:var(--dim);margin-top:8px;text-align:center">הנתונים נשמרים באופן פרטי במכשיר שלך בלבד 🔒</div>
+    </div>
+
+  </div>
+</div>
+
 <!-- ══ EMERGENCY SOS MODAL ══ -->
 <div id="sosModal" style="display:none;position:fixed;inset:0;z-index:200;background:rgba(4,2,10,.95);backdrop-filter:blur(12px);flex-direction:column;align-items:center;justify-content:center;padding:24px">
   <div style="max-width:380px;width:100%;text-align:center">
@@ -1823,6 +1902,7 @@ function go(id){
   if (id === 's11') initAdvisor();
   if (id === 's12') initCompanion();
   if (id === 's6')  updateDoneStats();
+  if (id === 's14') finInit();
   document.getElementById('tabs').style.display=appScreens.includes(id)?'flex':'none';
   const sosB = document.getElementById('sosBtn');
   if (sosB) sosB.style.display = appScreens.includes(id) ? 'flex' : 'none';
@@ -1899,6 +1979,138 @@ function goTab(id,tid){
   go(id);
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
   document.getElementById(tid).classList.add('on');
+}
+
+// ═══════════════════════════════════════════
+// FINANCE TRACKER — home & business income/expenses
+// ═══════════════════════════════════════════
+const FIN_KEY = 'shalva_finance_v1';
+let finScope = 'home';
+let finData = { home:{income:[],expense:[]}, biz:{income:[],expense:[]} };
+
+function finLoad(){
+  try{
+    const raw = localStorage.getItem(FIN_KEY);
+    if (raw) finData = JSON.parse(raw);
+  }catch(e){}
+}
+
+function finSave(){
+  try{ localStorage.setItem(FIN_KEY, JSON.stringify(finData)); }catch(e){}
+}
+
+function finInit(){
+  finLoad();
+  const today = new Date().toISOString().slice(0,10);
+  const di = document.getElementById('finIncomeDate');
+  const de = document.getElementById('finExpenseDate');
+  if (di && !di.value) di.value = today;
+  if (de && !de.value) de.value = today;
+  finSwitchScope(finScope);
+}
+
+function finSwitchScope(scope){
+  finScope = scope;
+  const homeBtn = document.getElementById('finTabHome');
+  const bizBtn  = document.getElementById('finTabBiz');
+  if (homeBtn && bizBtn){
+    const activeStyle = { background:'rgba(155,114,245,.14)', borderColor:'rgba(155,114,245,.4)', color:'var(--purple2)' };
+    const idleStyle   = { background:'var(--s2)', borderColor:'var(--s3)', color:'var(--dim)' };
+    const applyStyle = (btn, s) => { btn.style.background=s.background; btn.style.borderColor=s.borderColor; btn.style.color=s.color; };
+    applyStyle(homeBtn, scope==='home' ? activeStyle : idleStyle);
+    applyStyle(bizBtn,  scope==='biz'  ? activeStyle : idleStyle);
+  }
+  finRender();
+}
+
+function finFmt(n){
+  return '₪' + Math.round(n).toLocaleString('he-IL');
+}
+
+function finEsc(s){
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+function finAddRow(type){
+  const descEl = document.getElementById(type==='income' ? 'finIncomeDesc' : 'finExpenseDesc');
+  const amtEl  = document.getElementById(type==='income' ? 'finIncomeAmt'  : 'finExpenseAmt');
+  const dateEl = document.getElementById(type==='income' ? 'finIncomeDate' : 'finExpenseDate');
+  const desc = (descEl.value||'').trim();
+  const amt  = parseFloat(amtEl.value);
+  const date = dateEl.value || new Date().toISOString().slice(0,10);
+  if (!desc || !isFinite(amt) || amt <= 0) return;
+  finData[finScope][type].unshift({ date, desc, amt });
+  finSave();
+  descEl.value=''; amtEl.value='';
+  finRender();
+}
+
+function finDeleteRow(type, idx){
+  finData[finScope][type].splice(idx,1);
+  finSave();
+  finRender();
+}
+
+function finRenderTable(type){
+  const rows = finData[finScope][type];
+  const tableEl = document.getElementById(type==='income' ? 'finIncomeTable' : 'finExpenseTable');
+  const emptyEl = document.getElementById(type==='income' ? 'finIncomeEmpty' : 'finExpenseEmpty');
+  if (!tableEl) return;
+  if (!rows.length){
+    tableEl.innerHTML = '';
+    if (emptyEl) emptyEl.style.display='block';
+    return;
+  }
+  if (emptyEl) emptyEl.style.display='none';
+  const color = type==='income' ? 'var(--green)' : 'var(--red)';
+  tableEl.innerHTML = rows.map((r,i)=>`
+    <div style="display:grid;grid-template-columns:1fr 2fr 1fr auto;gap:6px;align-items:center;background:var(--s1);border:1px solid var(--s3);border-radius:10px;padding:8px 10px">
+      <div style="font-size:11px;color:var(--dim)">${r.date}</div>
+      <div style="font-size:12px;color:var(--white);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${finEsc(r.desc)}</div>
+      <div style="font-size:12px;font-weight:700;color:${color}">${finFmt(r.amt)}</div>
+      <button onclick="finDeleteRow('${type}',${i})" style="background:none;border:none;color:var(--dim);font-size:14px;cursor:pointer;padding:2px 4px">✕</button>
+    </div>
+  `).join('');
+}
+
+function finRender(){
+  finRenderTable('income');
+  finRenderTable('expense');
+  const inc = finData[finScope].income.reduce((s,r)=>s+r.amt,0);
+  const exp = finData[finScope].expense.reduce((s,r)=>s+r.amt,0);
+  const bal = inc - exp;
+  const incEl = document.getElementById('finSumIncome');
+  const expEl = document.getElementById('finSumExpense');
+  const balEl = document.getElementById('finSumBalance');
+  if (incEl) incEl.textContent = finFmt(inc);
+  if (expEl) expEl.textContent = finFmt(exp);
+  if (balEl){ balEl.textContent = (bal<0?'-':'') + finFmt(Math.abs(bal)); balEl.style.color = bal>=0 ? 'var(--green)' : 'var(--red)'; }
+}
+
+function finExportCSV(){
+  finLoad();
+  let csv = 'תחום,סוג,תאריך,תיאור,סכום\n';
+  const scopes = { home:'בית', biz:'עסק' };
+  const types  = { income:'הכנסה', expense:'הוצאה' };
+  Object.keys(finData).forEach(scope=>{
+    Object.keys(finData[scope]).forEach(type=>{
+      finData[scope][type].forEach(r=>{
+        const desc = (r.desc||'').replace(/"/g,'""');
+        csv += `${scopes[scope]},${types[type]},${r.date},"${desc}",${r.amt}\n`;
+      });
+    });
+  });
+  const blob = new Blob(['﻿'+csv], { type:'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'shalva-finance.csv';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
 }
 
 // ═══════════════════════════════════════════
