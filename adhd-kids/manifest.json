@@ -1,0 +1,19 @@
+{
+  "name": "פוקוסי — כלים טבעיים לריכוז וויסות",
+  "short_name": "פוקוסי",
+  "description": "אפליקציה טבעית לילדים ולהורים: תנועה, ויסות רגשי ומשחקי ריכוז לצד מידע מאוזן להורים — לא תחליף לייעוץ רפואי",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FFF8F0",
+  "theme_color": "#FF8A50",
+  "lang": "he",
+  "dir": "rtl",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "categories": ["health", "kids", "lifestyle", "education"]
+}

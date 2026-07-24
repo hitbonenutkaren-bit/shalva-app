@@ -1,0 +1,726 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<title>פוקוסי — כלים טבעיים לריכוז וויסות</title>
+<meta name="description" content="כלים יומיים טבעיים לילדים: תנועה, רוגע וריכוז — לצד מידע מאוזן להורים. לא תחליף לייעוץ רפואי.">
+<link rel="manifest" href="./manifest.json">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png">
+<meta name="theme-color" content="#FF8A50">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="פוקוסי">
+<style>
+:root{
+  --bg:#FFF8F0; --card:#FFFFFF; --ink:#2B2140; --dim:#8A8299; --line:#F1E6D8;
+  --orange:#FF8A50; --orange-deep:#FF6B35; --teal:#2DD4BF; --teal-deep:#14B8A6;
+  --purple:#7C6CF0; --purple-deep:#6152D9; --yellow:#FFD166; --red:#EF6461;
+  --shadow:0 6px 20px rgba(43,33,64,.08);
+}
+*{box-sizing:border-box; -webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;height:100%}
+body{
+  background:var(--bg); color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+  overscroll-behavior:none; direction:rtl;
+  padding-bottom:env(safe-area-inset-bottom);
+}
+button,input,textarea{font-family:inherit; direction:rtl}
+button{cursor:pointer}
+h1,h2,h3,p{margin:0}
+.app{max-width:480px;margin:0 auto;min-height:100vh;position:relative;background:var(--bg)}
+.hidden{display:none !important}
+
+/* ---------- Top bar ---------- */
+.topbar{position:sticky;top:0;z-index:20;background:var(--bg);padding:16px 20px 10px;display:flex;align-items:center;justify-content:space-between}
+.topbar h1{font-size:19px;font-weight:900}
+.topbar .sub{font-size:12px;color:var(--dim);margin-top:2px}
+.streak-chip{display:flex;align-items:center;gap:4px;background:#fff;border:1px solid var(--line);border-radius:20px;padding:6px 12px;font-size:13px;font-weight:800;box-shadow:var(--shadow)}
+
+/* ---------- Screens ---------- */
+.screen{padding:4px 20px 100px;min-height:60vh}
+
+/* ---------- Cards ---------- */
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:18px;box-shadow:var(--shadow);margin-bottom:14px}
+.pillar-move{--pc:var(--orange);--pcd:var(--orange-deep)}
+.pillar-calm{--pc:var(--teal);--pcd:var(--teal-deep)}
+.pillar-focus{--pc:var(--purple);--pcd:var(--purple-deep)}
+
+.mission-card{border-radius:20px;padding:18px;margin-bottom:12px;color:#fff;background:linear-gradient(135deg,var(--pc),var(--pcd));box-shadow:var(--shadow);position:relative;overflow:hidden}
+.mission-card .cat-label{font-size:11px;font-weight:800;opacity:.9;text-transform:uppercase;letter-spacing:.03em}
+.mission-card .m-title{font-size:18px;font-weight:900;margin:4px 0 2px}
+.mission-card .m-dur{font-size:12px;opacity:.9}
+.mission-card .m-emoji{position:absolute;font-size:64px;opacity:.18;left:-6px;bottom:-14px}
+.mission-card .m-btn{margin-top:12px;background:rgba(255,255,255,.22);border:1px solid rgba(255,255,255,.4);border-radius:14px;padding:9px 16px;color:#fff;font-weight:800;font-size:13px;backdrop-filter:blur(4px)}
+.mission-card.done{opacity:.55}
+.mission-card .done-check{position:absolute;top:14px;left:14px;font-size:22px}
+
+/* quick calm */
+.quick-calm{background:linear-gradient(135deg,#2DD4BF,#14B8A6);border-radius:22px;padding:20px;color:#fff;text-align:center;margin-bottom:16px;box-shadow:var(--shadow)}
+.quick-calm .qc-t{font-size:16px;font-weight:900;margin-bottom:4px}
+.quick-calm .qc-s{font-size:12px;opacity:.92;margin-bottom:12px}
+.quick-calm button{background:#fff;color:var(--teal-deep);border:none;border-radius:16px;padding:12px 26px;font-weight:900;font-size:14px}
+
+/* ---------- Bottom nav ---------- */
+.navbar{position:fixed;bottom:0;left:0;right:0;max-width:480px;margin:0 auto;background:#fff;border-top:1px solid var(--line);display:flex;padding:8px 4px calc(8px + env(safe-area-inset-bottom));z-index:30}
+.navbtn{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:none;color:var(--dim);font-size:10px;font-weight:700;padding:4px 0;border-radius:12px}
+.navbtn .ic{font-size:20px}
+.navbtn.on{color:var(--orange-deep)}
+
+/* ---------- Section headers ---------- */
+.sec-title{font-size:16px;font-weight:900;margin:18px 0 10px}
+.pillar-tabs{display:flex;gap:8px;margin-bottom:14px;overflow-x:auto;padding-bottom:2px}
+.pillar-tab{flex-shrink:0;border:1px solid var(--line);background:#fff;border-radius:16px;padding:8px 14px;font-size:13px;font-weight:800;color:var(--dim)}
+.pillar-tab.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+.act-item{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px 14px;margin-bottom:10px}
+.act-item .ic{font-size:26px;flex-shrink:0}
+.act-item .t{font-size:14px;font-weight:800}
+.act-item .d{font-size:12px;color:var(--dim);margin-top:1px}
+.act-item .go{margin-right:auto;color:var(--dim);font-size:18px}
+
+/* ---------- Disclaimer ---------- */
+.disclaimer{background:#FFF3E0;border:1px solid #FFD9A8;border-radius:16px;padding:12px 14px;font-size:12px;line-height:1.6;color:#8a5a2b;margin-bottom:16px}
+.disclaimer b{color:#6b4319}
+
+/* ---------- Modal ---------- */
+.modal-bg{position:fixed;inset:0;background:rgba(43,33,64,.55);backdrop-filter:blur(3px);z-index:100;display:flex;align-items:flex-end;justify-content:center}
+.modal-bg.hidden{display:none}
+.modal{background:#fff;border-radius:26px 26px 0 0;max-width:480px;width:100%;max-height:88vh;overflow-y:auto;padding:22px 22px calc(22px + env(safe-area-inset-bottom))}
+.modal-handle{width:40px;height:4px;background:var(--line);border-radius:3px;margin:0 auto 14px}
+.modal h2{font-size:19px;font-weight:900;margin-bottom:4px}
+.modal .why{background:#F7F3FF;border-radius:14px;padding:12px 14px;font-size:13px;color:#5b4fa8;line-height:1.6;margin:12px 0}
+.step-list{list-style:none;padding:0;margin:14px 0}
+.step-list li{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);font-size:14px;line-height:1.5}
+.step-list li .n{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--line);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800}
+
+.breathe-circle{width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,rgba(45,212,191,.35),rgba(45,212,191,.08));border:2px solid var(--teal);margin:20px auto;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:var(--teal-deep);transition:transform 4s ease-in-out}
+.breathe-circle.in{transform:scale(1.35)}
+.breathe-circle.out{transform:scale(.85)}
+
+.timer-row{display:flex;align-items:center;justify-content:center;gap:14px;margin:18px 0}
+.timer-num{font-size:34px;font-weight:900;font-variant-numeric:tabular-nums}
+.btn{border:none;border-radius:16px;padding:13px 20px;font-weight:900;font-size:14px;width:100%}
+.btn-primary{background:linear-gradient(135deg,var(--orange),var(--orange-deep));color:#fff}
+.btn-ghost{background:var(--line);color:var(--ink)}
+.btn-row{display:flex;gap:10px;margin-top:10px}
+.close-x{position:absolute;top:16px;left:16px;background:var(--line);border:none;width:32px;height:32px;border-radius:50%;font-size:15px;color:var(--dim)}
+
+/* ---------- Tracker ---------- */
+.week-strip{display:flex;justify-content:space-between;margin:14px 0 18px}
+.day-dot{display:flex;flex-direction:column;align-items:center;gap:6px}
+.day-dot .dd{width:34px;height:34px;border-radius:50%;background:var(--line);display:flex;align-items:center;justify-content:center;font-size:14px}
+.day-dot .dl{font-size:10px;color:var(--dim);font-weight:700}
+.mood-row{display:flex;justify-content:space-between;gap:6px;margin:14px 0}
+.mood-btn{flex:1;background:#fff;border:2px solid var(--line);border-radius:16px;padding:12px 0;font-size:24px;text-align:center}
+.mood-btn.on{border-color:var(--orange);background:#FFF3E0}
+.mini-progress{display:flex;gap:8px;margin-top:8px}
+.mini-progress .mp{flex:1;text-align:center;border-radius:14px;padding:10px 6px;font-size:11px;font-weight:800;color:#fff}
+
+/* ---------- Parent hub ---------- */
+.article{background:#fff;border:1px solid var(--line);border-radius:18px;margin-bottom:12px;overflow:hidden}
+.article summary{list-style:none;padding:15px 16px;font-size:14px;font-weight:800;display:flex;align-items:center;gap:10px;cursor:pointer}
+.article summary::-webkit-details-marker{display:none}
+.article summary .arrow{margin-right:auto;color:var(--dim);transition:transform .2s}
+.article[open] summary .arrow{transform:rotate(90deg)}
+.article .body{padding:0 16px 16px;font-size:13.5px;line-height:1.75;color:#4a4258}
+.article .body ul{margin:8px 0;padding-inline-start:20px}
+.article .body li{margin-bottom:6px}
+
+/* ---------- Chat ---------- */
+.chat-wrap{display:flex;flex-direction:column;height:calc(100vh - 170px)}
+.chat-msgs{flex:1;overflow-y:auto;padding:6px 0;display:flex;flex-direction:column;gap:10px}
+.msg{max-width:82%;padding:11px 14px;border-radius:16px;font-size:13.5px;line-height:1.6}
+.msg.bot{align-self:flex-start;background:#fff;border:1px solid var(--line);border-bottom-right-radius:4px}
+.msg.user{align-self:flex-end;background:linear-gradient(135deg,var(--purple),var(--purple-deep));color:#fff;border-bottom-left-radius:4px}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:4px 0 10px}
+.chip{flex-shrink:0;background:#fff;border:1px solid var(--line);border-radius:14px;padding:8px 13px;font-size:12px;font-weight:700;color:var(--purple-deep)}
+.chat-input-row{display:flex;gap:8px;padding-top:8px;border-top:1px solid var(--line)}
+.chat-input-row textarea{flex:1;background:#F7F3FF;border:1px solid var(--line);border-radius:16px;padding:11px 14px;font-size:14px;resize:none;height:44px;outline:none}
+.chat-send{width:44px;height:44px;border-radius:50%;border:none;background:linear-gradient(135deg,var(--purple),var(--purple-deep));color:#fff;font-size:18px;flex-shrink:0}
+
+/* ---------- Onboarding ---------- */
+.ob-screen{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:32px 26px;text-align:center}
+.ob-logo{font-size:52px;margin-bottom:10px}
+.ob-title{font-size:24px;font-weight:900;margin-bottom:6px}
+.ob-sub{font-size:14px;color:var(--dim);margin-bottom:26px;line-height:1.6}
+.ob-input{width:100%;background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:14px 16px;font-size:15px;margin-bottom:12px;outline:none;text-align:center}
+.ob-opts{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;justify-content:center}
+.ob-opt{border:1.5px solid var(--line);background:#fff;border-radius:14px;padding:10px 16px;font-size:13px;font-weight:700}
+.ob-opt.on{border-color:var(--orange);background:#FFF3E0;color:var(--orange-deep)}
+.ob-consent{display:flex;align-items:flex-start;gap:10px;text-align:right;background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px;margin:16px 0;font-size:12.5px;line-height:1.6;color:#4a4258}
+.ob-consent input{margin-top:3px;flex-shrink:0}
+.dots{display:flex;justify-content:center;gap:6px;margin-bottom:20px}
+.dots .d{width:7px;height:7px;border-radius:50%;background:var(--line)}
+.dots .d.on{background:var(--orange)}
+
+.toast{position:fixed;bottom:96px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;font-weight:700;z-index:200;box-shadow:0 6px 20px rgba(0,0,0,.25);opacity:0;transition:opacity .3s,transform .3s}
+.toast.show{opacity:1}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+
+  <!-- ============ ONBOARDING ============ -->
+  <div id="onboarding">
+    <!-- step 0: welcome -->
+    <div class="ob-screen" id="ob0">
+      <div class="ob-logo">🎯</div>
+      <div class="ob-title">ברוכים הבאים לפוקוסי</div>
+      <div class="ob-sub">כלים טבעיים ויומיים לתנועה, רוגע וריכוז — לילדים ולהורים.<br>בלי שיפוטיות, בלי הבטחות מוגזמות. רק כלים קטנים שעוזרים.</div>
+      <button class="btn btn-primary" onclick="obGo(1)">בואו נתחיל →</button>
+    </div>
+    <!-- step 1: child name + age -->
+    <div class="ob-screen hidden" id="ob1">
+      <div class="dots"><div class="d on"></div><div class="d"></div><div class="d"></div></div>
+      <div class="ob-title" style="font-size:20px">איך קוראים לילד/ה?</div>
+      <div class="ob-sub">נשתמש בשם כדי להפוך את זה לאישי</div>
+      <input class="ob-input" id="obName" type="text" placeholder="למשל: נועה">
+      <div class="ob-sub" style="margin-bottom:8px">טווח גיל</div>
+      <div class="ob-opts" id="obAge">
+        <button class="ob-opt" data-v="6-8" onclick="obPick('obAge',this)">6–8</button>
+        <button class="ob-opt" data-v="9-11" onclick="obPick('obAge',this)">9–11</button>
+        <button class="ob-opt" data-v="12-14" onclick="obPick('obAge',this)">12–14</button>
+      </div>
+      <button class="btn btn-primary" onclick="obGo(2)" style="margin-top:10px">המשך →</button>
+    </div>
+    <!-- step 2: goals -->
+    <div class="ob-screen hidden" id="ob2">
+      <div class="dots"><div class="d on"></div><div class="d on"></div><div class="d"></div></div>
+      <div class="ob-title" style="font-size:20px">על מה הכי נרצה לעבוד?</div>
+      <div class="ob-sub">אפשר לבחור כמה — נתאים את המשימות היומיות</div>
+      <div class="ob-opts" id="obGoals">
+        <button class="ob-opt" data-v="move" onclick="obToggle('obGoals',this)">🏃 תנועה ואנרגיה</button>
+        <button class="ob-opt" data-v="calm" onclick="obToggle('obGoals',this)">🌿 רוגע וויסות</button>
+        <button class="ob-opt" data-v="focus" onclick="obToggle('obGoals',this)">🎯 ריכוז ומשימות</button>
+      </div>
+      <button class="btn btn-primary" onclick="obGo(3)" style="margin-top:14px">המשך →</button>
+    </div>
+    <!-- step 3: disclaimer/consent -->
+    <div class="ob-screen hidden" id="ob3">
+      <div class="dots"><div class="d on"></div><div class="d on"></div><div class="d on"></div></div>
+      <div class="ob-title" style="font-size:20px">רגע לפני שממשיכים</div>
+      <div class="disclaimer" style="text-align:right">
+        <b>פוקוסי היא אפליקציית עזר בלבד.</b> היא מציעה כלים משלימים לתנועה, ויסות רגשי וריכוז שיכולים לעזור לילדים רבים — אך היא <b>אינה כלי אבחון ואינה תחליף לייעוץ, אבחון או טיפול רפואי/פסיכולוגי מקצועי</b>. אם יש חשד להפרעת קשב וריכוז, או אם כבר יש טיפול תרופתי — כל החלטה על התחלה, שינוי או הפסקה של טיפול תרופתי צריכה להתקבל עם רופא/ה או פסיכיאטר/ית, ולא על סמך האפליקציה.
+      </div>
+      <label class="ob-consent">
+        <input type="checkbox" id="obConsent" onchange="document.getElementById('obFinishBtn').disabled=!this.checked">
+        <span>קראתי והבנתי. אני מבין/ה שהאפליקציה היא כלי משלים בלבד, ולא תחליף לייעוץ רפואי מקצועי.</span>
+      </label>
+      <button class="btn btn-primary" id="obFinishBtn" onclick="finishOnboarding()" disabled style="opacity:.5">בואו נתחיל 🎯</button>
+    </div>
+  </div>
+
+  <!-- ============ MAIN APP ============ -->
+  <div id="mainApp" class="hidden">
+
+    <!-- ---------- HOME ---------- -->
+    <section class="screen" id="tab-home">
+      <div class="topbar">
+        <div>
+          <h1 id="homeGreeting">היי 👋</h1>
+          <div class="sub">בואו נתחיל את היום עם 3 משימות קטנות</div>
+        </div>
+        <div class="streak-chip">🔥 <span id="streakNum">0</span></div>
+      </div>
+      <div class="screen" style="padding-top:0">
+        <div class="quick-calm">
+          <div class="qc-t">🌊 רגע קשה עכשיו?</div>
+          <div class="qc-s">כלי הרגעה מיידי — נשימה מודרכת של 90 שניות</div>
+          <button onclick="openActivity('breathe-balloon')">התחילו עכשיו</button>
+        </div>
+
+        <div class="sec-title">המשימות של היום</div>
+        <div id="homeMissions"></div>
+
+        <div class="disclaimer">
+          <b>לתשומת לב:</b> הכלים כאן הם משלימים ומבוססי-מחקר חלקית, ואינם מהווים אבחון או טיפול רפואי. לכל שאלה על אבחון או תרופות — פנו לרופא/ת הילד/ה.
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- LIBRARY ---------- -->
+    <section class="screen hidden" id="tab-lib">
+      <div class="topbar"><div><h1>ספריית פעילויות</h1><div class="sub">24 כלים קצרים, מבוססי מחקר</div></div></div>
+      <div class="screen" style="padding-top:0">
+        <div class="pillar-tabs">
+          <button class="pillar-tab on" data-cat="all" onclick="setLibFilter('all',this)">הכל</button>
+          <button class="pillar-tab" data-cat="move" onclick="setLibFilter('move',this)">🏃 תנועה</button>
+          <button class="pillar-tab" data-cat="calm" onclick="setLibFilter('calm',this)">🌿 רוגע</button>
+          <button class="pillar-tab" data-cat="focus" onclick="setLibFilter('focus',this)">🎯 ריכוז</button>
+        </div>
+        <div id="libList"></div>
+      </div>
+    </section>
+
+    <!-- ---------- TRACKER ---------- -->
+    <section class="screen hidden" id="tab-track">
+      <div class="topbar"><div><h1>מעקב יומי</h1><div class="sub">איך היה היום?</div></div></div>
+      <div class="screen" style="padding-top:0">
+        <div class="card">
+          <div class="sec-title" style="margin-top:0">7 הימים האחרונים</div>
+          <div class="week-strip" id="weekStrip"></div>
+        </div>
+        <div class="card">
+          <div class="sec-title" style="margin-top:0">איך <span id="trackChildName">הילד/ה</span> מרגיש/ה עכשיו?</div>
+          <div class="mood-row" id="moodRow">
+            <button class="mood-btn" data-v="1" onclick="pickMood(this,1)">😣</button>
+            <button class="mood-btn" data-v="2" onclick="pickMood(this,2)">😕</button>
+            <button class="mood-btn" data-v="3" onclick="pickMood(this,3)">😐</button>
+            <button class="mood-btn" data-v="4" onclick="pickMood(this,4)">🙂</button>
+            <button class="mood-btn" data-v="5" onclick="pickMood(this,5)">😄</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="sec-title" style="margin-top:0">היום השלמנו</div>
+          <div class="mini-progress" id="todayProgress"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- PARENTS HUB ---------- -->
+    <section class="screen hidden" id="tab-parents">
+      <div class="topbar"><div><h1>מידע להורים</h1><div class="sub">מידע מאוזן ומבוסס-מחקר</div></div></div>
+      <div class="screen" style="padding-top:0">
+        <div class="disclaimer"><b>המידע כאן כללי ואינפורמטיבי בלבד</b> ואינו מהווה ייעוץ רפואי אישי. לאבחון, טיפול או שאלות על תרופות — פנו לרופא/ת ילדים, נוירולוג/ית או פסיכיאטר/ית ילדים.</div>
+        <div id="articlesList"></div>
+      </div>
+    </section>
+
+    <!-- ---------- ADVISOR ---------- -->
+    <section class="screen hidden" id="tab-advisor" style="padding-bottom:0">
+      <div class="topbar"><div><h1>יועצת פוקוסי</h1><div class="sub">שאלות נפוצות להורים — לא ייעוץ רפואי</div></div></div>
+      <div class="screen chat-wrap" style="padding-top:0">
+        <div class="chat-msgs" id="chatMsgs"></div>
+        <div class="chips" id="chatChips"></div>
+        <div class="chat-input-row">
+          <textarea id="chatInput" placeholder="כתבו שאלה..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChat();}"></textarea>
+          <button class="chat-send" onclick="sendChat()">➤</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- BOTTOM NAV ---------- -->
+    <div class="navbar">
+      <button class="navbtn on" data-tab="home" onclick="switchTab('home')"><span class="ic">🏠</span>בית</button>
+      <button class="navbtn" data-tab="lib" onclick="switchTab('lib')"><span class="ic">📚</span>פעילויות</button>
+      <button class="navbtn" data-tab="track" onclick="switchTab('track')"><span class="ic">📈</span>מעקב</button>
+      <button class="navbtn" data-tab="parents" onclick="switchTab('parents')"><span class="ic">👪</span>להורים</button>
+      <button class="navbtn" data-tab="advisor" onclick="switchTab('advisor')"><span class="ic">💬</span>יועצת</button>
+    </div>
+  </div>
+
+  <!-- ============ ACTIVITY MODAL ============ -->
+  <div class="modal-bg hidden" id="modalBg" onclick="if(event.target===this)closeActivity()">
+    <div class="modal">
+      <button class="close-x" onclick="closeActivity()">✕</button>
+      <div class="modal-handle"></div>
+      <div style="font-size:36px;text-align:center" id="modalEmoji">🌿</div>
+      <h2 id="modalTitle" style="text-align:center">כותרת</h2>
+      <div style="text-align:center;font-size:12px;color:var(--dim)" id="modalDur">2 דקות</div>
+      <div class="breathe-circle hidden" id="breatheCircle">שאפו</div>
+      <div class="why" id="modalWhy"></div>
+      <ol class="step-list" id="modalSteps"></ol>
+      <div class="timer-row">
+        <div class="timer-num" id="timerNum">02:00</div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-ghost" onclick="resetTimer()">איפוס</button>
+        <button class="btn btn-primary" id="timerBtn" onclick="toggleTimer()">▶ התחילו</button>
+      </div>
+      <button class="btn btn-ghost" style="margin-top:10px" onclick="markDoneFromModal()">✓ סמנו כהושלם</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+</div>
+
+<script>
+/* ================= DATA ================= */
+const ACTIVITIES = [
+  // ---- movement ----
+  {id:'move-jump', cat:'move', title:'5 קפיצות פתיחה', dur:2, emoji:'🤸', steps:['עמדו זקוף עם רגליים צמודות','קפצו ופזרו ידיים ורגליים לצדדים (ג׳אמפינג ג׳ק)','חזרו על כך 20 פעמים בקצב חופשי','נשמו עמוק בסיום'], why:'פעילות אירובית קצרה מעלה זרימת דם למוח ומשפרת באופן זמני תפקודים ניהוליים כמו קשב וזיכרון עבודה — נמצא במחקרים על ילדים עם ADHD.'},
+  {id:'move-animal', cat:'move', title:'הליכת בעלי חיים', dur:3, emoji:'🐻', steps:['הליכת דובי — ידיים ורגליים על הרצפה, זחילה קדימה','הליכת סרטן — ישיבה, ידיים מאחור, הליכה על ארבע לצדדים','קפיצות צפרדע — כפיפת ברכיים וקפיצה קדימה','30 שניות לכל תרגיל'], why:'תנועה מורכבת (קרוס-לטרל) מפעילה את שני חצאי המוח יחד ומספקת קלט פרופריוספטיבי שעוזר לוויסות עוררות.'},
+  {id:'move-dance', cat:'move', title:'ריקוד פרוע 60 שניות', dur:1, emoji:'💃', steps:['הפעילו שיר קצבי אהוב','זוזו הכי חופשי שאפשר במשך 60 שניות','כשהמוזיקה נעצרת — קפאו במקום כמו פסל'], why:'פריקת אנרגיה מהירה ומשעשעת מפחיתה חוסר שקט פיזי ומכינה את הגוף למעבר לפעילות רגועה יותר.'},
+  {id:'move-wallpush', cat:'move', title:'דחיפת קיר', dur:1, emoji:'🧱', steps:['עמדו מול קיר במרחק זרוע','דחפו את הקיר בשתי הידיים בכל הכוח למשך 10 שניות','נוחו 5 שניות וחזרו 5 פעמים'], why:'עבודה עצימה (Heavy Work) על השרירים נותנת קלט עמוק למערכת העצבים ועוזרת להירגע ולהתמקד — טכניקה נפוצה בריפוי בעיסוק.'},
+  {id:'move-rope', cat:'move', title:'דילוג במקום', dur:3, emoji:'🪢', steps:['דלגו במקום (עם או בלי חבל) 30 שניות','הפסקה 15 שניות','חזרו על כך 4 פעמים'], why:'פעילות קצבית וסדירה משפרת ויסות עצמי ומווסתת רמות עוררות דרך המערכת הוסטיבולרית.'},
+  {id:'move-yoga', cat:'move', title:'יוגה לילדים — עץ וכלב', dur:3, emoji:'🌳', steps:['תנוחת עץ: עמידה על רגל אחת, כף רגל שנייה על הירך, ידיים למעלה — 20 שניות לכל צד','תנוחת כלב מבט למטה: ידיים ורגליים על הרצפה ביצירת "V" הפוך — 20 שניות','נשמו עמוק לאורך כל התרגיל'], why:'שילוב של תנועה, שיווי משקל ונשימה מרגיע את מערכת העצבים תוך כדי שמירה על ערנות — לא כמו מנוחה פסיבית.'},
+  {id:'move-redlight', cat:'move', title:'אור אדום אור ירוק', dur:5, emoji:'🚦', steps:['הורה/מבוגר אומר "ירוק" — הילד/ה רץ/ה במקום','כשאומרים "אדום" — עצירה מיידית ללא תזוזה','שחקו 5-6 סבבים, אפשר להחליף תפקידים'], why:'משחק זה מתרגל בו-זמנית שחרור אנרגיה ובקרת דחפים (עצירה על פי איתות) — שני מרכיבים מרכזיים בוויסות התנהגותי.'},
+  {id:'move-carry', cat:'move', title:'נשיאת משא', dur:2, emoji:'🎒', steps:['בקשו מהילד/ה לשאת ערימת ספרים או כרית כבדה מחדר לחדר','חזרו 3-4 פעמים','אפשר להפוך למשחק "שליח מיוחד"'], why:'עבודה פיזית עם משקל (Heavy Work) מספקת קלט פרופריוספטיבי מרגיע ומסייעת במעבר בין פעילויות.'},
+
+  // ---- calm / nervous system ----
+  {id:'breathe-balloon', cat:'calm', title:'נשימת בלון', dur:2, emoji:'🎈', steps:['שבו בנוחות והניחו יד אחת על הבטן','שאפו לאט דרך האף כאילו מנפחים בלון בבטן — 4 שניות','נשפו לאט דרך הפה כאילו הבלון מתרוקן — 6 שניות','חזרו על כך 6-8 פעמים'], why:'נשימה סרעפתית איטית מפעילה את מערכת העצבים הפאראסימפתטית ("עצב הנדנוד") ומורידה דופק ורמת עוררות תוך דקות ספורות.', breathe:true},
+  {id:'breathe-box', cat:'calm', title:'נשימת קופסה 4-4-4-4', dur:2, emoji:'⬛', steps:['שאפו 4 שניות','עצרו נשימה 4 שניות','נשפו 4 שניות','עצרו ריקים 4 שניות','חזרו 4-5 סבבים'], why:'טכניקה בשימוש נפוץ (גם אצל ספורטאים וכוחות מיוחדים) לוויסות מהיר של מערכת העצבים ולהחזרת שליטה בזמני לחץ.', breathe:true},
+  {id:'calm-5senses', cat:'calm', title:'5 חושים — קרקוע', dur:3, emoji:'🖐️', steps:['ציינו 5 דברים שאתם רואים','4 דברים שאתם שומעים','3 דברים שאתם יכולים לגעת בהם','2 דברים שאתם מריחים','דבר אחד שאתם טועמים'], why:'טכניקת "grounding" מעבירה את תשומת הלב מהצפה רגשית לחוויה החושית של הרגע — יעילה מאוד לפני התפרצות או אחריה.'},
+  {id:'calm-pmr', cat:'calm', title:'הרפיית שרירים — "ספגטי מול רובוט"', dur:4, emoji:'🍝', steps:['היו "רובוט" — הפעילו את כל השרירים בגוף בחוזקה למשך 5 שניות','היו "ספגטי" — שחררו את כל הגוף כאילו הוא רך ורפוי','חזרו לסירוגין 5-6 פעמים'], why:'הרפיית שרירים מתקדמת (PMR) מלמדת את הגוף להבחין בין מתח לרפיון ומפחיתה מתח פיזי שמלווה עוררות רגשית.'},
+  {id:'calm-coldwater', cat:'calm', title:'מים קרים על הפנים', dur:1, emoji:'💧', steps:['הרטיבו מגבת קטנה במים קרים','הניחו על המצח והלחיים למשך 20-30 שניות','אפשר גם לשתות כוס מים קרה לאט'], why:'קור על הפנים מפעיל את "רפלקס הצלילה" ומוריד דופק במהירות — כלי חירום יעיל להרגעה מהירה בזמן משבר.'},
+  {id:'calm-hug', cat:'calm', title:'חיבוק לחץ עמוק', dur:2, emoji:'🤗', steps:['בקשו מהילד/ה רשות לחיבוק חזק','חבקו בלחץ נעים (לא כואב) למשך 20-30 שניות','אפשר להחליף בשמיכה כבדה או כרית לחיצה'], why:'לחץ עמוק (Deep Pressure) מפעיל את מערכת העצבים הפאראסימפתטית ומפחית קורטיזול — נחקר רבות אצל ילדים עם רגישות חושית.'},
+  {id:'calm-hum', cat:'calm', title:'זמזום דבורה', dur:1, emoji:'🐝', steps:['שאפו עמוק דרך האף','נשפו תוך כדי זמזום ארוך כמו דבורה: "מממממ"','חזרו 6-8 פעמים'], why:'הזמזום מאריך את הנשיפה ומרעיד את מיתרי הקול, מה שמגרה את עצב הנדנוד ומרגיע במהירות.'},
+  {id:'calm-corner', cat:'calm', title:'הקמת פינת רוגע בבית', dur:10, emoji:'🏡', steps:['בחרו פינה שקטה בבית','הוסיפו כרית רכה, שמיכה או בובה מחבקת','הוסיפו אביזר חושי אחד (פידג׳ט, כדור לחיצה)','הסבירו לילד/ה שזו פינה לבחירה חופשית כשצריך רגע, לא "פינת עונשין"'], why:'מרחב פיזי מוגדר לוויסות עצמי נותן לילד/ה כלי עצמאי לזהות ולנהל עוררות רגשית מבלי להזדקק תמיד למבוגר.'},
+
+  // ---- focus / play ----
+  {id:'focus-sprint', cat:'focus', title:'ספרינט ריכוז 10 דקות', dur:10, emoji:'⏳', steps:['בחרו משימה אחת קטנה וברורה','הפעילו טיימר חזותי ל-10 דקות','עבדו רק על המשימה הזו עד שהטיימר מצלצל','הפסקה קצרה של 2-3 דקות אחרי'], why:'עבודה בפרקי זמן קצרים ומוגדרים (בסגנון פומודורו) מפחיתה עומס ומגבירה תחושת שליטה והישג עבור ילדים עם קושי בוויסות קשב.'},
+  {id:'focus-diff', cat:'focus', title:'מצאו את ההבדלים', dur:5, emoji:'🔍', steps:['הדפיסו או פתחו משחק "מצאו את ההבדלים" מתאים לגיל','שבו יחד ותנו זמן קבוע (5 דקות) למציאת כמה שיותר הבדלים','חגגו כל הבדל שנמצא'], why:'משחקי תשומת לב חזותית מתמשכת מאמנים את יכולת ה-Sustained Attention בדרך משחקית ולא-מאיימת.'},
+  {id:'focus-visual', cat:'focus', title:'לוח משימות ויזואלי', dur:8, emoji:'🗒️', steps:['רשמו או ציירו את משימות הבוקר/ערב על כרטיסיות נפרדות','סדרו לפי סדר ביצוע על לוח מגנטי או קיר','הילד/ה מזיז/ה כרטיסייה ל"בוצע" בסיום כל משימה'], why:'תמיכה ויזואלית מפצה על קשיים בתפקוד ניהולי (זיכרון עבודה, תכנון) ומפחיתה את הצורך בתזכורות חוזרות מההורה.'},
+  {id:'focus-chunk', cat:'focus', title:'פירוק משימה לצעדים', dur:5, emoji:'🧩', steps:['קחו משימה שמרגישה גדולה (כמו "לסדר את החדר")','פרקו אותה יחד ל-3-4 צעדים קטנים וברורים','סמנו כל צעד שהושלם'], why:'פירוק משימות מקטין עומס קוגניטיבי ומפחית תחושת הצפה — טכניקת ליבה באימון הורים להתנהגות (Behavioral Parent Training).'},
+  {id:'focus-memory', cat:'focus', title:'משחק זיכרון קלפים', dur:6, emoji:'🃏', steps:['פרשו קלפי זיכרון הפוכים על השולחן','כל שחקן הופך שני קלפים בתורו ומנסה למצוא זוג','שחקו 6-10 דקות'], why:'משחקי זיכרון עובד מאמנים באופן ישיר יכולת שקשורה קשר הדוק לתפקוד קשב ולביצועים לימודיים.'},
+  {id:'focus-onecard', cat:'focus', title:'כרטיסייה אחת בכל פעם', dur:3, emoji:'📇', steps:['כתבו כל שלב במשימה על כרטיסייה נפרדת','תנו לילד/ה רק את הכרטיסייה הנוכחית — לא את כל הרשימה','עברו לכרטיסייה הבאה רק אחרי השלמת הנוכחית'], why:'הצגת מידע אחד בכל פעם מפחיתה עומס על זיכרון העבודה ומגדילה סיכוי להשלמת המשימה.'},
+  {id:'focus-brainbreak', cat:'focus', title:'הפסקת מוח בין משימות', dur:3, emoji:'🧠', steps:['אחרי 20-25 דקות ריכוז — קחו הפסקה של 3-5 דקות','קומו, מתחו, שתו מים או צאו לחצר','חזרו למשימה רק אחרי ההפסקה'], why:'הפסקות קצרות וקבועות משפרות ביצועי קשב לאורך זמן ומונעות "שחיקת קשב" מצטברת.'},
+  {id:'focus-declutter', cat:'focus', title:'סידור פינת עבודה נטולת הסחות', dur:5, emoji:'🧹', steps:['פנו מהשולחן כל דבר שלא קשור למשימה הנוכחית','הרחיקו מסכים שלא נחוצים למשימה','ודאו תאורה טובה וכיסא נוח'], why:'הפחתת גירויים סביבתיים מפחיתה את העומס על מערכת הקשב ומגדילה זמן התמקדות רציף.'},
+];
+
+const ARTICLES = [
+  {t:'מה זו הפרעת קשב וריכוז (ADHD)?', body:`ADHD היא הפרעה נוירו-התפתחותית הפוגעת בוויסות קשב, אימפולסיביות ולעיתים רמת פעילות. היא <b>אינה</b> תוצאה של "חינוך לקוי" או "עצלנות" — יש לה בסיס נוירוביולוגי מתועד. האבחון נעשה על ידי איש/אשת מקצוע מוסמכ/ת (רופא/ת ילדים, נוירולוג/ית, פסיכיאטר/ית או פסיכולוג/ית) על סמך קריטריונים קליניים מוגדרים — לא על סמך שאלון אחד או אפליקציה.`},
+  {t:'גישות טבעיות שנחקרו — מה המחקר אומר', body:`מספר גישות לא-תרופתיות נחקרו וקיבלו תמיכה מחקרית <b>חלקית עד בינונית</b> (לרוב כמשלימות, לא כתחליף):
+  <ul>
+  <li><b>פעילות גופנית אירובית סדירה</b> — התומכת בתפקודים ניהוליים ובוויסות עוררות.</li>
+  <li><b>שינה איכותית וסדירה</b> — חוסר שינה מחריף משמעותית תסמיני קשב אצל כל הילדים, ובפרט אצל ילדים עם ADHD.</li>
+  <li><b>אימון הורים להתנהגות (Behavioral Parent Training)</b> — בעל אחת התמיכות המחקריות החזקות ביותר מבין הגישות הלא-תרופתיות.</li>
+  <li><b>מבנה שגרתי וכלים ויזואליים</b> — מפחיתים עומס על תפקוד ניהולי.</li>
+  <li><b>תזונה מאוזנת</b> — ארוחת בוקר עם חלבון וויסות סוכר יכולים לסייע ליציבות אנרגיה וריכוז; עדויות לגבי תוספי אומגה-3 מעורבות ולא חד-משמעיות.</li>
+  <li><b>מיינדפולנס ותרגילי נשימה</b> — עדויות ראשוניות-בינוניות לשיפור בוויסות עצמי.</li>
+  <li><b>נוירופידבק</b> — תחום מחקר מתפתח, התוצאות עדיין לא חד-משמעיות ודורשות ליווי מקצועי.</li>
+  </ul>
+  חשוב: אף אחת מהגישות הללו אינה "מרפאה" ADHD, וההשפעה משתנה מאוד מילד לילד.`},
+  {t:'מתי לפנות לרופא/ה?', body:`כדאי לפנות להערכה מקצועית אם קשיי הקשב, האימפולסיביות או רמת הפעילות: פוגעים משמעותית בתפקוד היומיומי (לימודים, חברים, משפחה), נמשכים לאורך זמן (חודשים ולא ימים בודדים), ומופיעים במספר סביבות (גם בית וגם בית ספר). אבחון מוקדם ומדויק מאפשר להתאים את הכלים הנכונים — תרופתיים ולא-תרופתיים — לילד/ה הספציפי/ת.`},
+  {t:'טיפול תרופתי — מידע מאוזן', body:`תרופות לטיפול ב-ADHD (כמו מתילפנידאט או תרופות לא-ממריצות) הן <b>טיפול מבוסס-מחקר בעל יעילות מוכחת</b> עבור חלק גדול מהילדים, ונרשמות על ידי רופא/ה מוסמכ/ת בהתאם להערכה אישית. ההחלטה אם להתחיל, להתאים מינון או להפסיק טיפול תרופתי היא <b>תמיד</b> החלטה רפואית שנעשית יחד עם הרופא/ה המטפל/ת — ולא משהו שאפליקציה יכולה או צריכה להחליף. הכלים הטבעיים באפליקציה זו יכולים לשמש <b>לצד</b> טיפול תרופתי (במידה וקיים) ולא כתחליף לו.`},
+  {t:'שאלות טובות לשאול את הרופא/ה', body:`<ul>
+  <li>אילו כלים לא-תרופתיים מתאימים למקרה הספציפי של הילד/ה שלי?</li>
+  <li>איך נדע אם גישה מסוימת (תזונה, שינה, פעילות גופנית) עוזרת בפועל?</li>
+  <li>אם מדובר בטיפול תרופתי — מהן תופעות הלוואי האפשריות ואיך עוקבים אחריהן?</li>
+  <li>איך משלבים בין הכלים היומיומיים בבית לבין הטיפול המקצועי?</li>
+  <li>למי פונים אם יש הידרדרות פתאומית או משבר?</li>
+  </ul>`},
+  {t:'התמודדות עם התפרצות רגשית (Meltdown)', body:`בזמן משבר, מערכת העצבים "מוצפת" והילד/ה לא זמין/ה להיגיון או שכנוע. הצעדים המומלצים: 1) שמרו על רוגע גופני ואל תרימו קול. 2) הפחיתו גירויים (אור, רעש, אנשים). 3) הציעו כלי ויסות מהיר (נשימה, לחץ עמוק, מים קרים — ראו בספריית הפעילויות). 4) שוחחו על מה שקרה רק אחרי שהרגיעה חזרה, לא באמצע. אם התפרצויות תכופות מאוד, ארוכות או כוללות סיכון — זה סימן לפנות לאיש/אשת מקצוע.`},
+];
+
+const FAQ = [
+  {kw:['תרופ','ריטלין','קונצרטה','מתילפנידאט','להפסיק תרופה','לוותר על תרופה'], a:'תרופות ל-ADHD הן טיפול מבוסס-מחקר עם יעילות מוכחת עבור חלק גדול מהילדים. פוקוסי מתמקדת בכלים טבעיים ומשלימים (תנועה, רוגע, ריכוז) — אך <b>כל החלטה</b> על התחלה, שינוי או הפסקה של תרופה חייבת להתקבל עם הרופא/ה המטפל/ת. אל תפסיקו טיפול תרופתי על סמך מידע מהאפליקציה.'},
+  {kw:['תזונה','אוכל','לאכול','סוכר','אומגה'], a:'ארוחת בוקר עם חלבון ופחמימות מורכבות עוזרת ליציבות אנרגיה וריכוז. הימנעות משיאי סוכר (משקאות ממותקים, ממתקים בבוקר) יכולה לסייע. תוספי אומגה-3 נחקרו עם תוצאות מעורבות — כדאי להתייעץ עם הרופא/ה לפני מתן תוספים.'},
+  {kw:['שינה','לישון','נדודי שינה'], a:'שינה סדירה ואיכותית היא אחד הגורמים המשפיעים ביותר על קשב וריכוז ביום שאחריה. מומלץ שגרת ערב קבועה, הפחתת מסכים שעה לפני השינה, וחדר שקט וחשוך. אם יש קושי מתמשך בהירדמות — כדאי לשתף את הרופא/ה.'},
+  {kw:['ספורט','פעילות גופנית','להתאמן'], a:'פעילות אירובית סדירה (ריצה, שחייה, כדורגל, רכיבה על אופניים) נמצאה כמשפרת תפקודים ניהוליים וקשב אצל ילדים עם ADHD. גם 10-15 דקות תנועה לפני שיעורי בית יכולות לעזור — ראו את פעילויות "תנועה" בספרייה.'},
+  {kw:['מסך','מסכים','טלוויזיה','טלפון','משחקי מחשב'], a:'מומלץ להגביל זמן מסכים בפרט בשעה שלפני השינה ולפני משימות שדורשות ריכוז, ולעודד הפסקות תנועה בין פרקי שימוש. אין הסכמה מדעית חד-משמעית ש"מסכים גורמים" ל-ADHD, אך הם יכולים להחריף קשיי ויסות אצל חלק מהילדים.'},
+  {kw:['שיעורי בית','בית ספר','לימודים','שיעור'], a:'עוזר מאוד: לוח משימות ויזואלי, פירוק שיעורי הבית לצעדים קטנים, פינת עבודה נטולת הסחות, והפסקות תנועה קצרות כל 20-25 דקות. ראו את פעילויות "ריכוז" בספרייה לכלים מעשיים.'},
+  {kw:['התפרצות','זעם','משבר','כעס','לצרוח','בוכה'], a:'בזמן משבר, קודם כל הפחיתו גירויים ושמרו על רוגע גופני. הציעו כלי הרגעה מהיר כמו נשימת בלון או מים קרים על הפנים (ראו "רגע קשה עכשיו?" במסך הבית). שיחה על מה שקרה עדיף לאחר שהרוגע חוזר. אם התפרצויות תכופות/עצימות מאוד — זה סימן לפנות לאיש/אשת מקצוע.'},
+  {kw:['אבחון','לאבחן','איך לדעת','חושדת','חושד'], a:'אבחון ADHD נעשה על ידי איש/אשת מקצוע מוסמכ/ת (רופא/ת ילדים, נוירולוג/ית, פסיכיאטר/ית או פסיכולוג/ית) בהתבסס על תצפית, שאלונים וראיון קליני מובנה — לא על בסיס אפליקציה או שאלון בודד. אם קשיי הקשב פוגעים משמעותית בתפקוד היומיומי לאורך זמן ובכמה סביבות (בית וגם בית ספר) — זה הזמן לפנות להערכה.'},
+];
+
+const FAQ_DEFAULT = 'זו שאלה טובה. אני יכולה לעזור עם מידע כללי על תנועה, רוגע, ריכוז, שינה, תזונה והתמודדות עם משברים — אך לשאלות אבחוניות או רפואיות אישיות, מומלץ לפנות לרופא/ת הילד/ה. אפשר לנסות לנסח את השאלה אחרת, או לגעת באחת מהצ׳יפים למטה 👇';
+const QUICK_QS = ['איך להתמודד עם התפרצות?', 'האם צריך תרופות?', 'טיפים לשיעורי בית', 'איך משפרים שינה?'];
+
+/* ================= STATE ================= */
+const SK = 'focusi_state_v1';
+let state = loadState();
+function loadState(){
+  try{ const s = JSON.parse(localStorage.getItem(SK)); if(s) return s; }catch(e){}
+  return {onboarded:false, childName:'', age:'', goals:[], history:{}, workerUrl:''};
+}
+function saveState(){ try{ localStorage.setItem(SK, JSON.stringify(state)); }catch(e){} }
+function todayKey(){ const d=new Date(); return d.toISOString().slice(0,10); }
+function dayHistory(key){ if(!state.history[key]) state.history[key]={move:false,calm:false,focus:false,mood:null}; return state.history[key]; }
+
+/* ================= ONBOARDING ================= */
+let obState = {age:'', goals:[]};
+function obGo(step){
+  if(step===1 && !document.getElementById('obName').value){ /* allow proceed even if empty, default name */ }
+  document.querySelectorAll('.ob-screen').forEach(s=>s.classList.add('hidden'));
+  document.getElementById('ob'+step).classList.remove('hidden');
+}
+function obPick(group, btn){
+  document.querySelectorAll('#'+group+' .ob-opt').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on'); obState.age = btn.dataset.v;
+}
+function obToggle(group, btn){
+  btn.classList.toggle('on');
+  const v = btn.dataset.v;
+  if(obState.goals.includes(v)) obState.goals = obState.goals.filter(g=>g!==v);
+  else obState.goals.push(v);
+}
+function finishOnboarding(){
+  state.childName = document.getElementById('obName').value.trim() || 'הילד/ה';
+  state.age = obState.age || '9-11';
+  state.goals = obState.goals.length ? obState.goals : ['move','calm','focus'];
+  state.onboarded = true;
+  saveState();
+  document.getElementById('onboarding').classList.add('hidden');
+  document.getElementById('mainApp').classList.remove('hidden');
+  initApp();
+}
+
+/* ================= NAV ================= */
+function switchTab(name){
+  document.querySelectorAll('.navbtn').forEach(b=>b.classList.toggle('on', b.dataset.tab===name));
+  ['home','lib','track','parents','advisor'].forEach(t=>{
+    document.getElementById('tab-'+t).classList.toggle('hidden', t!==name);
+  });
+  if(name==='track') renderTracker();
+}
+
+/* ================= HOME / MISSIONS ================= */
+function dayOfYear(){ const d=new Date(); const start=new Date(d.getFullYear(),0,0); return Math.floor((d-start)/864e5); }
+function pickDaily(cat){
+  const list = ACTIVITIES.filter(a=>a.cat===cat);
+  const idx = (dayOfYear() + cat.length) % list.length;
+  return list[idx];
+}
+function renderHome(){
+  document.getElementById('homeGreeting').textContent = `היי ${state.childName||''} 👋`;
+  document.getElementById('streakNum').textContent = computeStreak();
+  const cats = [['move','🏃 תנועה'],['calm','🌿 רוגע'],['focus','🎯 ריכוז']];
+  const h = dayHistory(todayKey());
+  const wrap = document.getElementById('homeMissions');
+  wrap.innerHTML='';
+  cats.forEach(([cat,label])=>{
+    const act = pickDaily(cat);
+    const done = h[cat];
+    const div = document.createElement('div');
+    div.className = 'mission-card pillar-'+cat+(done?' done':'');
+    div.innerHTML = `
+      <div class="cat-label">${label}</div>
+      <div class="m-title">${act.title}</div>
+      <div class="m-dur">⏱ ${act.dur} דקות</div>
+      <div class="m-emoji">${act.emoji}</div>
+      ${done?'<div class="done-check">✅</div>':`<button class="m-btn" onclick="openActivity('${act.id}')">התחילו</button>`}
+    `;
+    wrap.appendChild(div);
+  });
+}
+function computeStreak(){
+  let streak=0, d=new Date();
+  // if today not fully done yet, start counting from yesterday
+  const t = dayHistory(todayKey());
+  const todayDone = t.move && t.calm && t.focus;
+  if(!todayDone) d.setDate(d.getDate()-1);
+  while(true){
+    const key = d.toISOString().slice(0,10);
+    const h = state.history[key];
+    if(h && h.move && h.calm && h.focus){ streak++; d.setDate(d.getDate()-1); }
+    else break;
+  }
+  return streak;
+}
+
+/* ================= LIBRARY ================= */
+let libFilter='all';
+function setLibFilter(cat, btn){
+  libFilter=cat;
+  document.querySelectorAll('.pillar-tab').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  renderLibrary();
+}
+function renderLibrary(){
+  const wrap = document.getElementById('libList');
+  wrap.innerHTML='';
+  const list = ACTIVITIES.filter(a=>libFilter==='all'||a.cat===libFilter);
+  list.forEach(a=>{
+    const div = document.createElement('div');
+    div.className='act-item';
+    div.onclick=()=>openActivity(a.id);
+    div.innerHTML = `<div class="ic">${a.emoji}</div><div><div class="t">${a.title}</div><div class="d">⏱ ${a.dur} דק׳ · ${catLabel(a.cat)}</div></div><div class="go">‹</div>`;
+    wrap.appendChild(div);
+  });
+}
+function catLabel(c){ return c==='move'?'תנועה':c==='calm'?'רוגע':'ריכוז'; }
+
+/* ================= ACTIVITY MODAL ================= */
+let curAct=null, timerInterval=null, timerSecs=0, timerRunning=false;
+function openActivity(id){
+  curAct = ACTIVITIES.find(a=>a.id===id);
+  if(!curAct) return;
+  document.getElementById('modalEmoji').textContent = curAct.emoji;
+  document.getElementById('modalTitle').textContent = curAct.title;
+  document.getElementById('modalDur').textContent = `⏱ ${curAct.dur} דקות`;
+  document.getElementById('modalWhy').innerHTML = '💡 <b>למה זה עוזר:</b> '+curAct.why;
+  const steps = document.getElementById('modalSteps');
+  steps.innerHTML='';
+  curAct.steps.forEach((s,i)=>{
+    const li=document.createElement('li');
+    li.innerHTML = `<div class="n">${i+1}</div><div>${s}</div>`;
+    steps.appendChild(li);
+  });
+  const bc = document.getElementById('breatheCircle');
+  if(curAct.breathe){ bc.classList.remove('hidden'); animateBreath(); } else { bc.classList.add('hidden'); }
+  timerSecs = curAct.dur*60;
+  timerRunning=false;
+  clearInterval(timerInterval);
+  updateTimerDisplay();
+  document.getElementById('timerBtn').textContent='▶ התחילו';
+  document.getElementById('modalBg').classList.remove('hidden');
+}
+function closeActivity(){
+  document.getElementById('modalBg').classList.add('hidden');
+  clearInterval(timerInterval); timerRunning=false;
+}
+function updateTimerDisplay(){
+  const m = Math.floor(timerSecs/60), s = timerSecs%60;
+  document.getElementById('timerNum').textContent = String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+}
+function toggleTimer(){
+  timerRunning = !timerRunning;
+  document.getElementById('timerBtn').textContent = timerRunning?'⏸ עצירה':'▶ המשך';
+  if(timerRunning){
+    timerInterval = setInterval(()=>{
+      if(timerSecs>0){ timerSecs--; updateTimerDisplay(); }
+      else { clearInterval(timerInterval); timerRunning=false; document.getElementById('timerBtn').textContent='▶ התחילו'; showToast('כל הכבוד! סיימתם 🎉'); }
+    },1000);
+  } else clearInterval(timerInterval);
+}
+function resetTimer(){
+  clearInterval(timerInterval); timerRunning=false;
+  timerSecs = curAct.dur*60; updateTimerDisplay();
+  document.getElementById('timerBtn').textContent='▶ התחילו';
+}
+let breathTimeout=null;
+function animateBreath(){
+  const bc = document.getElementById('breatheCircle');
+  clearTimeout(breathTimeout);
+  function cycle(){
+    bc.className='breathe-circle in'; bc.textContent='שאפו...';
+    breathTimeout=setTimeout(()=>{
+      bc.className='breathe-circle out'; bc.textContent='נשפו...';
+      breathTimeout=setTimeout(cycle,4000);
+    },4000);
+  }
+  cycle();
+}
+function markDoneFromModal(){
+  if(!curAct) return;
+  const h = dayHistory(todayKey());
+  h[curAct.cat]=true;
+  saveState();
+  closeActivity();
+  renderHome();
+  showToast('נרשם! כל הכבוד 🌟');
+}
+
+/* ================= TRACKER ================= */
+function renderTracker(){
+  document.getElementById('trackChildName').textContent = state.childName||'הילד/ה';
+  const strip = document.getElementById('weekStrip');
+  strip.innerHTML='';
+  const labels=['א','ב','ג','ד','ה','ו','ש'];
+  for(let i=6;i>=0;i--){
+    const d=new Date(); d.setDate(d.getDate()-i);
+    const key=d.toISOString().slice(0,10);
+    const h=state.history[key];
+    const count = h?[h.move,h.calm,h.focus].filter(Boolean).length:0;
+    const div=document.createElement('div');
+    div.className='day-dot';
+    const color = count===3?'linear-gradient(135deg,#FF8A50,#FF6B35)':count>0?'#FFE3C2':'#F1E6D8';
+    const emoji = h&&h.mood ? moodEmoji(h.mood) : (count===3?'✓':'');
+    div.innerHTML = `<div class="dd" style="background:${color};color:#fff;font-weight:800">${emoji}</div><div class="dl">${labels[d.getDay()]}</div>`;
+    strip.appendChild(div);
+  }
+  const h = dayHistory(todayKey());
+  document.querySelectorAll('.mood-btn').forEach(b=>b.classList.toggle('on', h.mood==+b.dataset.v));
+  const prog = document.getElementById('todayProgress');
+  prog.innerHTML='';
+  [['move','🏃 תנועה','var(--orange)'],['calm','🌿 רוגע','var(--teal)'],['focus','🎯 ריכוז','var(--purple)']].forEach(([cat,label,color])=>{
+    const div=document.createElement('div');
+    div.className='mp';
+    div.style.background = h[cat] ? color : '#D9D2C7';
+    div.textContent = label+(h[cat]?' ✓':'');
+    prog.appendChild(div);
+  });
+}
+function moodEmoji(v){ return ['😣','😕','😐','🙂','😄'][v-1]||''; }
+function pickMood(btn, v){
+  const h = dayHistory(todayKey());
+  h.mood = v; saveState();
+  renderTracker();
+  showToast('תודה שסימנתם 💛');
+}
+
+/* ================= PARENTS HUB ================= */
+function renderArticles(){
+  const wrap = document.getElementById('articlesList');
+  wrap.innerHTML='';
+  ARTICLES.forEach((a,i)=>{
+    const det = document.createElement('details');
+    det.className='article';
+    if(i===0) det.open=true;
+    det.innerHTML = `<summary>${a.t}<span class="arrow">‹</span></summary><div class="body">${a.body}</div>`;
+    wrap.appendChild(det);
+  });
+}
+
+/* ================= ADVISOR CHAT ================= */
+function renderChips(){
+  const wrap = document.getElementById('chatChips');
+  wrap.innerHTML='';
+  QUICK_QS.forEach(q=>{
+    const c=document.createElement('button');
+    c.className='chip'; c.textContent=q;
+    c.onclick=()=>{ document.getElementById('chatInput').value=q; sendChat(); };
+    wrap.appendChild(c);
+  });
+}
+function addMsg(text, who){
+  const m=document.createElement('div');
+  m.className='msg '+who;
+  m.innerHTML=text;
+  document.getElementById('chatMsgs').appendChild(m);
+  document.getElementById('chatMsgs').scrollTop = 999999;
+}
+function localAnswer(q){
+  const qn = q.toLowerCase();
+  for(const f of FAQ){ if(f.kw.some(k=>qn.includes(k))) return f.a; }
+  return FAQ_DEFAULT;
+}
+async function sendChat(){
+  const inp = document.getElementById('chatInput');
+  const text = inp.value.trim();
+  if(!text) return;
+  addMsg(text,'user'); inp.value='';
+  const workerUrl = state.workerUrl;
+  if(workerUrl){
+    addMsg('חושבת...','bot');
+    try{
+      const res = await fetch(workerUrl,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:text})});
+      const data = await res.json();
+      document.getElementById('chatMsgs').lastChild.remove();
+      addMsg(data.reply || localAnswer(text), 'bot');
+    }catch(e){
+      document.getElementById('chatMsgs').lastChild.remove();
+      addMsg(localAnswer(text),'bot');
+    }
+  } else {
+    setTimeout(()=>addMsg(localAnswer(text),'bot'), 350);
+  }
+}
+function initChat(){
+  document.getElementById('chatMsgs').innerHTML='';
+  addMsg(`שלום! אני יועצת פוקוסי 💬<br>אני יכולה לעזור עם מידע כללי ומאוזן על תנועה, רוגע, ריכוז ועוד — <b>אך אינני תחליף לרופא/ה או פסיכולוג/ית</b>. לשאלות אבחוניות או על תרופות, תמיד פנו לאיש/אשת מקצוע.`,'bot');
+  renderChips();
+}
+
+/* ================= TOAST ================= */
+let toastTimeout=null;
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  clearTimeout(toastTimeout);
+  toastTimeout=setTimeout(()=>t.classList.remove('show'),2200);
+}
+
+/* ================= INIT ================= */
+function initApp(){
+  renderHome();
+  renderLibrary();
+  renderArticles();
+  initChat();
+}
+window.addEventListener('load', ()=>{
+  if(state.onboarded){
+    document.getElementById('onboarding').classList.add('hidden');
+    document.getElementById('mainApp').classList.remove('hidden');
+    initApp();
+  }
+  if('serviceWorker' in navigator){
+    navigator.serviceWorker.register('./sw.js').catch(()=>{});
+  }
+});
+</script>
+</body>
+</html>
