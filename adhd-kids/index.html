@@ -16,6 +16,7 @@
   --bg:#FFF8F0; --card:#FFFFFF; --ink:#2B2140; --dim:#8A8299; --line:#F1E6D8;
   --orange:#FF8A50; --orange-deep:#FF6B35; --teal:#2DD4BF; --teal-deep:#14B8A6;
   --purple:#7C6CF0; --purple-deep:#6152D9; --yellow:#FFD166; --red:#EF6461;
+  --gold:#E8A33D; --gold-deep:#C97F1A;
   --shadow:0 6px 20px rgba(43,33,64,.08);
 }
 *{box-sizing:border-box; -webkit-tap-highlight-color:transparent}
@@ -51,6 +52,7 @@ h1,h2,h3,p{margin:0}
 .pillar-move{--pc:var(--orange);--pcd:var(--orange-deep)}
 .pillar-calm{--pc:var(--teal);--pcd:var(--teal-deep)}
 .pillar-focus{--pc:var(--purple);--pcd:var(--purple-deep)}
+.pillar-discipline{--pc:var(--gold);--pcd:var(--gold-deep)}
 
 .mission-card{border-radius:20px;padding:18px;margin-bottom:12px;color:#fff;background:linear-gradient(135deg,var(--pc),var(--pcd));box-shadow:var(--shadow);position:relative;overflow:hidden}
 .mission-card .cat-label{font-size:11px;font-weight:800;opacity:.9;text-transform:uppercase;letter-spacing:.03em}
@@ -239,6 +241,7 @@ h1,h2,h3,p{margin:0}
         <button class="ob-opt" data-v="move" onclick="obToggle('obGoals',this)">🏃 תנועה ואנרגיה</button>
         <button class="ob-opt" data-v="calm" onclick="obToggle('obGoals',this)">🌿 רוגע וויסות</button>
         <button class="ob-opt" data-v="focus" onclick="obToggle('obGoals',this)">🎯 ריכוז ומשימות</button>
+        <button class="ob-opt" data-v="discipline" onclick="obToggle('obGoals',this)">🧭 משמעת ומוטיבציה</button>
       </div>
       <button class="btn btn-primary" onclick="obGo(3)" style="margin-top:14px">המשך →</button>
     </div>
@@ -265,7 +268,7 @@ h1,h2,h3,p{margin:0}
       <div class="topbar">
         <div>
           <button class="profile-switch" onclick="openProfileModal()"><h1 id="homeGreeting">היי 👋</h1><span class="chev">⌄</span></button>
-          <div class="sub">בואו נתחיל את היום עם 3 משימות קטנות</div>
+          <div class="sub">בואו נתחיל את היום עם 4 משימות קטנות</div>
         </div>
         <div class="topbar-left">
           <div class="stars-chip">⭐ <span id="starsNum">0</span></div>
@@ -280,6 +283,12 @@ h1,h2,h3,p{margin:0}
           <button onclick="openActivity('breathe-balloon')">התחילו עכשיו</button>
         </div>
 
+        <div class="quick-calm" style="background:linear-gradient(135deg,#8B7FE8,#6152D9)">
+          <div class="qc-t">😟 מפחד/ת או דואג/ת עכשיו?</div>
+          <div class="qc-s">כלי מהיר לזהות ולשחרר את התחושה בגוף</div>
+          <button onclick="openActivity('calm-bodyscan')" style="color:#6152D9">התחילו עכשיו</button>
+        </div>
+
         <div class="sec-title">המשימות של היום</div>
         <div id="homeMissions"></div>
 
@@ -291,13 +300,18 @@ h1,h2,h3,p{margin:0}
 
     <!-- ---------- LIBRARY ---------- -->
     <section class="screen hidden" id="tab-lib">
-      <div class="topbar"><div><h1>ספריית פעילויות</h1><div class="sub">24 כלים קצרים, מבוססי מחקר</div></div></div>
+      <div class="topbar"><div><h1>ספריית פעילויות</h1><div class="sub">36 כלים קצרים, מבוססי מחקר</div></div></div>
       <div class="screen" style="padding-top:0">
         <div class="pillar-tabs">
           <button class="pillar-tab on" data-cat="all" onclick="setLibFilter('all',this)">הכל</button>
           <button class="pillar-tab" data-cat="move" onclick="setLibFilter('move',this)">🏃 תנועה</button>
           <button class="pillar-tab" data-cat="calm" onclick="setLibFilter('calm',this)">🌿 רוגע</button>
           <button class="pillar-tab" data-cat="focus" onclick="setLibFilter('focus',this)">🎯 ריכוז</button>
+          <button class="pillar-tab" data-cat="discipline" onclick="setLibFilter('discipline',this)">🧭 משמעת</button>
+        </div>
+        <div class="pillar-tabs hidden" id="worryFilterRow">
+          <button class="pillar-tab on" data-w="all" onclick="setWorryFilter(false,this)">כל הרוגע</button>
+          <button class="pillar-tab" data-w="only" onclick="setWorryFilter(true,this)">😟 פחד ודאגה בגוף</button>
         </div>
         <div id="libList"></div>
       </div>
@@ -412,6 +426,7 @@ h1,h2,h3,p{margin:0}
           <button class="ob-opt" data-v="move" onclick="acToggle('acGoals',this)">🏃 תנועה</button>
           <button class="ob-opt" data-v="calm" onclick="acToggle('acGoals',this)">🌿 רוגע</button>
           <button class="ob-opt" data-v="focus" onclick="acToggle('acGoals',this)">🎯 ריכוז</button>
+          <button class="ob-opt" data-v="discipline" onclick="acToggle('acGoals',this)">🧭 משמעת</button>
         </div>
         <button class="btn btn-primary" style="margin-top:14px" onclick="createChild()">צרו פרופיל</button>
         <button class="btn btn-ghost" style="margin-top:8px" onclick="cancelAddChild()">ביטול</button>
@@ -463,7 +478,7 @@ h1,h2,h3,p{margin:0}
       <h2 style="text-align:center">דוח שבועי — <span id="reportChildName"></span></h2>
       <div style="text-align:center;font-size:12px;color:var(--dim);margin-bottom:6px">גיל <span id="reportChildAge"></span> · <span id="reportDateRange"></span></div>
       <table class="report-table">
-        <thead><tr><th>יום</th><th>🏃 תנועה</th><th>🌿 רוגע</th><th>🎯 ריכוז</th><th>מצב רוח</th></tr></thead>
+        <thead><tr><th>יום</th><th>🏃</th><th>🌿</th><th>🎯</th><th>🧭</th><th>רוח</th></tr></thead>
         <tbody id="reportBody"></tbody>
       </table>
       <div style="display:flex;gap:16px;justify-content:center;margin:10px 0 16px;font-size:13px">
@@ -494,12 +509,16 @@ const ACTIVITIES = [
   // ---- calm / nervous system ----
   {id:'breathe-balloon', cat:'calm', title:'נשימת בלון', dur:2, emoji:'🎈', steps:['שבו בנוחות והניחו יד אחת על הבטן','שאפו לאט דרך האף כאילו מנפחים בלון בבטן — 4 שניות','נשפו לאט דרך הפה כאילו הבלון מתרוקן — 6 שניות','חזרו על כך 6-8 פעמים'], why:'נשימה סרעפתית איטית מפעילה את מערכת העצבים הפאראסימפתטית ("עצב הנדנוד") ומורידה דופק ורמת עוררות תוך דקות ספורות.', breathe:true},
   {id:'breathe-box', cat:'calm', title:'נשימת קופסה 4-4-4-4', dur:2, emoji:'⬛', steps:['שאפו 4 שניות','עצרו נשימה 4 שניות','נשפו 4 שניות','עצרו ריקים 4 שניות','חזרו 4-5 סבבים'], why:'טכניקה בשימוש נפוץ (גם אצל ספורטאים וכוחות מיוחדים) לוויסות מהיר של מערכת העצבים ולהחזרת שליטה בזמני לחץ.', breathe:true},
-  {id:'calm-5senses', cat:'calm', title:'5 חושים — קרקוע', dur:3, emoji:'🖐️', steps:['ציינו 5 דברים שאתם רואים','4 דברים שאתם שומעים','3 דברים שאתם יכולים לגעת בהם','2 דברים שאתם מריחים','דבר אחד שאתם טועמים'], why:'טכניקת "grounding" מעבירה את תשומת הלב מהצפה רגשית לחוויה החושית של הרגע — יעילה מאוד לפני התפרצות או אחריה.'},
+  {id:'calm-5senses', cat:'calm', worry:true, title:'5 חושים — קרקוע', dur:3, emoji:'🖐️', steps:['ציינו 5 דברים שאתם רואים','4 דברים שאתם שומעים','3 דברים שאתם יכולים לגעת בהם','2 דברים שאתם מריחים','דבר אחד שאתם טועמים'], why:'טכניקת "grounding" מעבירה את תשומת הלב מהצפה רגשית לחוויה החושית של הרגע — יעילה מאוד לפני התפרצות או אחריה, וגם כשעולה פחד או דאגה פתאומיים.'},
   {id:'calm-pmr', cat:'calm', title:'הרפיית שרירים — "ספגטי מול רובוט"', dur:4, emoji:'🍝', steps:['היו "רובוט" — הפעילו את כל השרירים בגוף בחוזקה למשך 5 שניות','היו "ספגטי" — שחררו את כל הגוף כאילו הוא רך ורפוי','חזרו לסירוגין 5-6 פעמים'], why:'הרפיית שרירים מתקדמת (PMR) מלמדת את הגוף להבחין בין מתח לרפיון ומפחיתה מתח פיזי שמלווה עוררות רגשית.'},
-  {id:'calm-coldwater', cat:'calm', title:'מים קרים על הפנים', dur:1, emoji:'💧', steps:['הרטיבו מגבת קטנה במים קרים','הניחו על המצח והלחיים למשך 20-30 שניות','אפשר גם לשתות כוס מים קרה לאט'], why:'קור על הפנים מפעיל את "רפלקס הצלילה" ומוריד דופק במהירות — כלי חירום יעיל להרגעה מהירה בזמן משבר.'},
-  {id:'calm-hug', cat:'calm', title:'חיבוק לחץ עמוק', dur:2, emoji:'🤗', steps:['בקשו מהילד/ה רשות לחיבוק חזק','חבקו בלחץ נעים (לא כואב) למשך 20-30 שניות','אפשר להחליף בשמיכה כבדה או כרית לחיצה'], why:'לחץ עמוק (Deep Pressure) מפעיל את מערכת העצבים הפאראסימפתטית ומפחית קורטיזול — נחקר רבות אצל ילדים עם רגישות חושית.'},
+  {id:'calm-coldwater', cat:'calm', worry:true, title:'מים קרים על הפנים', dur:1, emoji:'💧', steps:['הרטיבו מגבת קטנה במים קרים','הניחו על המצח והלחיים למשך 20-30 שניות','אפשר גם לשתות כוס מים קרה לאט'], why:'קור על הפנים מפעיל את "רפלקס הצלילה" ומוריד דופק במהירות — כלי חירום יעיל להרגעה מהירה בזמן משבר, פחד פתאומי או פאניקה קלה.'},
+  {id:'calm-hug', cat:'calm', worry:true, title:'חיבוק לחץ עמוק', dur:2, emoji:'🤗', steps:['בקשו מהילד/ה רשות לחיבוק חזק','חבקו בלחץ נעים (לא כואב) למשך 20-30 שניות','אפשר להחליף בשמיכה כבדה או כרית לחיצה'], why:'לחץ עמוק (Deep Pressure) מפעיל את מערכת העצבים הפאראסימפתטית ומפחית קורטיזול — נחקר רבות אצל ילדים עם רגישות חושית ואצל ילדים חרדתיים.'},
   {id:'calm-hum', cat:'calm', title:'זמזום דבורה', dur:1, emoji:'🐝', steps:['שאפו עמוק דרך האף','נשפו תוך כדי זמזום ארוך כמו דבורה: "מממממ"','חזרו 6-8 פעמים'], why:'הזמזום מאריך את הנשיפה ומרעיד את מיתרי הקול, מה שמגרה את עצב הנדנוד ומרגיע במהירות.'},
-  {id:'calm-corner', cat:'calm', title:'הקמת פינת רוגע בבית', dur:10, emoji:'🏡', steps:['בחרו פינה שקטה בבית','הוסיפו כרית רכה, שמיכה או בובה מחבקת','הוסיפו אביזר חושי אחד (פידג׳ט, כדור לחיצה)','הסבירו לילד/ה שזו פינה לבחירה חופשית כשצריך רגע, לא "פינת עונשין"'], why:'מרחב פיזי מוגדר לוויסות עצמי נותן לילד/ה כלי עצמאי לזהות ולנהל עוררות רגשית מבלי להזדקק תמיד למבוגר.'},
+  {id:'calm-corner', cat:'calm', worry:true, title:'הקמת פינת רוגע בבית', dur:10, emoji:'🏡', steps:['בחרו פינה שקטה בבית','הוסיפו כרית רכה, שמיכה או בובה מחבקת','הוסיפו אביזר חושי אחד (פידג׳ט, כדור לחיצה)','הסבירו לילד/ה שזו פינה לבחירה חופשית כשצריך רגע, לא "פינת עונשין"'], why:'מרחב פיזי מוגדר לוויסות עצמי נותן לילד/ה כלי עצמאי לזהות ולנהל עוררות רגשית מבלי להזדקק תמיד למבוגר.'},
+  {id:'calm-bodyscan', cat:'calm', worry:true, title:'סריקת גוף קצרה', dur:3, emoji:'🧘', steps:['שבו או שכבו בנוחות, ואפשר לעצום עיניים','שאלו: "איפה בגוף מרגישים את הדאגה או הפחד? בבטן? בחזה? בגרון?"','שימו יד עדינה על המקום הזה','נשמו לאט לתוך המקום הזה 3 פעמים'], why:'זיהוי מודע של מיקום התחושה הפיזית (interoception) הוא צעד ראשון בוויסות רגשי — עוזר לילדים להבין שרגשות הם תחושות גוף שחולפות, לא "אמת מוחלטת" שצריך לפחד ממנה.', breathe:false},
+  {id:'calm-worrybox', cat:'calm', worry:true, title:'קופסת הדאגות', dur:5, emoji:'📦', steps:['קחו קופסה קטנה או מעטפה וקשטו יחד','כשעולה דאגה — כתבו או ציירו אותה על פתק','שימו את הפתק בקופסה ואמרו: "אני שם/ה את זה כאן לעכשיו"','קבעו "זמן דאגות" קבוע ביום (5 דקות) לפתוח את הקופסה ולדבר על מה שבפנים'], why:'טכניקת "worry time" מוכרת בטיפול קוגניטיבי-התנהגותי (CBT) — מפרידה בין החוויה של הדאגה לבין הצורך להגיב אליה מיד, ומפחיתה מעגל חשיבה חוזרת.'},
+  {id:'calm-anchor', cat:'calm', worry:true, title:'העוגן הבטוח', dur:2, emoji:'⚓', steps:['בחרו יחד מילה, תמונה או חפץ קטן שמזכיר לילד/ה תחושת ביטחון (משפחה, חיה אהובה, מקום אהוב)','תרגלו לחשוב על ה"עוגן" הזה גם כשהילד/ה רגוע/ה, כדי שיהיה מוכר','כשעולה פחד — הזכירו: "תחשוב/י על..."'], why:'עיגון (anchoring) יוצר קיצור דרך מהיר למערכת העצבים — קישור בין גירוי מוכר לתחושת ביטחון, שאפשר להפעיל גם ברגעי לחץ.'},
+  {id:'calm-shake', cat:'calm', worry:true, title:'רעד משחרר', dur:2, emoji:'🐕', steps:['עמדו ונערו את הידיים והרגליים בחופשיות, כמו כלב שמתייבש אחרי מקלחת','המשיכו 20-30 שניות בכל הגוף','סיימו בעמידה רגועה ונשימה עמוקה אחת'], why:'ניעור עדין הוא דרך טבעית שבה הגוף משחרר מתח שהצטבר אחרי אירוע מלחיץ — יכול לסייע ל"איפוס" מהיר של מערכת העצבים אחרי בהלה או פחד.'},
 
   // ---- focus / play ----
   {id:'focus-sprint', cat:'focus', title:'ספרינט ריכוז 10 דקות', dur:10, emoji:'⏳', steps:['בחרו משימה אחת קטנה וברורה','הפעילו טיימר חזותי ל-10 דקות','עבדו רק על המשימה הזו עד שהטיימר מצלצל','הפסקה קצרה של 2-3 דקות אחרי'], why:'עבודה בפרקי זמן קצרים ומוגדרים (בסגנון פומודורו) מפחיתה עומס ומגבירה תחושת שליטה והישג עבור ילדים עם קושי בוויסות קשב.'},
@@ -510,6 +529,16 @@ const ACTIVITIES = [
   {id:'focus-onecard', cat:'focus', title:'כרטיסייה אחת בכל פעם', dur:3, emoji:'📇', steps:['כתבו כל שלב במשימה על כרטיסייה נפרדת','תנו לילד/ה רק את הכרטיסייה הנוכחית — לא את כל הרשימה','עברו לכרטיסייה הבאה רק אחרי השלמת הנוכחית'], why:'הצגת מידע אחד בכל פעם מפחיתה עומס על זיכרון העבודה ומגדילה סיכוי להשלמת המשימה.'},
   {id:'focus-brainbreak', cat:'focus', title:'הפסקת מוח בין משימות', dur:3, emoji:'🧠', steps:['אחרי 20-25 דקות ריכוז — קחו הפסקה של 3-5 דקות','קומו, מתחו, שתו מים או צאו לחצר','חזרו למשימה רק אחרי ההפסקה'], why:'הפסקות קצרות וקבועות משפרות ביצועי קשב לאורך זמן ומונעות "שחיקת קשב" מצטברת.'},
   {id:'focus-declutter', cat:'focus', title:'סידור פינת עבודה נטולת הסחות', dur:5, emoji:'🧹', steps:['פנו מהשולחן כל דבר שלא קשור למשימה הנוכחית','הרחיקו מסכים שלא נחוצים למשימה','ודאו תאורה טובה וכיסא נוח'], why:'הפחתת גירויים סביבתיים מפחיתה את העומס על מערכת הקשב ומגדילה זמן התמקדות רציף.'},
+
+  // ---- self-discipline & motivation ----
+  {id:'disc-motivboard', cat:'discipline', title:'לוח מוטיבציה אישי', dur:8, emoji:'🌟', steps:['קחו דף גדול או קרטון','ציירו או הדביקו תמונה של משהו שהילד/ה ממש רוצה להשיג (כמו לרכוב על אופניים בלי גלגלי עזר)','כתבו למטה 2-3 מילים שמתארות איך זה ירגיש כשמשיגים את זה','תלו במקום בולט בחדר'], why:'ייצוג חזותי של מטרה אישית וחיבור רגשי ל"למה" מחזקים מוטיבציה פנימית — עיקרון מרכזי בתיאוריית ההכוונה העצמית (Self-Determination Theory).'},
+  {id:'disc-2min', cat:'discipline', title:'כלל שתי הדקות', dur:2, emoji:'⏲️', steps:['כשעולה משימה קטנה (לסדר נעליים, להחזיר צלחת) — שאלו: "זה לוקח פחות משתי דקות?"','אם כן — עשו אותה מיד, בלי לדחות','אם לא — כתבו אותה ברשימת "לעשות אחר כך"'], why:'משימות קצרות שמתבצעות מיד לא מצטברות לערימה שמרגישה בלתי אפשרית — מקטין את "מחסום ההתחלה" שלעיתים גדול יותר מהמשימה עצמה.'},
+  {id:'disc-contract', cat:'discipline', title:'חוזה משפחתי קטן', dur:10, emoji:'🤝', steps:['שבו יחד עם הילד/ה בזמן רגוע (לא באמצע ויכוח)','כתבו יחד ציפייה ברורה אחת או שתיים ("אני מסדר/ת את התיק לפני הטלוויזיה")','כתבו מה קורה כשזה מצליח — תגמול טבעי, לא איום','שני הצדדים חותמים על הדף'], why:'הסכמה כתובה וברורה על ציפיות ותגמול טבעי מגבירה מחויבות עצמית ותחושת שליטה — מרכיב מרכזי באימון הורים להתנהגות (Behavioral Parent Training).'},
+  {id:'disc-progress', cat:'discipline', title:'מד התקדמות חזותי', dur:5, emoji:'🌡️', steps:['ציירו תרמומטר או מסלול עם 10 תחנות על דף','כל פעם שיש התקדמות במטרה — צובעים או מדביקים מדבקה בתחנה הבאה','חגגו כשמגיעים לסוף המסלול'], why:'ייצוג חזותי ומוחשי של התקדמות במטרה ארוכת טווח מספק משוב מיידי שמזין מוטיבציה, גם כשהמטרה הסופית עוד רחוקה.'},
+  {id:'disc-choice', cat:'discipline', title:'שתי בחירות טובות', dur:2, emoji:'🎛️', steps:['במקום "תעשה שיעורים עכשיו" — הציעו "אתה מעדיף להתחיל במתמטיקה או באנגלית?"','תנו לילד/ה לבחור בעצמו/ה מבין שתי האפשרויות','כבדו את הבחירה גם אם היא לא מה שציפיתם'], why:'הצעת שתי אפשרויות מקובלות במקום דרישה פתוחה מעניקה תחושת שליטה ובחירה — מגבירה נכונות לשתף פעולה בלי מאבק כוח.'},
+  {id:'disc-ritual', cat:'discipline', title:'טקס פתיחה קבוע למשימה', dur:3, emoji:'🔔', steps:['בחרו יחד פעולה קצרה קבועה (3 נשימות, שתיית מים, סידור השולחן)','עשו אותה תמיד ממש לפני התחלת שיעורי בית או משימה','חזרו על כך בעקביות במשך שבועיים עד שזה הופך אוטומטי'], why:'פעולה קבועה שחוזרת על עצמה הופכת ל"רמז התנהגותי" שמאותת למוח שהזמן להתחיל — מבוסס על מחקר יצירת הרגלים (habit formation).'},
+  {id:'disc-smallwins', cat:'discipline', title:'חגיגת ניצחון קטן', dur:1, emoji:'🎉', steps:['שימו לב לרגע שבו הילד/ה מתחיל/ה משימה בעצמו/ה — גם בלי לסיים!','תגיבו מיד במילה חיובית קצרה או מחיאת כף','אל תחכו רק להישגים גדולים'], why:'תגובה חיובית מיידית להישג קטן מחזקת את הקשר בין מאמץ להצלחה ובונה מוטיבציה פנימית לטווח ארוך.'},
+  {id:'disc-marshmallow', cat:'discipline', title:'משחק דחיית סיפוקים', dur:5, emoji:'🍬', steps:['הציעו לילד/ה בחירה: ממתק קטן אחד עכשיו, או שניים אחרי 10 דקות המתנה','הניחו טיימר גלוי','אם הצליח/ה להמתין — חגגו את זה כהישג של שליטה עצמית, לא רק "קיבל/ה עוד ממתק"'], why:'תרגול מודע של המתנה לתגמול גדול יותר מאמן את "שריר" השליטה העצמית — יכולת שנחקרה רבות כמנבאת הצלחה בוויסות עצמי בטווח הארוך.'},
 ];
 
 const ARTICLES = [
@@ -535,6 +564,23 @@ const ARTICLES = [
   <li>למי פונים אם יש הידרדרות פתאומית או משבר?</li>
   </ul>`},
   {t:'התמודדות עם התפרצות רגשית (Meltdown)', body:`בזמן משבר, מערכת העצבים "מוצפת" והילד/ה לא זמין/ה להיגיון או שכנוע. הצעדים המומלצים: 1) שמרו על רוגע גופני ואל תרימו קול. 2) הפחיתו גירויים (אור, רעש, אנשים). 3) הציעו כלי ויסות מהיר (נשימה, לחץ עמוק, מים קרים — ראו בספריית הפעילויות). 4) שוחחו על מה שקרה רק אחרי שהרגיעה חזרה, לא באמצע. אם התפרצויות תכופות מאוד, ארוכות או כוללות סיכון — זה סימן לפנות לאיש/אשת מקצוע.`},
+  {t:'פיתוח משמעת עצמית ומוטיבציה', body:`משמעת עצמית אצל ילדים עם ADHD היא לרוב לא "עניין של רצון" אלא של תפקוד ניהולי — היכולת לגשר בין כוונה לפעולה. מה שעוזר בפועל, לפי מחקר:
+  <ul>
+  <li><b>מוטיבציה פנימית לעומת חיצונית</b> — לפי תיאוריית ההכוונה העצמית (Self-Determination Theory), מוטיבציה שמחזיקה מעמד נבנית מתחושת <b>אוטונומיה</b> (בחירה), <b>מסוגלות</b> (הרגשת הצלחה) ו<b>שייכות</b> — לא רק מתגמולים חיצוניים.</li>
+  <li><b>בחירות מוגבלות</b> — הצעת 2 אפשרויות מקובלות במקום דרישה פתוחה מגבירה שיתוף פעולה.</li>
+  <li><b>פירוק לשלבים קטנים</b> — כל שלב שהושלם הוא הזדמנות לחיזוק, לא רק המשימה השלמה.</li>
+  <li><b>עקביות בטקסים ובשגרה</b> — הרגלים נבנים מחזרתיות, לא מכוח רצון חד-פעמי.</li>
+  <li><b>תרגול דחיית סיפוקים</b> — יכולת שאפשר לחזק בהדרגה ובמינונים קטנים, לא לצפות שתופיע מעצמה.</li>
+  </ul>
+  חשוב לזכור: קושי במשמעת עצמית אצל ילד/ה עם ADHD הוא לרוב ביטוי לפער התפתחותי בתפקוד ניהולי, ולא "עצלנות" — גישה מבינה ותומכת יעילה הרבה יותר מביקורת.`},
+  {t:'כשהגוף מרגיש פחד, דאגה או לחץ', body:`תגובת הגוף לפחד או ללחץ (מה שנקרא לעיתים "הילחם, ברח או קפא") היא אוטומטית ולא נשלטת במודע — לכן כלים גופניים (לא רק מילוליים) יעילים כל כך. כלים שכדאי להכיר:
+  <ul>
+  <li><b>סריקת גוף</b> — זיהוי היכן בגוף "יושבת" הדאגה, כצעד ראשון לוויסות.</li>
+  <li><b>נשימה איטית וממושכת</b> — מפעילה את מערכת העצבים הפאראסימפתטית ומאותתת לגוף שהוא בטוח.</li>
+  <li><b>לחץ עמוק וקרקוע חושי</b> — עוזרים "לעגן" את הגוף ברגע ההווה.</li>
+  <li><b>"זמן דאגות" קבוע</b> — מפריד בין החוויה של הדאגה לבין הצורך להגיב אליה מיד.</li>
+  </ul>
+  <b>מתי זה מעבר לדאגה רגילה:</b> פחד או דאגה מסוימים הם חלק נורמלי מהילדות. אך אם החרדה נמשכת רוב הזמן, פוגעת בשינה/אכילה/תפקוד יומיומי, או מלווה בהתקפי פאניקה — זה יכול להעיד על הפרעת חרדה, מצב נפוץ וניתן לטיפול יעיל (לעיתים גם מופיע יחד עם ADHD). במקרה כזה מומלץ להיפגש עם פסיכולוג/ית ילדים להערכה.`},
 ];
 
 const FAQ = [
@@ -546,10 +592,13 @@ const FAQ = [
   {kw:['שיעורי בית','בית ספר','לימודים','שיעור'], a:'עוזר מאוד: לוח משימות ויזואלי, פירוק שיעורי הבית לצעדים קטנים, פינת עבודה נטולת הסחות, והפסקות תנועה קצרות כל 20-25 דקות. ראו את פעילויות "ריכוז" בספרייה לכלים מעשיים.'},
   {kw:['התפרצות','זעם','משבר','כעס','לצרוח','בוכה'], a:'בזמן משבר, קודם כל הפחיתו גירויים ושמרו על רוגע גופני. הציעו כלי הרגעה מהיר כמו נשימת בלון או מים קרים על הפנים (ראו "רגע קשה עכשיו?" במסך הבית). שיחה על מה שקרה עדיף לאחר שהרוגע חוזר. אם התפרצויות תכופות/עצימות מאוד — זה סימן לפנות לאיש/אשת מקצוע.'},
   {kw:['אבחון','לאבחן','איך לדעת','חושדת','חושד'], a:'אבחון ADHD נעשה על ידי איש/אשת מקצוע מוסמכ/ת (רופא/ת ילדים, נוירולוג/ית, פסיכיאטר/ית או פסיכולוג/ית) בהתבסס על תצפית, שאלונים וראיון קליני מובנה — לא על בסיס אפליקציה או שאלון בודד. אם קשיי הקשב פוגעים משמעותית בתפקוד היומיומי לאורך זמן ובכמה סביבות (בית וגם בית ספר) — זה הזמן לפנות להערכה.'},
+  {kw:['משמעת','דחיינות','לא מתחיל','מתמהמה','לא מסיים','מתעצל'], a:'משמעת עצמית קשורה בעיקר לתפקוד ניהולי, לא ל"רצון" — ולכן כלים קטנים עוזרים יותר מביקורת. נסו: כלל שתי הדקות (משימה קצרה — עושים מיד), פירוק משימה לצעדים, שתי בחירות מוגבלות במקום דרישה פתוחה, וחגיגת ניצחונות קטנים בדרך. ראו את פעילויות "משמעת" בספרייה לכלים מלאים.'},
+  {kw:['מוטיבציה','לא רוצה','אין לו חשק','אין לה חשק'], a:'מוטיבציה שמחזיקה מעמד נבנית מתחושת בחירה, הצלחה ושייכות — לא רק מפרסים. לוח מוטיבציה אישי (עם "למה" ברור), מד התקדמות חזותי, וחיזוק מיידי על מאמץ (לא רק על תוצאה סופית) עוזרים במיוחד. ראו את פעילויות "משמעת ומוטיבציה" בספרייה.'},
+  {kw:['פחד','דאגה','חרדה','מפחד','מודאג','מודאגת','לחוץ','לחוצה','לחץ','פאניקה'], a:'תגובת פחד היא אוטומטית בגוף, ולכן כלים גופניים עוזרים הכי מהר: סריקת גוף לזיהוי איפה יושבת הדאגה, נשימה איטית, לחץ עמוק (חיבוק/שמיכה כבדה), וקרקוע ב-5 חושים. ראו "מפחד/ת או דואג/ת עכשיו?" במסך הבית. אם הפחד/הדאגה נמשכים רוב הזמן ופוגעים בשינה או בתפקוד — כדאי להיפגש עם פסיכולוג/ית ילדים להערכה, זה עשוי להיות מעבר לדאגה רגילה וניתן לטיפול יעיל.'},
 ];
 
 const FAQ_DEFAULT = 'זו שאלה טובה. אני יכולה לעזור עם מידע כללי על תנועה, רוגע, ריכוז, שינה, תזונה והתמודדות עם משברים — אך לשאלות אבחוניות או רפואיות אישיות, מומלץ לפנות לרופא/ת הילד/ה. אפשר לנסות לנסח את השאלה אחרת, או לגעת באחת מהצ׳יפים למטה 👇';
-const QUICK_QS = ['איך להתמודד עם התפרצות?', 'האם צריך תרופות?', 'טיפים לשיעורי בית', 'איך משפרים שינה?'];
+const QUICK_QS = ['איך להתמודד עם התפרצות?', 'האם צריך תרופות?', 'טיפים לשיעורי בית', 'איך משפרים שינה?', 'איך מרגיעים פחד בגוף?', 'טיפים למשמעת עצמית'];
 
 const BADGES = [
   {id:'first-step', emoji:'🌱', name:'צעד ראשון', test:s=>s.totalDone>=1},
@@ -559,6 +608,7 @@ const BADGES = [
   {id:'move-10', emoji:'🏃', name:'מאסטר תנועה', test:s=>s.moveDone>=10},
   {id:'calm-10', emoji:'🌿', name:'מאסטר רוגע', test:s=>s.calmDone>=10},
   {id:'focus-10', emoji:'🎯', name:'מאסטר ריכוז', test:s=>s.focusDone>=10},
+  {id:'discipline-10', emoji:'🧭', name:'מאסטר משמעת', test:s=>s.disciplineDone>=10},
   {id:'total-25', emoji:'🥉', name:'25 פעילויות', test:s=>s.totalDone>=25},
   {id:'total-50', emoji:'🥈', name:'50 פעילויות', test:s=>s.totalDone>=50},
   {id:'total-100', emoji:'🥇', name:'100 פעילויות', test:s=>s.totalDone>=100},
@@ -597,7 +647,7 @@ function profileList(){ return Object.values(state.profiles); }
 function todayKey(){ const d=new Date(); return d.toISOString().slice(0,10); }
 function dayHistory(key, profile){
   profile = profile || activeProfile();
-  if(!profile.history[key]) profile.history[key]={move:false,calm:false,focus:false,mood:null};
+  if(!profile.history[key]) profile.history[key]={move:false,calm:false,focus:false,discipline:false,mood:null};
   return profile.history[key];
 }
 
@@ -620,7 +670,7 @@ function obToggle(group, btn){
 function finishOnboarding(){
   const id = uid();
   const name = document.getElementById('obName').value.trim() || 'הילד/ה';
-  state.profiles = { [id]: {id, name, age: obState.age||'9-11', goals: obState.goals.length?obState.goals:['move','calm','focus'], history:{}, stars:0, badges:[]} };
+  state.profiles = { [id]: {id, name, age: obState.age||'9-11', goals: obState.goals.length?obState.goals:['move','calm','focus','discipline'], history:{}, stars:0, badges:[]} };
   state.activeProfileId = id;
   state.onboarded = true;
   saveState();
@@ -651,7 +701,7 @@ function renderHome(){
   document.getElementById('homeGreeting').textContent = `היי ${p.name||''} 👋`;
   document.getElementById('streakNum').textContent = computeStreak(p);
   document.getElementById('starsNum').textContent = p.stars||0;
-  const cats = [['move','🏃 תנועה'],['calm','🌿 רוגע'],['focus','🎯 ריכוז']];
+  const cats = [['move','🏃 תנועה'],['calm','🌿 רוגע'],['focus','🎯 ריכוז'],['discipline','🧭 משמעת ומוטיבציה']];
   const h = dayHistory(todayKey(), p);
   const wrap = document.getElementById('homeMissions');
   wrap.innerHTML='';
@@ -674,12 +724,12 @@ function computeStreak(profile){
   profile = profile || activeProfile();
   let streak=0, d=new Date();
   const t = dayHistory(todayKey(), profile);
-  const todayDone = t.move && t.calm && t.focus;
+  const todayDone = t.move && t.calm && t.focus && t.discipline;
   if(!todayDone) d.setDate(d.getDate()-1);
   while(true){
     const key = d.toISOString().slice(0,10);
     const h = profile.history[key];
-    if(h && h.move && h.calm && h.focus){ streak++; d.setDate(d.getDate()-1); }
+    if(h && h.move && h.calm && h.focus && h.discipline){ streak++; d.setDate(d.getDate()-1); }
     else break;
   }
   return streak;
@@ -687,16 +737,30 @@ function computeStreak(profile){
 
 /* ================= LIBRARY ================= */
 let libFilter='all';
+let worryOnly=false;
 function setLibFilter(cat, btn){
   libFilter=cat;
-  document.querySelectorAll('.pillar-tab').forEach(b=>b.classList.remove('on'));
+  document.querySelectorAll('.pillar-tabs')[0].querySelectorAll('.pillar-tab').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  renderLibrary();
+}
+function setWorryFilter(v, btn){
+  worryOnly=v;
+  document.getElementById('worryFilterRow').querySelectorAll('.pillar-tab').forEach(b=>b.classList.remove('on'));
   btn.classList.add('on');
   renderLibrary();
 }
 function renderLibrary(){
   const wrap = document.getElementById('libList');
   wrap.innerHTML='';
-  const list = ACTIVITIES.filter(a=>libFilter==='all'||a.cat===libFilter);
+  let list = ACTIVITIES.filter(a=>libFilter==='all'||a.cat===libFilter);
+  const worryRow = document.getElementById('worryFilterRow');
+  if(libFilter==='calm'){
+    worryRow.classList.remove('hidden');
+    if(worryOnly) list = list.filter(a=>a.worry);
+  } else {
+    worryRow.classList.add('hidden');
+  }
   list.forEach(a=>{
     const div = document.createElement('div');
     div.className='act-item';
@@ -705,7 +769,7 @@ function renderLibrary(){
     wrap.appendChild(div);
   });
 }
-function catLabel(c){ return c==='move'?'תנועה':c==='calm'?'רוגע':'ריכוז'; }
+function catLabel(c){ return c==='move'?'תנועה':c==='calm'?'רוגע':c==='focus'?'ריכוז':'משמעת'; }
 
 /* ================= ACTIVITY MODAL ================= */
 let curAct=null, timerInterval=null, timerSecs=0, timerRunning=false;
@@ -783,13 +847,14 @@ function markDoneFromModal(){
 
 /* ================= GAMIFICATION ================= */
 function profileStats(p){
-  let totalDone=0, moveDone=0, calmDone=0, focusDone=0;
+  let totalDone=0, moveDone=0, calmDone=0, focusDone=0, disciplineDone=0;
   Object.values(p.history).forEach(h=>{
     if(h.move){totalDone++;moveDone++;}
     if(h.calm){totalDone++;calmDone++;}
     if(h.focus){totalDone++;focusDone++;}
+    if(h.discipline){totalDone++;disciplineDone++;}
   });
-  return {totalDone, moveDone, calmDone, focusDone, streak:computeStreak(p)};
+  return {totalDone, moveDone, calmDone, focusDone, disciplineDone, streak:computeStreak(p)};
 }
 function checkBadges(p){
   const stats = profileStats(p);
@@ -825,11 +890,11 @@ function renderTracker(){
     const d=new Date(); d.setDate(d.getDate()-i);
     const key=d.toISOString().slice(0,10);
     const h=p.history[key];
-    const count = h?[h.move,h.calm,h.focus].filter(Boolean).length:0;
+    const count = h?[h.move,h.calm,h.focus,h.discipline].filter(Boolean).length:0;
     const div=document.createElement('div');
     div.className='day-dot';
-    const color = count===3?'linear-gradient(135deg,#FF8A50,#FF6B35)':count>0?'#FFE3C2':'#F1E6D8';
-    const emoji = h&&h.mood ? moodEmoji(h.mood) : (count===3?'✓':'');
+    const color = count===4?'linear-gradient(135deg,#FF8A50,#FF6B35)':count>0?'#FFE3C2':'#F1E6D8';
+    const emoji = h&&h.mood ? moodEmoji(h.mood) : (count===4?'✓':'');
     div.innerHTML = `<div class="dd" style="background:${color};color:#fff;font-weight:800">${emoji}</div><div class="dl">${labels[d.getDay()]}</div>`;
     strip.appendChild(div);
   }
@@ -837,7 +902,7 @@ function renderTracker(){
   document.querySelectorAll('.mood-btn').forEach(b=>b.classList.toggle('on', h.mood==+b.dataset.v));
   const prog = document.getElementById('todayProgress');
   prog.innerHTML='';
-  [['move','🏃 תנועה','var(--orange)'],['calm','🌿 רוגע','var(--teal)'],['focus','🎯 ריכוז','var(--purple)']].forEach(([cat,label,color])=>{
+  [['move','🏃 תנועה','var(--orange)'],['calm','🌿 רוגע','var(--teal)'],['focus','🎯 ריכוז','var(--purple)'],['discipline','🧭 משמעת','var(--gold)']].forEach(([cat,label,color])=>{
     const div=document.createElement('div');
     div.className='mp';
     div.style.background = h[cat] ? color : '#D9D2C7';
@@ -872,9 +937,9 @@ function openReport(){
     const key=d.toISOString().slice(0,10);
     const h=p.history[key]||{};
     const tr=document.createElement('tr');
-    tr.innerHTML = `<td>${labels[d.getDay()]} ${d.getDate()}/${d.getMonth()+1}</td><td>${h.move?'✓':'—'}</td><td>${h.calm?'✓':'—'}</td><td>${h.focus?'✓':'—'}</td><td>${h.mood?moodEmoji(h.mood):'—'}</td>`;
+    tr.innerHTML = `<td>${labels[d.getDay()]} ${d.getDate()}/${d.getMonth()+1}</td><td>${h.move?'✓':'—'}</td><td>${h.calm?'✓':'—'}</td><td>${h.focus?'✓':'—'}</td><td>${h.discipline?'✓':'—'}</td><td>${h.mood?moodEmoji(h.mood):'—'}</td>`;
     tbody.appendChild(tr);
-    if(h.move||h.calm||h.focus) activeDays++;
+    if(h.move||h.calm||h.focus||h.discipline) activeDays++;
   }
   document.getElementById('reportStreak').textContent = computeStreak(p);
   document.getElementById('reportActiveDays').textContent = activeDays;
@@ -941,7 +1006,7 @@ function createChild(){
   const name = document.getElementById('acName').value.trim();
   if(!name){ showToast('נא להזין שם'); return; }
   const id = uid();
-  state.profiles[id] = {id, name, age: addChildState.age||'9-11', goals: addChildState.goals.length?addChildState.goals:['move','calm','focus'], history:{}, stars:0, badges:[]};
+  state.profiles[id] = {id, name, age: addChildState.age||'9-11', goals: addChildState.goals.length?addChildState.goals:['move','calm','focus','discipline'], history:{}, stars:0, badges:[]};
   state.activeProfileId = id;
   saveState();
   closeProfileModal();
