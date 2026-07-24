@@ -36,7 +36,12 @@ h1,h2,h3,p{margin:0}
 .topbar{position:sticky;top:0;z-index:20;background:var(--bg);padding:16px 20px 10px;display:flex;align-items:center;justify-content:space-between}
 .topbar h1{font-size:19px;font-weight:900}
 .topbar .sub{font-size:12px;color:var(--dim);margin-top:2px}
-.streak-chip{display:flex;align-items:center;gap:4px;background:#fff;border:1px solid var(--line);border-radius:20px;padding:6px 12px;font-size:13px;font-weight:800;box-shadow:var(--shadow)}
+.topbar-left{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.streak-chip{display:flex;align-items:center;gap:4px;background:#fff;border:1px solid var(--line);border-radius:20px;padding:6px 10px;font-size:12px;font-weight:800;box-shadow:var(--shadow)}
+.stars-chip{display:flex;align-items:center;gap:4px;background:#fff;border:1px solid var(--line);border-radius:20px;padding:6px 10px;font-size:12px;font-weight:800;box-shadow:var(--shadow)}
+.icon-btn{background:#fff;border:1px solid var(--line);width:32px;height:32px;border-radius:50%;box-shadow:var(--shadow);font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.profile-switch{background:none;border:none;display:flex;align-items:center;gap:3px;padding:0;cursor:pointer;color:inherit}
+.profile-switch .chev{color:var(--dim);font-size:12px}
 
 /* ---------- Screens ---------- */
 .screen{padding:4px 20px 100px;min-height:60vh}
@@ -118,6 +123,12 @@ h1,h2,h3,p{margin:0}
 .mini-progress{display:flex;gap:8px;margin-top:8px}
 .mini-progress .mp{flex:1;text-align:center;border-radius:14px;padding:10px 6px;font-size:11px;font-weight:800;color:#fff}
 
+.badge-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}
+.badge-cell{background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px 6px;text-align:center}
+.badge-cell.locked{opacity:.4}
+.badge-cell .be{font-size:26px;margin-bottom:4px}
+.badge-cell .bt{font-size:10px;font-weight:800;line-height:1.3}
+
 /* ---------- Parent hub ---------- */
 .article{background:#fff;border:1px solid var(--line);border-radius:18px;margin-bottom:12px;overflow:hidden}
 .article summary{list-style:none;padding:15px 16px;font-size:14px;font-weight:800;display:flex;align-items:center;gap:10px;cursor:pointer}
@@ -155,7 +166,41 @@ h1,h2,h3,p{margin:0}
 .dots .d{width:7px;height:7px;border-radius:50%;background:var(--line)}
 .dots .d.on{background:var(--orange)}
 
-.toast{position:fixed;bottom:96px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;font-weight:700;z-index:200;box-shadow:0 6px 20px rgba(0,0,0,.25);opacity:0;transition:opacity .3s,transform .3s}
+/* ---------- Profiles ---------- */
+.profile-row{display:flex;align-items:center;gap:12px;background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:12px 14px;margin-bottom:10px;cursor:pointer}
+.profile-row.on{border-color:var(--orange);background:#FFF3E0}
+.profile-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--orange),var(--purple));display:flex;align-items:center;justify-content:center;font-size:16px;color:#fff;font-weight:900;flex-shrink:0}
+
+/* ---------- Settings ---------- */
+.settings-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--line);gap:10px}
+.settings-row:last-child{border-bottom:none}
+.settings-label{font-size:14px;font-weight:800}
+.settings-sub{font-size:11.5px;color:var(--dim);margin-top:2px}
+.switch{position:relative;width:44px;height:26px;flex-shrink:0}
+.switch input{opacity:0;width:0;height:0;position:absolute}
+.switch .sl{position:absolute;inset:0;background:var(--line);border-radius:20px;transition:.2s;cursor:pointer}
+.switch .sl:before{content:"";position:absolute;width:20px;height:20px;right:3px;top:3px;background:#fff;border-radius:50%;transition:.2s}
+.switch input:checked + .sl{background:var(--orange)}
+.switch input:checked + .sl:before{transform:translateX(-18px)}
+.time-input{background:var(--line);border:none;border-radius:10px;padding:7px 8px;font-size:12.5px;font-weight:700;color:var(--ink);width:84px}
+.settings-btn{width:auto !important;padding:8px 14px !important;font-size:12.5px !important}
+
+/* ---------- Premium ---------- */
+.plan-card{border:1.5px solid var(--line);border-radius:18px;padding:16px;margin:6px 0 14px;text-align:center}
+.plan-price{font-size:26px;font-weight:900;margin:4px 0}
+
+/* ---------- Report ---------- */
+.report-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:12px}
+.report-table th,.report-table td{border:1px solid var(--line);padding:6px 4px;text-align:center}
+.report-table th{background:#F7F3FF}
+@media print{
+  body *{visibility:hidden}
+  #reportModal, #reportModal *{visibility:visible}
+  #reportModal{position:absolute;inset:0;margin:0;padding:24px;max-height:none;overflow:visible;border-radius:0;max-width:100%}
+  .no-print{display:none !important}
+}
+
+.toast{position:fixed;bottom:96px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;font-weight:700;z-index:200;box-shadow:0 6px 20px rgba(0,0,0,.25);opacity:0;transition:opacity .3s,transform .3s;max-width:86%;text-align:center}
 .toast.show{opacity:1}
 </style>
 </head>
@@ -219,10 +264,14 @@ h1,h2,h3,p{margin:0}
     <section class="screen" id="tab-home">
       <div class="topbar">
         <div>
-          <h1 id="homeGreeting">היי 👋</h1>
+          <button class="profile-switch" onclick="openProfileModal()"><h1 id="homeGreeting">היי 👋</h1><span class="chev">⌄</span></button>
           <div class="sub">בואו נתחיל את היום עם 3 משימות קטנות</div>
         </div>
-        <div class="streak-chip">🔥 <span id="streakNum">0</span></div>
+        <div class="topbar-left">
+          <div class="stars-chip">⭐ <span id="starsNum">0</span></div>
+          <div class="streak-chip">🔥 <span id="streakNum">0</span></div>
+          <button class="icon-btn" onclick="openSettings()">⚙️</button>
+        </div>
       </div>
       <div class="screen" style="padding-top:0">
         <div class="quick-calm">
@@ -276,6 +325,11 @@ h1,h2,h3,p{margin:0}
           <div class="sec-title" style="margin-top:0">היום השלמנו</div>
           <div class="mini-progress" id="todayProgress"></div>
         </div>
+        <div class="card">
+          <div class="sec-title" style="margin-top:0">🏅 אוסף מדבקות</div>
+          <div class="badge-grid" id="badgeGrid"></div>
+        </div>
+        <button class="btn btn-primary" onclick="openReportGated()">📄 דוח שבועי לרופא/ה</button>
       </div>
     </section>
 
@@ -330,6 +384,94 @@ h1,h2,h3,p{margin:0}
         <button class="btn btn-primary" id="timerBtn" onclick="toggleTimer()">▶ התחילו</button>
       </div>
       <button class="btn btn-ghost" style="margin-top:10px" onclick="markDoneFromModal()">✓ סמנו כהושלם</button>
+    </div>
+  </div>
+
+  <!-- ============ PROFILE MODAL ============ -->
+  <div class="modal-bg hidden" id="profileBg" onclick="if(event.target===this)closeProfileModal()">
+    <div class="modal">
+      <button class="close-x" onclick="closeProfileModal()">✕</button>
+      <div class="modal-handle"></div>
+      <div id="profileListView">
+        <h2 style="text-align:center;margin-bottom:14px">בחרו פרופיל</h2>
+        <div id="profileListWrap"></div>
+        <button class="btn btn-ghost" style="margin-top:6px" onclick="openAddChild()">➕ הוסיפו ילד/ה נוסף/ת</button>
+      </div>
+      <div id="profileAddView" class="hidden">
+        <h2 style="text-align:center;margin-bottom:4px">פרופיל חדש</h2>
+        <div class="ob-sub" style="margin-bottom:14px;text-align:center">פרטי הילד/ה</div>
+        <input class="ob-input" id="acName" type="text" placeholder="שם">
+        <div class="ob-sub" style="margin-bottom:8px;text-align:center">טווח גיל</div>
+        <div class="ob-opts" id="acAge">
+          <button class="ob-opt" data-v="6-8" onclick="acPick('acAge',this)">6–8</button>
+          <button class="ob-opt" data-v="9-11" onclick="acPick('acAge',this)">9–11</button>
+          <button class="ob-opt" data-v="12-14" onclick="acPick('acAge',this)">12–14</button>
+        </div>
+        <div class="ob-sub" style="margin:12px 0 8px;text-align:center">על מה נרצה לעבוד?</div>
+        <div class="ob-opts" id="acGoals">
+          <button class="ob-opt" data-v="move" onclick="acToggle('acGoals',this)">🏃 תנועה</button>
+          <button class="ob-opt" data-v="calm" onclick="acToggle('acGoals',this)">🌿 רוגע</button>
+          <button class="ob-opt" data-v="focus" onclick="acToggle('acGoals',this)">🎯 ריכוז</button>
+        </div>
+        <button class="btn btn-primary" style="margin-top:14px" onclick="createChild()">צרו פרופיל</button>
+        <button class="btn btn-ghost" style="margin-top:8px" onclick="cancelAddChild()">ביטול</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ SETTINGS MODAL ============ -->
+  <div class="modal-bg hidden" id="settingsBg" onclick="if(event.target===this)closeSettings()">
+    <div class="modal">
+      <button class="close-x" onclick="closeSettings()">✕</button>
+      <div class="modal-handle"></div>
+      <h2 style="text-align:center;margin-bottom:10px">הגדרות</h2>
+      <div class="settings-row">
+        <div><div class="settings-label">תזכורת יומית</div><div class="settings-sub">התראה בזמן שקבעתם, כשהאפליקציה פתוחה ברקע</div></div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <input class="time-input" type="time" id="reminderTimeInput" value="18:00" onchange="onReminderTimeChange(this.value)">
+          <label class="switch"><input type="checkbox" id="reminderToggle" onchange="onReminderToggle(this)"><span class="sl"></span></label>
+        </div>
+      </div>
+      <div class="settings-row">
+        <div><div class="settings-label">מנוי פוקוסי פרימיום</div><div class="settings-sub" id="settingsPremiumStatus">לא פעיל</div></div>
+        <button class="btn btn-ghost settings-btn" onclick="closeSettings();openPremium()">ניהול</button>
+      </div>
+      <div class="settings-row">
+        <div><div class="settings-label">ניהול פרופילים</div><div class="settings-sub">החלפה או הוספת ילד/ה</div></div>
+        <button class="btn btn-ghost settings-btn" onclick="closeSettings();openProfileModal()">פתחו</button>
+      </div>
+      <div class="disclaimer" style="margin-top:16px">פוקוסי היא כלי משלים בלבד ואינה תחליף לייעוץ, אבחון או טיפול רפואי מקצועי.</div>
+    </div>
+  </div>
+
+  <!-- ============ PREMIUM MODAL ============ -->
+  <div class="modal-bg hidden" id="premiumBg" onclick="if(event.target===this)closePremium()">
+    <div class="modal">
+      <button class="close-x" onclick="closePremium()">✕</button>
+      <div class="modal-handle"></div>
+      <div style="font-size:36px;text-align:center">✨</div>
+      <h2 style="text-align:center">פוקוסי פרימיום</h2>
+      <div id="premiumBody"></div>
+    </div>
+  </div>
+
+  <!-- ============ WEEKLY REPORT MODAL ============ -->
+  <div class="modal-bg hidden" id="reportBg" onclick="if(event.target===this)closeReport()">
+    <div class="modal" id="reportModal">
+      <button class="close-x no-print" onclick="closeReport()">✕</button>
+      <div class="modal-handle no-print"></div>
+      <h2 style="text-align:center">דוח שבועי — <span id="reportChildName"></span></h2>
+      <div style="text-align:center;font-size:12px;color:var(--dim);margin-bottom:6px">גיל <span id="reportChildAge"></span> · <span id="reportDateRange"></span></div>
+      <table class="report-table">
+        <thead><tr><th>יום</th><th>🏃 תנועה</th><th>🌿 רוגע</th><th>🎯 ריכוז</th><th>מצב רוח</th></tr></thead>
+        <tbody id="reportBody"></tbody>
+      </table>
+      <div style="display:flex;gap:16px;justify-content:center;margin:10px 0 16px;font-size:13px">
+        <div>🔥 רצף נוכחי: <b id="reportStreak">0</b></div>
+        <div>📅 ימים פעילים: <b id="reportActiveDays">0</b></div>
+      </div>
+      <div class="disclaimer">מסמך זה הופק על ידי אפליקציית פוקוסי לצורך שיתוף מידע כללי בלבד עם הרופא/ה המטפל/ת, ואינו מהווה אבחון, חוות דעת רפואית או המלצה טיפולית.</div>
+      <button class="btn btn-primary no-print" onclick="printReport()">🖨 הדפיסו / שמרו כ-PDF</button>
     </div>
   </div>
 
@@ -409,21 +551,59 @@ const FAQ = [
 const FAQ_DEFAULT = 'זו שאלה טובה. אני יכולה לעזור עם מידע כללי על תנועה, רוגע, ריכוז, שינה, תזונה והתמודדות עם משברים — אך לשאלות אבחוניות או רפואיות אישיות, מומלץ לפנות לרופא/ת הילד/ה. אפשר לנסות לנסח את השאלה אחרת, או לגעת באחת מהצ׳יפים למטה 👇';
 const QUICK_QS = ['איך להתמודד עם התפרצות?', 'האם צריך תרופות?', 'טיפים לשיעורי בית', 'איך משפרים שינה?'];
 
+const BADGES = [
+  {id:'first-step', emoji:'🌱', name:'צעד ראשון', test:s=>s.totalDone>=1},
+  {id:'streak-3', emoji:'🔥', name:'3 ימים ברצף', test:s=>s.streak>=3},
+  {id:'streak-7', emoji:'⭐', name:'שבוע שלם', test:s=>s.streak>=7},
+  {id:'streak-30', emoji:'🏆', name:'חודש שלם', test:s=>s.streak>=30},
+  {id:'move-10', emoji:'🏃', name:'מאסטר תנועה', test:s=>s.moveDone>=10},
+  {id:'calm-10', emoji:'🌿', name:'מאסטר רוגע', test:s=>s.calmDone>=10},
+  {id:'focus-10', emoji:'🎯', name:'מאסטר ריכוז', test:s=>s.focusDone>=10},
+  {id:'total-25', emoji:'🥉', name:'25 פעילויות', test:s=>s.totalDone>=25},
+  {id:'total-50', emoji:'🥈', name:'50 פעילויות', test:s=>s.totalDone>=50},
+  {id:'total-100', emoji:'🥇', name:'100 פעילויות', test:s=>s.totalDone>=100},
+];
+
 /* ================= STATE ================= */
-const SK = 'focusi_state_v1';
-let state = loadState();
+const SK = 'focusi_state_v2';
+const OLD_SK = 'focusi_state_v1';
+
+function uid(){ return 'p'+Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
+
 function loadState(){
   try{ const s = JSON.parse(localStorage.getItem(SK)); if(s) return s; }catch(e){}
-  return {onboarded:false, childName:'', age:'', goals:[], history:{}, workerUrl:''};
+  // migrate from single-child v1 state, if present
+  try{
+    const old = JSON.parse(localStorage.getItem(OLD_SK));
+    if(old && old.onboarded){
+      const id = uid();
+      return {
+        onboarded:true,
+        profiles:{ [id]: {id, name:old.childName||'הילד/ה', age:old.age||'9-11', goals:old.goals||['move','calm','focus'], history:old.history||{}, stars:0, badges:[]} },
+        activeProfileId:id,
+        settings:{reminderTime:null, reminderLast:'', workerUrl:old.workerUrl||''},
+        premium:{tier:'none', trialStart:0, code:''}
+      };
+    }
+  }catch(e){}
+  return {onboarded:false, profiles:{}, activeProfileId:null,
+    settings:{reminderTime:null, reminderLast:'', workerUrl:''},
+    premium:{tier:'none', trialStart:0, code:''}};
 }
+let state = loadState();
 function saveState(){ try{ localStorage.setItem(SK, JSON.stringify(state)); }catch(e){} }
+function activeProfile(){ return state.profiles[state.activeProfileId]; }
+function profileList(){ return Object.values(state.profiles); }
 function todayKey(){ const d=new Date(); return d.toISOString().slice(0,10); }
-function dayHistory(key){ if(!state.history[key]) state.history[key]={move:false,calm:false,focus:false,mood:null}; return state.history[key]; }
+function dayHistory(key, profile){
+  profile = profile || activeProfile();
+  if(!profile.history[key]) profile.history[key]={move:false,calm:false,focus:false,mood:null};
+  return profile.history[key];
+}
 
 /* ================= ONBOARDING ================= */
 let obState = {age:'', goals:[]};
 function obGo(step){
-  if(step===1 && !document.getElementById('obName').value){ /* allow proceed even if empty, default name */ }
   document.querySelectorAll('.ob-screen').forEach(s=>s.classList.add('hidden'));
   document.getElementById('ob'+step).classList.remove('hidden');
 }
@@ -438,9 +618,10 @@ function obToggle(group, btn){
   else obState.goals.push(v);
 }
 function finishOnboarding(){
-  state.childName = document.getElementById('obName').value.trim() || 'הילד/ה';
-  state.age = obState.age || '9-11';
-  state.goals = obState.goals.length ? obState.goals : ['move','calm','focus'];
+  const id = uid();
+  const name = document.getElementById('obName').value.trim() || 'הילד/ה';
+  state.profiles = { [id]: {id, name, age: obState.age||'9-11', goals: obState.goals.length?obState.goals:['move','calm','focus'], history:{}, stars:0, badges:[]} };
+  state.activeProfileId = id;
   state.onboarded = true;
   saveState();
   document.getElementById('onboarding').classList.add('hidden');
@@ -465,10 +646,13 @@ function pickDaily(cat){
   return list[idx];
 }
 function renderHome(){
-  document.getElementById('homeGreeting').textContent = `היי ${state.childName||''} 👋`;
-  document.getElementById('streakNum').textContent = computeStreak();
+  const p = activeProfile();
+  if(!p) return;
+  document.getElementById('homeGreeting').textContent = `היי ${p.name||''} 👋`;
+  document.getElementById('streakNum').textContent = computeStreak(p);
+  document.getElementById('starsNum').textContent = p.stars||0;
   const cats = [['move','🏃 תנועה'],['calm','🌿 רוגע'],['focus','🎯 ריכוז']];
-  const h = dayHistory(todayKey());
+  const h = dayHistory(todayKey(), p);
   const wrap = document.getElementById('homeMissions');
   wrap.innerHTML='';
   cats.forEach(([cat,label])=>{
@@ -486,15 +670,15 @@ function renderHome(){
     wrap.appendChild(div);
   });
 }
-function computeStreak(){
+function computeStreak(profile){
+  profile = profile || activeProfile();
   let streak=0, d=new Date();
-  // if today not fully done yet, start counting from yesterday
-  const t = dayHistory(todayKey());
+  const t = dayHistory(todayKey(), profile);
   const todayDone = t.move && t.calm && t.focus;
   if(!todayDone) d.setDate(d.getDate()-1);
   while(true){
     const key = d.toISOString().slice(0,10);
-    const h = state.history[key];
+    const h = profile.history[key];
     if(h && h.move && h.calm && h.focus){ streak++; d.setDate(d.getDate()-1); }
     else break;
   }
@@ -586,24 +770,61 @@ function animateBreath(){
 }
 function markDoneFromModal(){
   if(!curAct) return;
-  const h = dayHistory(todayKey());
+  const p = activeProfile();
+  const h = dayHistory(todayKey(), p);
+  const already = h[curAct.cat];
   h[curAct.cat]=true;
+  if(!already){ p.stars=(p.stars||0)+10; checkBadges(p); }
   saveState();
   closeActivity();
   renderHome();
-  showToast('נרשם! כל הכבוד 🌟');
+  showToast(already?'כבר סומן היום ✓':'נרשם! +10 כוכבים 🌟');
+}
+
+/* ================= GAMIFICATION ================= */
+function profileStats(p){
+  let totalDone=0, moveDone=0, calmDone=0, focusDone=0;
+  Object.values(p.history).forEach(h=>{
+    if(h.move){totalDone++;moveDone++;}
+    if(h.calm){totalDone++;calmDone++;}
+    if(h.focus){totalDone++;focusDone++;}
+  });
+  return {totalDone, moveDone, calmDone, focusDone, streak:computeStreak(p)};
+}
+function checkBadges(p){
+  const stats = profileStats(p);
+  BADGES.forEach(b=>{
+    if(!p.badges.includes(b.id) && b.test(stats)){
+      p.badges.push(b.id);
+      setTimeout(()=>showToast('🏅 מדבקה חדשה: '+b.name+'!'), 700);
+    }
+  });
+}
+function renderBadges(){
+  const p = activeProfile();
+  const wrap = document.getElementById('badgeGrid');
+  wrap.innerHTML='';
+  BADGES.forEach(b=>{
+    const on = p.badges.includes(b.id);
+    const div=document.createElement('div');
+    div.className='badge-cell'+(on?'':' locked');
+    div.innerHTML = `<div class="be">${on?b.emoji:'🔒'}</div><div class="bt">${b.name}</div>`;
+    wrap.appendChild(div);
+  });
 }
 
 /* ================= TRACKER ================= */
 function renderTracker(){
-  document.getElementById('trackChildName').textContent = state.childName||'הילד/ה';
+  const p = activeProfile();
+  if(!p) return;
+  document.getElementById('trackChildName').textContent = p.name||'הילד/ה';
   const strip = document.getElementById('weekStrip');
   strip.innerHTML='';
   const labels=['א','ב','ג','ד','ה','ו','ש'];
   for(let i=6;i>=0;i--){
     const d=new Date(); d.setDate(d.getDate()-i);
     const key=d.toISOString().slice(0,10);
-    const h=state.history[key];
+    const h=p.history[key];
     const count = h?[h.move,h.calm,h.focus].filter(Boolean).length:0;
     const div=document.createElement('div');
     div.className='day-dot';
@@ -612,7 +833,7 @@ function renderTracker(){
     div.innerHTML = `<div class="dd" style="background:${color};color:#fff;font-weight:800">${emoji}</div><div class="dl">${labels[d.getDay()]}</div>`;
     strip.appendChild(div);
   }
-  const h = dayHistory(todayKey());
+  const h = dayHistory(todayKey(), p);
   document.querySelectorAll('.mood-btn').forEach(b=>b.classList.toggle('on', h.mood==+b.dataset.v));
   const prog = document.getElementById('todayProgress');
   prog.innerHTML='';
@@ -623,6 +844,7 @@ function renderTracker(){
     div.textContent = label+(h[cat]?' ✓':'');
     prog.appendChild(div);
   });
+  renderBadges();
 }
 function moodEmoji(v){ return ['😣','😕','😐','🙂','😄'][v-1]||''; }
 function pickMood(btn, v){
@@ -630,6 +852,204 @@ function pickMood(btn, v){
   h.mood = v; saveState();
   renderTracker();
   showToast('תודה שסימנתם 💛');
+}
+
+/* ================= WEEKLY REPORT (premium) ================= */
+function openReportGated(){ if(!requirePremium()) return; openReport(); }
+function openReport(){
+  const p = activeProfile();
+  document.getElementById('reportChildName').textContent = p.name;
+  document.getElementById('reportChildAge').textContent = p.age;
+  const end = new Date(); const start = new Date(); start.setDate(end.getDate()-6);
+  const fmt = d=>d.toLocaleDateString('he-IL');
+  document.getElementById('reportDateRange').textContent = `${fmt(start)} – ${fmt(end)}`;
+  const tbody = document.getElementById('reportBody');
+  tbody.innerHTML='';
+  const labels=['א','ב','ג','ד','ה','ו','ש'];
+  let activeDays=0;
+  for(let i=6;i>=0;i--){
+    const d=new Date(); d.setDate(d.getDate()-i);
+    const key=d.toISOString().slice(0,10);
+    const h=p.history[key]||{};
+    const tr=document.createElement('tr');
+    tr.innerHTML = `<td>${labels[d.getDay()]} ${d.getDate()}/${d.getMonth()+1}</td><td>${h.move?'✓':'—'}</td><td>${h.calm?'✓':'—'}</td><td>${h.focus?'✓':'—'}</td><td>${h.mood?moodEmoji(h.mood):'—'}</td>`;
+    tbody.appendChild(tr);
+    if(h.move||h.calm||h.focus) activeDays++;
+  }
+  document.getElementById('reportStreak').textContent = computeStreak(p);
+  document.getElementById('reportActiveDays').textContent = activeDays;
+  document.getElementById('reportBg').classList.remove('hidden');
+}
+function closeReport(){ document.getElementById('reportBg').classList.add('hidden'); }
+function printReport(){ window.print(); }
+
+/* ================= PROFILES ================= */
+function openProfileModal(){
+  renderProfileList();
+  document.getElementById('profileAddView').classList.add('hidden');
+  document.getElementById('profileListView').classList.remove('hidden');
+  document.getElementById('profileBg').classList.remove('hidden');
+}
+function closeProfileModal(){ document.getElementById('profileBg').classList.add('hidden'); }
+function renderProfileList(){
+  const wrap = document.getElementById('profileListWrap');
+  wrap.innerHTML='';
+  profileList().forEach(p=>{
+    const div=document.createElement('div');
+    div.className='profile-row'+(p.id===state.activeProfileId?' on':'');
+    div.onclick=()=>selectProfile(p.id);
+    div.innerHTML = `<div class="profile-avatar">${(p.name||'?')[0]}</div><div><div style="font-weight:800;font-size:14px">${p.name}</div><div style="font-size:11.5px;color:var(--dim)">גיל ${p.age}</div></div>`;
+    wrap.appendChild(div);
+  });
+}
+function selectProfile(id){
+  state.activeProfileId = id; saveState();
+  closeProfileModal();
+  renderHome(); renderTracker();
+  showToast('עברתם לפרופיל של '+activeProfile().name);
+}
+let addChildState={age:'',goals:[]};
+function openAddChild(){
+  if(profileList().length>=1 && !isPremium()){
+    closeProfileModal();
+    showToast('פרופיל נוסף דורש מנוי פרימיום');
+    openPremium();
+    return;
+  }
+  addChildState={age:'',goals:[]};
+  document.getElementById('acName').value='';
+  document.querySelectorAll('#acAge .ob-opt').forEach(b=>b.classList.remove('on'));
+  document.querySelectorAll('#acGoals .ob-opt').forEach(b=>b.classList.remove('on'));
+  document.getElementById('profileListView').classList.add('hidden');
+  document.getElementById('profileAddView').classList.remove('hidden');
+}
+function cancelAddChild(){
+  document.getElementById('profileAddView').classList.add('hidden');
+  document.getElementById('profileListView').classList.remove('hidden');
+}
+function acPick(group,btn){
+  document.querySelectorAll('#'+group+' .ob-opt').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on'); addChildState.age=btn.dataset.v;
+}
+function acToggle(group,btn){
+  btn.classList.toggle('on');
+  const v=btn.dataset.v;
+  if(addChildState.goals.includes(v)) addChildState.goals=addChildState.goals.filter(g=>g!==v);
+  else addChildState.goals.push(v);
+}
+function createChild(){
+  const name = document.getElementById('acName').value.trim();
+  if(!name){ showToast('נא להזין שם'); return; }
+  const id = uid();
+  state.profiles[id] = {id, name, age: addChildState.age||'9-11', goals: addChildState.goals.length?addChildState.goals:['move','calm','focus'], history:{}, stars:0, badges:[]};
+  state.activeProfileId = id;
+  saveState();
+  closeProfileModal();
+  renderHome(); renderTracker();
+  showToast('פרופיל חדש נוצר 🎉');
+}
+
+/* ================= SETTINGS ================= */
+function openSettings(){ renderSettings(); document.getElementById('settingsBg').classList.remove('hidden'); }
+function closeSettings(){ document.getElementById('settingsBg').classList.add('hidden'); }
+function renderSettings(){
+  document.getElementById('reminderToggle').checked = !!state.settings.reminderTime;
+  document.getElementById('reminderTimeInput').value = state.settings.reminderTime || '18:00';
+  const st = premiumState();
+  document.getElementById('settingsPremiumStatus').textContent =
+    st.tier==='premium' ? 'פעיל ✨' : st.tier==='trial' ? `ניסיון חינם (${st.daysLeft} ימים נותרו)` : 'לא פעיל';
+}
+function onReminderToggle(cb){
+  if(cb.checked){
+    if(!('Notification' in window)){ showToast('הדפדפן לא תומך בהתראות'); cb.checked=false; return; }
+    Notification.requestPermission().then(perm=>{
+      if(perm==='granted'){
+        state.settings.reminderTime = document.getElementById('reminderTimeInput').value || '18:00';
+        saveState(); showToast('תזכורת יומית הופעלה 🔔');
+      } else { cb.checked=false; showToast('לא אושרה הרשאת התראות'); }
+    });
+  } else { state.settings.reminderTime=null; saveState(); }
+}
+function onReminderTimeChange(v){ if(state.settings.reminderTime){ state.settings.reminderTime=v; saveState(); } }
+setInterval(()=>{
+  try{
+    const rt = state.settings.reminderTime;
+    if(!rt || !('Notification' in window) || Notification.permission!=='granted') return;
+    const now=new Date(); const [h,m]=rt.split(':').map(Number);
+    if(now.getHours()===h && now.getMinutes()===m){
+      const today=now.toDateString();
+      if(state.settings.reminderLast!==today){
+        state.settings.reminderLast=today; saveState();
+        const p=activeProfile();
+        new Notification('פוקוסי 🎯',{body:`זמן למשימות של ${p?p.name:''} — 3 כלים קטנים ליום טוב יותר`});
+      }
+    }
+  }catch(e){}
+}, 30000);
+/* Note: this reminder fires only while a browser tab/PWA instance is open in the background.
+   True background push notifications (when the app is fully closed) require a push-capable
+   service worker + a small backend to hold push subscriptions — not implemented in this MVP. */
+
+/* ================= PREMIUM / SUBSCRIPTION ================= */
+/* NOTE: this is a UI/UX scaffold, not a real payment integration. "buyPremium" opens a
+   contact email and "enterPremiumCode" checks a hard-coded demo code list — wire up a real
+   payment provider (Stripe / Apple / Google Play Billing) before charging real users. */
+const PREMIUM_TRIAL_DAYS = 14;
+const PREMIUM_PRICE_TXT = '₪19.90 לחודש';
+const PREMIUM_CONTACT = 'hitbonenut.karen@gmail.com';
+const PREMIUM_CODES = ['FOCUSI-2026-DEMO'];
+
+function premiumState(){
+  if(state.premium.tier==='premium') return {tier:'premium'};
+  if(state.premium.trialStart){
+    const daysLeft = PREMIUM_TRIAL_DAYS - Math.floor((Date.now()-state.premium.trialStart)/864e5);
+    if(daysLeft>0) return {tier:'trial', daysLeft};
+    return {tier:'expired'};
+  }
+  return {tier:'none'};
+}
+function isPremium(){ const s=premiumState(); return s.tier==='premium'||s.tier==='trial'; }
+function requirePremium(){ if(isPremium()) return true; openPremium(); return false; }
+function openPremium(){ renderPremium(); document.getElementById('premiumBg').classList.remove('hidden'); }
+function closePremium(){ document.getElementById('premiumBg').classList.add('hidden'); }
+function renderPremium(){
+  const st = premiumState();
+  const body = document.getElementById('premiumBody');
+  if(st.tier==='premium'){
+    body.innerHTML = `<div class="disclaimer" style="background:#E8FBF6;border-color:#BFF0E4;color:#0f6d5c"><b>המנוי שלכם פעיל ✨</b><br>תודה שאתם עם פוקוסי!</div>`;
+    return;
+  }
+  let statusHtml='';
+  if(st.tier==='trial') statusHtml = `<div class="disclaimer">🌟 ניסיון חינם פעיל — נותרו <b>${st.daysLeft}</b> ימים</div>`;
+  else if(st.tier==='expired') statusHtml = `<div class="disclaimer">תקופת הניסיון הסתיימה — נשמח שתישארו איתנו 💛</div>`;
+  body.innerHTML = `
+    ${statusHtml}
+    <div class="plan-card">
+      <div style="font-size:14px;font-weight:800">פוקוסי פרימיום</div>
+      <div class="plan-price">${PREMIUM_PRICE_TXT}</div>
+      <div style="font-size:12px;color:var(--dim);line-height:1.6">פרופילים למספר ילדים · דוח שבועי להדפסה ולשיתוף עם הרופא/ה</div>
+    </div>
+    ${st.tier==='none'?'<button class="btn btn-primary" onclick="startTrial()">✨ 14 ימי ניסיון חינם</button>':''}
+    <button class="btn ${st.tier==='none'?'btn-ghost':'btn-primary'}" style="margin-top:10px" onclick="buyPremium()">💳 רכישת מנוי</button>
+    <button class="btn btn-ghost" style="margin-top:10px" onclick="enterPremiumCode()">יש לי קוד הפעלה</button>
+  `;
+}
+function startTrial(){
+  if(state.premium.trialStart){ showToast('תקופת הניסיון כבר נוצלה במכשיר זה'); renderPremium(); return; }
+  state.premium.trialStart = Date.now();
+  saveState(); renderPremium(); showToast('✨ 14 ימי ניסיון הופעלו!');
+}
+function buyPremium(){
+  location.href = 'mailto:'+PREMIUM_CONTACT+'?subject='+encodeURIComponent('הצטרפות לפוקוסי פרימיום')+'&body='+encodeURIComponent('היי, אשמח להצטרף למנוי פוקוסי פרימיום ('+PREMIUM_PRICE_TXT+')');
+}
+function enterPremiumCode(){
+  const c = prompt('הכניסו קוד הפעלה:');
+  if(c===null) return;
+  const code = c.trim().toUpperCase();
+  if(PREMIUM_CODES.includes(code)){
+    state.premium.tier='premium'; state.premium.code=code; saveState(); renderPremium();
+    showToast('✨ המנוי הופעל!');
+  } else showToast('⚠️ קוד לא תקין');
 }
 
 /* ================= PARENTS HUB ================= */
@@ -673,7 +1093,7 @@ async function sendChat(){
   const text = inp.value.trim();
   if(!text) return;
   addMsg(text,'user'); inp.value='';
-  const workerUrl = state.workerUrl;
+  const workerUrl = state.settings.workerUrl;
   if(workerUrl){
     addMsg('חושבת...','bot');
     try{
@@ -701,7 +1121,7 @@ function showToast(msg){
   const t=document.getElementById('toast');
   t.textContent=msg; t.classList.add('show');
   clearTimeout(toastTimeout);
-  toastTimeout=setTimeout(()=>t.classList.remove('show'),2200);
+  toastTimeout=setTimeout(()=>t.classList.remove('show'),2400);
 }
 
 /* ================= INIT ================= */
@@ -712,7 +1132,7 @@ function initApp(){
   initChat();
 }
 window.addEventListener('load', ()=>{
-  if(state.onboarded){
+  if(state.onboarded && activeProfile()){
     document.getElementById('onboarding').classList.add('hidden');
     document.getElementById('mainApp').classList.remove('hidden');
     initApp();

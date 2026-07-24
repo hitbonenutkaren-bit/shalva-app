@@ -1,5 +1,5 @@
 // פוקוסי — Service Worker (עבודה גם ללא אינטרנט)
-const CACHE = 'focusi-v1';
+const CACHE = 'focusi-v2';
 const ASSETS = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png', './icon-512-maskable.png', './apple-touch-icon.png'];
 
 self.addEventListener('install', e => {
